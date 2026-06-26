@@ -12,8 +12,11 @@ import Intro from "./Components/Intro";
 import Career from "./pages/Career";
 import OurTeam from "./pages/OurTeam";
 import Industries from "./pages/Industries";
+import About from "./pages/About";
 import Automotive from "./pages/industries/Automotive";
 import IndustryComingSoon from "./pages/industries/ComingSoon";
+import Technology from "./pages/Technology";
+import News from "./pages/News"; 
 
 const App = () => {
   const [isPlay, setIsPlay] = useState(false);
@@ -47,13 +50,22 @@ const App = () => {
       <main className="relative w-full overflow-x-hidden">
         
         <Routes>
+          {/* AVEC HASHROUTER, LA RACINE DEVANT EST TOUJOURS SÛRE ET UNIQUE */}
           <Route path="/" element={<Home togglePlay={togglePlay} />} />
-          <Route path="/about" element={<IndustryComingSoon name="About Voltcore" />} />
-          <Route path="/technology" element={<IndustryComingSoon name="Technology" />} />
+          
+          {/* AUTRES PAGES */}
+          <Route path="/about" element={<About />} />
+          
+          {/* LA ROUTE TECHNOLOGY BIEN PLACÉE ICI ET MISE À JOUR */}
+          <Route path="/technology" element={<Technology />} />
+          
           <Route path="/products" element={<Products togglePlay={togglePlay} />} />
-          <Route path="/team" element={<OurTeam />} /> {/* Route renommée pour l'équipe */}
+          <Route path="/team" element={<OurTeam />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/career" element={<Career />} />
+          
+          {/* DÉCLARATION DE LA ROUTE DE LA PAGE NEWS */}
+          <Route path="/news" element={<News />} />
 
           {/* INDUSTRIES */}
           <Route path="/industries" element={<Industries />} />
