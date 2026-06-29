@@ -17,6 +17,7 @@ import Automotive from "./pages/industries/Automotive";
 import IndustryComingSoon from "./pages/industries/ComingSoon";
 import Technology from "./pages/Technology";
 import News from "./pages/News"; 
+import ThermalLogistics from "./pages/ThermalLogistics";
 
 const App = () => {
   const [isPlay, setIsPlay] = useState(false);
@@ -63,6 +64,7 @@ const App = () => {
           <Route path="/team" element={<OurTeam />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/career" element={<Career />} />
+          <Route path="/industries/food-delivery" element={<ThermalLogistics />} />
           
           {/* DÉCLARATION DE LA ROUTE DE LA PAGE NEWS */}
           <Route path="/news" element={<News />} />
