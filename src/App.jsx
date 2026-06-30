@@ -14,6 +14,7 @@ import OurTeam from "./pages/OurTeam";
 import Industries from "./pages/Industries";
 import About from "./pages/About";
 import Automotive from "./pages/industries/Automotive";
+import HeatedApparel from "./pages/HeatedApparel"; 
 import IndustryComingSoon from "./pages/industries/ComingSoon";
 import Technology from "./pages/Technology";
 import News from "./pages/News"; 
@@ -72,14 +73,11 @@ const App = () => {
           {/* INDUSTRIES */}
           <Route path="/industries" element={<Industries />} />
           <Route path="/industries/automotive" element={<Automotive />} />
-          <Route
-            path="/industries/food-delivery"
-            element={<IndustryComingSoon name="Food & Delivery" />}
-          />
-          <Route
-            path="/industries/heated-apparel"
-            element={<IndustryComingSoon name="Heated Apparel" />}
-          />
+          
+          {/* ROUTE HEATED APPAREL MISE À JOUR (Remplace l'écran ComingSoon) */}
+          <Route path="/industries/heated-apparel" element={<HeatedApparel />} />
+          
+          {/* SECTIONS COMING SOON RESTANTES */}
           <Route
             path="/industries/underfloor-heating"
             element={<IndustryComingSoon name="Underfloor Heating" />}
