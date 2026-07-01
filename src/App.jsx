@@ -20,6 +20,7 @@ import Technology from "./pages/Technology";
 import News from "./pages/News";
 import ThermalLogistics from "./pages/ThermalLogistics";
 import FloorHeating from "./pages/FloorHeating";
+import Defense from "./pages/industries/Defense";
 
 const App = () => {
   const [isPlay, setIsPlay] = useState(false);
@@ -67,7 +68,7 @@ const App = () => {
           {/* ROUTE UNDERFLOOR HEATING (Remplace l'écran ComingSoon) */}
           <Route path="/industries/underfloor-heating" element={<FloorHeating />} />
           {/* SECTIONS COMING SOON RESTANTES */}
-          <Route path="/industries/defense" element={<IndustryComingSoon name="Defense" />} />
+          <Route path="/industries/defense" element={<Defense />} />
         </Routes>
       </main>
       <PopupPlayer isPlay={isPlay} togglePlay={togglePlay} />
