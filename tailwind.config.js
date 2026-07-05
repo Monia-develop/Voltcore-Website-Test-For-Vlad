@@ -3,10 +3,13 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   darkMode: "class",
   theme: {
+fontFamily: 
+{
+  sans: ["AkkuratLL", "Helvetica Neue", "Arial", "sans-serif"],
+  antonym: ["Antonym", "serif"],
+  parisienne: ["Parisienne", "cursive"],
+},
     extend: {
-      fontFamily: {
-        parisienne: ["Parisienne", "cursive"],
-      },
       colors: {
         primary: "#00C2FF",
         secondary: "#DD0BFF",

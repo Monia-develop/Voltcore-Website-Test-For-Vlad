@@ -3,6 +3,33 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
+@font-face {
+  font-family: "AkkuratLL";
+  src: url("/fonts/AkkuratLLWeb-Black.woff2") format("woff2"),
+       url("/fonts/AkkuratLLWeb-Black.woff") format("woff");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "AkkuratLL";
+  src: url("/fonts/AkkuratLLWeb-Regular.woff2") format("woff2"),
+       url("/fonts/AkkuratLLWeb-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Antonym";
+  src: url("/fonts/Antonym-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
 @layer components {
   .primary-btn {
     @apply bg-gradient-to-r from-primary to-secondary duration-300 py-2 px-6 text-white rounded-full hover:scale-105;
