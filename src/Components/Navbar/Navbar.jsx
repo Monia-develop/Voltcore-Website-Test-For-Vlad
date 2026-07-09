@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Logo from "../../assets/logo.png";
 import DarkMode from "./DarkMode";
 import { Link, useLocation } from "react-router-dom";
-import { FaArrowRight, FaChevronUp, FaChevronDown } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa";
 
 /* ─── MAIN NAV LINKS ──────────────────────────────────────────────────────── */
 const NAV_LINKS = [
@@ -13,15 +13,50 @@ const NAV_LINKS = [
   { id: 5, name: "Products",       link: "/products"   },
 ];
 
-/* ─── HOME SECTION ANCHORS ────────────────────────────────────────────────── */
-const HOME_SECTIONS = [
-  { id: "hero",        label: "Top"         },
-  { id: "who-we-are",  label: "01 Who We Are"     },
-  { id: "technology",  label: "02 Technology"     },
-  { id: "industries",  label: "03 Industries"     },
-  { id: "news",        label: "04 News"           },
-  { id: "leadership",  label: "05 Leadership"     },
-];
+/* ─── SECTION ANCHORS PER PAGE ────────────────────────────────────────────── */
+const PAGE_SECTIONS = {
+  "/": [
+    { id: "hero",       label: "Top"           },
+    { id: "who-we-are", label: "01 Who We Are" },
+    { id: "technology", label: "02 Technology" },
+    { id: "industries", label: "03 Industries" },
+    { id: "news",       label: "04 News"       },
+    { id: "leadership", label: "05 Leadership" },
+  ],
+  "/about": [
+    { id: "about-hero",  label: "Top"            },
+    { id: "values",      label: "01 Values"      },
+    { id: "milestones",  label: "02 Milestones"  },
+    { id: "press",       label: "03 Press"       },
+    { id: "team",        label: "04 Team"        },
+    { id: "location",    label: "05 Location"    },
+    { id: "careers",     label: "06 Careers"     },
+  ],
+  "/technology": [
+    { id: "tech-hero",   label: "Top"            },
+    { id: "second-skin", label: "01 Second Skin" },
+    { id: "schema",      label: "02 Architecture"},
+    { id: "platforms",   label: "03 Platforms"   },
+    { id: "pillars",     label: "04 Why Voltcore"},
+    { id: "poc",         label: "05 Pipeline"    },
+  ],
+  "/industries": [
+    { id: "industries-hero",     label: "Top" },
+    { id: "automotive",          label: "Automotive" },
+    { id: "food-delivery",       label: "Food & Delivery" },
+    { id: "heated-apparel",      label: "Heated Apparel" },
+    { id: "underfloor-heating",  label: "Underfloor Heating" },
+    { id: "defense",             label: "Defense" },
+  ],
+  "/products": [
+    { id: "activefil",   label: "ActiveFil" },
+    { id: "targetheat",  label: "TargetHeat" },
+    { id: "sensiterm",   label: "SensiTerm" },
+  ]
+};
+
+// keep backward-compat alias
+const HOME_SECTIONS = PAGE_SECTIONS["/"];
 
 /* ─── SCROLL TO SECTION ───────────────────────────────────────────────────── */
 const scrollTo = (sectionId) => {
@@ -33,9 +68,10 @@ const scrollTo = (sectionId) => {
 const Navbar = () => {
   const [scrolled,      setScrolled]      = useState(false);
   const [mobileOpen,    setMobileOpen]    = useState(false);
-  const [activeSection, setActiveSection] = useState("hero");
+  const [activeSection, setActiveSection] = useState("");
   const location = useLocation();
-  const isHome = location.pathname === "/";
+  const currentSections = PAGE_SECTIONS[location.pathname] ?? [];
+  const hasSections = currentSections.length > 0;
 
   /* scroll → glass effect */
   useEffect(() => {
@@ -44,9 +80,10 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* scroll-spy: track active section */
+  /* scroll-spy: track active section for any page */
   useEffect(() => {
-    if (!isHome) return;
+    if (!hasSections) return;
+    setActiveSection(currentSections[0]?.id ?? "");
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -55,18 +92,31 @@ const Navbar = () => {
       },
       { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
     );
-    HOME_SECTIONS.forEach(({ id }) => {
+    currentSections.forEach(({ id }) => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
     return () => observer.disconnect();
-  }, [isHome, location]);
+  }, [location.pathname, hasSections]);
 
   /* lock body scroll when mobile menu open */
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
+
+  /* scroll to section after cross-page navigation */
+  useEffect(() => {
+    const target = sessionStorage.getItem("scrollTo");
+    if (!target) return;
+    sessionStorage.removeItem("scrollTo");
+    const attempt = (tries = 0) => {
+      const el = document.getElementById(target);
+      if (el) { el.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
+      if (tries < 10) setTimeout(() => attempt(tries + 1), 120);
+    };
+    setTimeout(() => attempt(), 200);
+  }, [location.pathname]);
 
   const bg = scrolled
     ? "bg-white/85 dark:bg-[#14141B]/85 backdrop-blur-xl shadow-[0_1px_0_rgba(0,0,0,0.06)] dark:shadow-[0_1px_0_rgba(255,255,255,0.04)]"
@@ -82,7 +132,7 @@ const Navbar = () => {
           <div className="flex items-center justify-between h-[68px]">
 
             {/* LOGO */}
-            <Link to="/" onClick={() => isHome && scrollTo("hero")} className="flex items-center gap-3 shrink-0">
+            <Link to="/" onClick={() => location.pathname === "/" && scrollTo("hero")} className="flex items-center gap-3 shrink-0">
               <img
                 src={Logo}
                 alt="Voltcore"
@@ -94,7 +144,9 @@ const Navbar = () => {
             <nav className="hidden md:flex items-center gap-1">
               {NAV_LINKS.map(({ id, name, link }) => {
                 const active = location.pathname === link;
-                const isHomeLink = link === "/";
+                const linkSections = PAGE_SECTIONS[link] ?? [];
+                const hasDropdown = linkSections.length > 0;
+                const isCurrentPage = location.pathname === link;
                 const textClass = scrolled
                   ? active ? "text-[#14141B] dark:text-white" : "text-[#14141B]/60 dark:text-[#B8B7A4]/70 hover:text-[#14141B] dark:hover:text-white"
                   : active ? "text-white" : "text-white/60 hover:text-white";
@@ -104,7 +156,7 @@ const Navbar = () => {
                     {/* Link */}
                     <Link
                       to={link}
-                      onClick={() => isHomeLink && isHome && scrollTo("hero")}
+                      onClick={() => isCurrentPage && scrollTo(linkSections[0]?.id)}
                       className={`relative px-4 py-2 text-[11px] font-black uppercase tracking-[0.16em] transition-colors duration-200 rounded-full ${textClass}`}
                     >
                       {name}
@@ -113,22 +165,21 @@ const Navbar = () => {
                       )}
                     </Link>
 
-                    {/* Chevron arrow — only for Home link */}
-                    {isHomeLink && (
+                    {/* Chevron + dropdown — for any page that has section anchors */}
+                    {hasDropdown && (
                       <div className="relative">
-                        {/* Arrow trigger */}
                         <button
                           className={`flex items-center justify-center w-5 h-5 rounded-full transition-all duration-200 -ml-1
                             ${scrolled ? "hover:bg-black/8 dark:hover:bg-white/8" : "hover:bg-white/10"}
                             ${textClass}`}
-                          aria-label="Home sections"
+                          aria-label={`${name} sections`}
                         >
                           <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
                             <path d="M1.5 2.5L4 5.5L6.5 2.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                           </svg>
                         </button>
 
-                        {/* Dropdown */}
+                        {/* Dropdown panel */}
                         <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 pointer-events-none opacity-0 translate-y-2
                           group-hover/nav:opacity-100 group-hover/nav:translate-y-0 group-hover/nav:pointer-events-auto
                           transition-all duration-200 ease-out z-50">
@@ -140,35 +191,44 @@ const Navbar = () => {
                           {/* Panel */}
                           <div className="relative bg-white dark:bg-[#1c1c24] border border-black/8 dark:border-white/10
                             rounded-2xl shadow-2xl shadow-black/20 dark:shadow-black/60 overflow-hidden min-w-[200px]">
-                            {HOME_SECTIONS.filter(s => s.id !== "hero").map(({ id: sid, label }, i) => (
-                              <button
-                                key={sid}
-                                onClick={() => scrollTo(sid)}
-                                className={`w-full flex items-center gap-3 px-5 py-3 text-left transition-colors duration-150 group/item
-                                  ${activeSection === sid
-                                    ? "bg-[#D9FE42]/10 dark:bg-[#D9FE42]/8"
-                                    : "hover:bg-black/4 dark:hover:bg-white/5"}
-                                  ${i !== 0 ? "border-t border-black/5 dark:border-white/5" : ""}`}
-                              >
-                                {/* Dot indicator */}
-                                <span className={`w-1.5 h-1.5 rounded-full shrink-0 transition-all duration-200
-                                  ${activeSection === sid
-                                    ? "bg-[#D9FE42] shadow-[0_0_6px_rgba(217,254,66,0.8)]"
-                                    : "bg-black/15 dark:bg-white/20 group-hover/item:bg-[#D9FE42]/60"}`}
-                                />
-                                <span className={`text-[10px] font-black uppercase tracking-[0.14em] transition-colors duration-150
-                                  ${activeSection === sid
-                                    ? "text-[#14141B] dark:text-white"
-                                    : "text-[#14141B]/60 dark:text-[#B8B7A4]/70 group-hover/item:text-[#14141B] dark:group-hover/item:text-white"}`}>
-                                  {label}
-                                </span>
-                                {activeSection === sid && (
-                                  <span className="ml-auto text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-[#D9FE42] text-[#14141B]">
-                                    Here
+                            {linkSections.filter(s => s.label !== "Top").map(({ id: sid, label }, i) => {
+                              const isCurrent = isCurrentPage && activeSection === sid;
+                              return (
+                                <Link
+                                  key={sid}
+                                  to={link}
+                                  onClick={(e) => {
+                                    if (isCurrentPage) {
+                                      e.preventDefault();
+                                      scrollTo(sid);
+                                    } else {
+                                      // Navigate then scroll after mount
+                                      sessionStorage.setItem("scrollTo", sid);
+                                    }
+                                  }}
+                                  className={`w-full flex items-center gap-3 px-5 py-3 text-left transition-colors duration-150 group/item
+                                    ${isCurrent ? "bg-[#D9FE42]/10 dark:bg-[#D9FE42]/8" : "hover:bg-black/4 dark:hover:bg-white/5"}
+                                    ${i !== 0 ? "border-t border-black/5 dark:border-white/5" : ""}`}
+                                animate-fadeIn>
+                                  <span className={`w-1.5 h-1.5 rounded-full shrink-0 transition-all duration-200
+                                    ${isCurrent
+                                      ? "bg-[#D9FE42] shadow-[0_0_6px_rgba(217,254,66,0.8)]"
+                                      : "bg-black/15 dark:bg-white/20 group-hover/item:bg-[#D9FE42]/60"}`}
+                                  />
+                                  <span className={`text-[10px] font-black uppercase tracking-[0.14em] transition-colors duration-150
+                                    ${isCurrent
+                                      ? "text-[#14141B] dark:text-white"
+                                      : "text-[#14141B]/60 dark:text-[#B8B7A4]/70 group-hover/item:text-[#14141B] dark:group-hover/item:text-white"}`}>
+                                    {label}
                                   </span>
-                                )}
-                              </button>
-                            ))}
+                                  {isCurrent && (
+                                    <span className="ml-auto text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-[#D9FE42] text-[#14141B]">
+                                      Here
+                                    </span>
+                                  )}
+                                </Link>
+                              );
+                            })}
                           </div>
                         </div>
                       </div>
@@ -176,19 +236,6 @@ const Navbar = () => {
                   </div>
                 );
               })}
-
-              {/* CTA */}
-              <Link
-                to="/contact"
-                className={`ml-3 inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-[11px] font-black uppercase tracking-[0.14em] transition-all duration-300 hover:scale-105
-                  ${scrolled
-                    ? "bg-[#14141B] dark:bg-[#D9FE42] text-white dark:text-[#14141B] hover:bg-[#D9FE42] hover:text-[#14141B] dark:hover:bg-white dark:hover:text-[#14141B]"
-                    : "bg-white/10 text-white border border-white/20 hover:bg-[#D9FE42] hover:text-[#14141B] hover:border-[#D9FE42]"
-                  }`}
-              >
-                Contact
-                <FaArrowRight size={8} />
-              </Link>
 
               <div className="ml-2"><DarkMode /></div>
             </nav>
@@ -268,8 +315,8 @@ const Navbar = () => {
             ))}
           </ul>
 
-          {/* HOME SECTION SHORTCUTS (mobile) */}
-          {isHome && (
+          {/* SECTION SHORTCUTS (mobile) — shown for any page that has sections */}
+          {hasSections && (
             <div
               className="mb-8"
               style={{
@@ -279,7 +326,7 @@ const Navbar = () => {
             >
               <p className="text-[9px] font-black uppercase tracking-[0.2em] text-[#D9FE42]/60 mb-4">// Sections</p>
               <div className="flex flex-wrap gap-2">
-                {HOME_SECTIONS.map(({ id, label }) => (
+                {currentSections.filter(s => s.label !== "Top").map(({ id, label }) => (
                   <button
                     key={id}
                     onClick={() => { setMobileOpen(false); setTimeout(() => scrollTo(id), 300); }}

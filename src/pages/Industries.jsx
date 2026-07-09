@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { FaArrowRight, FaArrowUp } from "react-icons/fa"; // Changement ici : FaArrowUp au lieu de FaArrowUpRight
 
@@ -7,6 +7,42 @@ import FoodDeliveryImg  from "../assets/website/industries/FoodDelivery.png";
 import HeatedApparelImg from "../assets/website/industries/Heated-Apparel.png";
 import UnderfloorImg    from "../assets/website/industries/Underfloor-Heating.png";
 import DefenseImg       from "../assets/website/industries/Defense.png";
+
+const useIsDark = () => {
+  const [dark, setDark] = useState(false);
+  useEffect(() => {
+    const update = () => setDark(document.documentElement.classList.contains("dark"));
+    update();
+    const obs = new MutationObserver(update);
+    obs.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => obs.disconnect();
+  }, []);
+  return dark;
+};
+
+const useInView = (threshold = 0.15) => {
+  const ref = useRef(null);
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setShown(true); }, { threshold });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+  return [ref, shown];
+};
+
+const Reveal = ({ children, delay = 0, y = 28, className = "", tag: Tag = "div" }) => {
+  const [ref, shown] = useInView(0.1);
+  return (
+    <Tag ref={ref} className={className} style={{
+      opacity: shown ? 1 : 0,
+      transform: shown ? "translateY(0)" : `translateY(${y}px)`,
+      transition: `opacity 0.6s cubic-bezier(.22,.61,.36,1) ${delay}ms, transform 0.6s cubic-bezier(.22,.61,.36,1) ${delay}ms`,
+    }}>
+      {children}
+    </Tag>
+  );
+};
 
 const INDUSTRIES = [
   {
@@ -69,34 +105,85 @@ const Industries = () => {
     <div className="min-h-screen bg-[#F2F0EA] dark:bg-[#0E0E13] text-[#14141B] dark:text-white">
 
       {/* ── HEADER ── */}
-      <section className="relative pt-40 pb-24 px-6 overflow-hidden bg-[#0E0E13]">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_0%,rgba(148,195,86,0.10),transparent_55%)] pointer-events-none" />
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
-          backgroundImage: "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.6) 1px, transparent 1px)",
-          backgroundSize: "64px 64px",
-        }} />
-        <div className="container mx-auto max-w-7xl relative z-10">
-          <div className="flex items-center gap-3 mb-8">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#94C356]" />
-            <span className="text-[11px] font-mono uppercase tracking-[0.35em] text-[#94C356]">
-              Field Guide — 5 Sectors
-            </span>
-          </div>
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10">
-            <h1 className="text-[13vw] leading-[0.85] lg:text-[6.5rem] font-black tracking-tighter uppercase text-white max-w-4xl">
-              Heat, applied
-              <br />
-              <span className="text-transparent" style={{ WebkitTextStroke: "1.5px rgba(255,255,255,0.35)" }}>
-                where it matters.
-              </span>
-            </h1>
-            <p className="text-[#B8B7A4] max-w-xs text-sm font-light leading-relaxed lg:pb-2">
-              One polymer heating platform, five very different jobs. Pick a sector to see the bench
-              data against legacy technology.
-            </p>
-          </div>
-        </div>
-      </section>
+{/* ── HERO ───────────────────────────────────────────── */}
+<section
+  id="industries-hero"
+  className="relative w-full min-h-[88vh] flex items-center overflow-hidden bg-[#14141B]"
+>
+  {/* Background */}
+  <div className="absolute inset-0 pointer-events-none">
+    <div
+      className="absolute top-1/3 left-1/4 w-[500px] h-[500px] rounded-full blur-[120px] opacity-10"
+      style={{ background: "#D9FE42" }}
+    />
+    <div
+      className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full blur-3xl opacity-5"
+      style={{ background: "#94C356" }}
+    />
+    <div
+      className="absolute top-1/2 right-0 w-64 h-64 rounded-full blur-3xl opacity-5"
+      style={{ background: "#4A5DA7" }}
+    />
+  </div>
+
+  {/* Grid */}
+  <div
+    className="absolute inset-0 opacity-[0.03]"
+    style={{
+      backgroundImage:
+        "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg,#fff 1px, transparent 1px)",
+      backgroundSize: "60px 60px",
+    }}
+  />
+
+  <div className="relative z-10 container mx-auto px-6 md:px-12 max-w-6xl pt-32 pb-24">
+
+    <span className="text-xs tracking-[0.18em] uppercase font-bold block mb-6 text-[#D9FE42]">
+      04 // Industries
+    </span>
+
+<Reveal>
+  <h1 className="text-5xl md:text-6xl font-black tracking-tighter leading-[0.9] text-white uppercase mb-6">
+    Heating Solutions<br />
+    <span style={{ color: "#D9FE42" }}>
+      Across Industries
+    </span>
+  </h1>
+</Reveal>
+<Reveal delay={120}>
+    <p
+      className="text-base leading-relaxed max-w-2xl mb-10"
+      style={{ color: "#B8B7A4" }}
+    >
+      One conductive polymer platform powering applications across automotive,
+      apparel, logistics, residential heating and defence. Explore how the
+      same technology adapts to completely different industries.
+    </p>
+</Reveal>
+<Reveal delay={220}>
+    <div className="flex flex-wrap gap-4 mb-16">
+      <Link
+        to="/contact"
+        className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-sm font-black uppercase tracking-widest transition-all duration-300 hover:opacity-90 hover:scale-105 hover:shadow-[0_0_30px_rgba(217,254,66,0.25)]"
+        style={{ background: "#D9FE42", color: "#14141B" }}
+      >
+
+        Contact Us
+        <FaArrowRight size={9} />
+      </Link>
+
+      <Link
+        to="/technology"
+        className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-xs font-black uppercase tracking-widest border border-white/20 text-white hover:border-white/50 transition-all duration-300"
+      >
+        Explore Technology
+        <FaArrowRight size={9} />
+      </Link>
+    </div>
+</Reveal>
+  </div>
+</section>
+
 
       {/* ── INDEX STRIP ── */}
       <section className="bg-[#0E0E13] border-t border-white/10">
@@ -136,6 +223,7 @@ const Industries = () => {
                 {INDUSTRIES.map((ind, i) => {
                   const isActive = active === i;
                   return (
+                         <Reveal key={ind.slug} delay={i * 70}>
                     <div
                       key={ind.slug}
                       onMouseEnter={() => setActive(i)}
@@ -192,6 +280,7 @@ const Industries = () => {
                         />
                       </Link>
                     </div>
+               </Reveal>
                   );
                 })}
               </div>
@@ -200,11 +289,13 @@ const Industries = () => {
             {/* Sticky visual */}
             <div className="col-span-7">
               <div className="sticky top-28">
+                <Reveal delay={250}>
                 <Link
                   to={`/industries/${current.slug}`}
                   className="relative block w-full h-[600px] rounded-3xl overflow-hidden bg-[#14141B] group"
                   style={{ boxShadow: `0 30px 80px -30px ${current.accent}40` }}
                 >
+                  
                   {INDUSTRIES.map((ind, i) => (
                     <img
                       key={ind.slug}
@@ -243,9 +334,11 @@ const Industries = () => {
                     </span>
                   </div>
                 </Link>
+                </Reveal>
               </div>
             </div>
           </div>
+          
 
           {/* ── MOBILE STACK ── */}
           <div className="md:hidden flex flex-col gap-4">
@@ -279,7 +372,9 @@ const Industries = () => {
       </section>
 
       {/* ── CTA FOOTER ── */}
+   
       <section className="py-24 px-6 bg-[#0E0E13] border-t border-white/10">
+         <Reveal>
         <div className="container mx-auto max-w-3xl text-center">
           <div className="text-[11px] tracking-[0.3em] uppercase text-[#94C356] font-mono mb-5">// Custom Applications</div>
           <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-white mb-5 leading-tight">
@@ -296,7 +391,9 @@ const Industries = () => {
             Contact Our Engineering Team <FaArrowRight size={10} />
           </Link>
         </div>
+        </Reveal>
       </section>
+
 
     </div>
   );

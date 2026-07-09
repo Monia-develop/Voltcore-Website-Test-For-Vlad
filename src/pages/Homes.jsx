@@ -16,7 +16,6 @@ import SensiTermImg     from "../assets/website/platforms/BRD-04-sensiterm.png";
 
 import HeroVideo from "../assets/voltcore-hero.mp4"; 
 
-
 const METRICS = [
   { val:"−75%",      numPrefix:"−",      numEnd:75, numSuffix:"%",   label:"CO₂ footprint vs copper",     sub:"Third-party LCA validated",        barColor:"#D9FE42", glowColor:"rgba(217,254,66,0.18)"  },
   { val:"Up to 4×",  numPrefix:"Up to ", numEnd:4,  numSuffix:"×",   label:"Less energy consumption",     sub:"Versus conventional alternatives", barColor:"#D9FE42", glowColor:"rgba(217,254,66,0.18)"  },
@@ -121,11 +120,11 @@ const MetricCard = ({ m, idx }) => {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={handleClick}
-      className="group relative overflow-hidden rounded-2xl cursor-default bg-black/40 backdrop-blur-md border border-white/10"
+      className="group relative overflow-hidden rounded-2xl cursor-default bg-black/50 backdrop-blur-md border border-white/10"
       style={{
         borderTopWidth: 3,
         borderTopColor: m.barColor,
-        boxShadow: hovered ? `0 20px 50px ${m.glowColor}` : "0 4px 12px rgba(0,0,0,0.2)",
+        boxShadow: hovered ? `0 20px 50px ${m.glowColor}` : "0 4px 12px rgba(0,0,0,0.3)",
         opacity: visible ? 1 : 0,
         transform: `translateY(${visible ? (hovered ? "-6px" : "0") : "24px"})`,
         transition: `opacity 0.6s ${idx * 120}ms, transform 0.6s ${idx * 120}ms cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s`,
@@ -268,7 +267,7 @@ const TeamCard = ({ m }) => {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
-// HOME
+// HOME MAIN COMPONENT
 // ─────────────────────────────────────────────────────────────────────────────
 const Home = () => {
   const [wordIdx, setWordIdx]   = useState(0);
@@ -309,76 +308,104 @@ const Home = () => {
   return (
     <div className="bg-white dark:bg-[#14141B] text-[#14141B] dark:text-[#B8B7A4] min-h-screen overflow-x-hidden font-sans selection:bg-[#D9FE42] selection:text-[#14141B]">
 
-      {/* Ambient glow */}
-      <div className="fixed pointer-events-none z-50 rounded-full" style={{ width: 500, height: 500, left: cursor.x - 250, top: cursor.y - 250, background: "radial-gradient(circle, rgba(217,254,66,0.03) 0%, transparent 70%)", mixBlendMode: "screen" }} />
+      {/* Lueur d'ambiance interactive exclusive qui suit précisément la souris */}
+      <div className="fixed pointer-events-none z-50 rounded-full mix-blend-screen" 
+        style={{ 
+          width: 650, 
+          height: 650, 
+          left: cursor.x - 325, 
+          top: cursor.y - 325, 
+          background: "radial-gradient(circle, rgba(217,254,66,0.06) 0%, transparent 65%)" 
+        }} 
+      />
 
-      {/* ── HERO WITH VIDEO BACKGROUND ───────────────────────────────────────── */}
+      {/* ── HERO OPTIMISÉ POUR METTRE EN VALEUR LA VIDÉO ET LE LOGO ──────────────── */}
       <section
         id="hero"
-        className="relative grid grid-cols-1 lg:grid-cols-2 min-h-[760px] lg:min-h-[820px] border-b border-[#2a2a3a] bg-[#14141B] text-white overflow-hidden"
+        className="relative grid grid-cols-1 lg:grid-cols-2 min-h-[780px] lg:min-h-[850px] border-b border-[#2a2a3a] bg-[#14141B] text-white overflow-hidden"
         onMouseMove={handleMouseMove}
       >
-        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-40">
+        {/* LA VIDÉO - Opacité augmentée de 70% à 95% pour une visibilité totale */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-95">
           <video autoPlay loop muted playsInline className="w-full h-full object-cover">
             <source src={HeroVideo} type="video/mp4" />
           </video>
+          {/* Masque dégradé adouci : protège le texte à gauche tout en ouvrant complètement le centre */}
+          <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(20,20,27,0.7) 0%, rgba(20,20,27,0.3) 45%, transparent 100%)" }} />
+          <div className="absolute inset-0 bg-black/10" />
         </div>
 
-        {/* Left Side Content */}
-        <div className="relative z-10 flex flex-col justify-center px-10 py-20 border-b lg:border-b-0 lg:border-r border-white/10 overflow-hidden bg-black/20 backdrop-blur-[2px]">
+        {/* Zone de Contenu Gauche */}
+        <div className="relative z-10 flex flex-col justify-center px-10 py-20 border-b lg:border-b-0 lg:border-r border-white/5 overflow-hidden bg-transparent">
+          
+          {/* Grille Nanotech Interactive - S'illumine au passage du curseur */}
           <div
-            className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:48px_48px] pointer-events-none"
-            style={{ transform: `translate(${mouse.x * 16}px, ${mouse.y * 16}px)`, transition: "transform 0.4s ease-out" }}
+            className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"
+            style={{ 
+              transform: `translate(${mouse.x * 24}px, ${mouse.y * 24}px)`, 
+              transition: "transform 0.5s cubic-bezier(0.1, 0.8, 0.2, 1)",
+              maskImage: `radial-gradient(circle 180px at ${(mouse.x + 0.5) * 100}% ${(mouse.y + 0.5) * 100}%, black 20%, transparent 100%)`,
+              WebkitMaskImage: `radial-gradient(circle 180px at ${(mouse.x + 0.5) * 100}% ${(mouse.y + 0.5) * 100}%, black 20%, transparent 100%)`
+            }}
           />
 
-          {/* Location badge */}
-          <div className="inline-flex items-center gap-2 mb-8 w-fit">
+          {/* Badge Localisation */}
+          <div className="inline-flex items-center gap-2 mb-8 bg-black/40 border border-white/10 px-4 py-1.5 rounded-full w-fit backdrop-blur-sm">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#D9FE42] opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[#D9FE42]" />
             </span>
-            <span className="text-[11px] tracking-[0.16em] uppercase text-white/60 font-medium">Advanced Materials — Bissen, Luxembourg</span>
+            <span className="text-[11px] tracking-[0.16em] uppercase text-white/90 font-medium">Advanced Materials — Bissen, Luxembourg</span>
           </div>
 
-          {/* Typing word */}
-          <div className="text-[11px] tracking-[0.2em] uppercase text-[#D9FE42] font-semibold mb-3 h-5">
+          {/* Écriture dynamique mise à jour */}
+          <div className="text-[12px] tracking-[0.25em] uppercase text-[#D9FE42] font-black mb-3 h-5">
             {displayed}<span className="animate-pulse ml-px">|</span>
           </div>
 
-          <h1 className="text-5xl md:text-6xl font-black tracking-tighter leading-[0.95] text-white uppercase mb-6 max-w-xl"
-            style={{ transform: `translate(${mouse.x * -8}px, ${mouse.y * -4}px)`, transition: "transform 0.15s ease-out" }}
+          {/* Titre Principal Impactant */}
+          <h1 className="text-5xl md:text-6.5xl font-black tracking-tighter leading-[0.92] text-white uppercase mb-6 max-w-xl"
+            style={{ transform: `translate(${mouse.x * -12}px, ${mouse.y * -6}px)`, transition: "transform 0.2s ease-out" }}
           >
             HEAT SMART<br />
-            <span className="text-[#D9FE42]">GO GREEN</span>
+            <span className="text-[#D9FE42] drop-shadow-[0_0_30px_rgba(217,254,66,0.2)]">GO GREEN</span>
           </h1>
 
-          <p className="text-base font-antonym text-white/70 leading-relaxed max-w-[420px] mb-10">
-            Voltcore is an advanced materials and mobility-tech start-up. Our mission is to create the most sustainable and energy-efficient surface <strong className="text-white font-bold">HEATING SOLUTIONS.</strong>
+          <p className="text-base font-antonym text-white/90 leading-relaxed max-w-[440px] mb-10 drop-shadow-md">
+            Voltcore is an advanced materials and mobility-tech start-up. Our mission is to create the most sustainable and energy-efficient surface <strong className="text-white font-black font-sans">HEATING SOLUTIONS.</strong>
           </p>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-4">
             <Link to="/technology"
-              className="group inline-flex items-center gap-2 px-7 py-3.5 bg-[#D9FE42] text-[#14141B] rounded-full text-sm font-black uppercase tracking-widest transition-all duration-300 hover:opacity-90 hover:scale-105 hover:shadow-[0_0_30px_rgba(217,254,66,0.25)]"
+              className="group inline-flex items-center gap-3 px-8 py-4 bg-[#D9FE42] text-[#14141B] rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300 hover:scale-105 hover:shadow-[0_0_35px_rgba(217,254,66,0.45)]"
             >
               Discover Our Technology
-              <FaArrowRight size={10} className="transition-transform duration-300 group-hover:translate-x-1" />
+              <FaArrowRight size={10} className="transition-transform duration-300 group-hover:translate-x-1.5" />
             </Link>
             <Link to="/contact"
-              className="inline-flex items-center gap-2 px-7 py-3.5 border border-white/20 text-white rounded-full text-sm font-black uppercase tracking-widest transition-all duration-300 hover:border-[#D9FE42] hover:text-[#D9FE42] hover:bg-white/5"
+              className="inline-flex items-center gap-3 px-8 py-4 border border-white/30 text-white backdrop-blur-sm rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300 hover:border-[#D9FE42] hover:text-[#D9FE42] hover:bg-white/10"
             >
               Contact Us
             </Link>
           </div>
+
+          {/* Défilement Indicateur Bas */}
+          <div className="absolute bottom-8 left-10 flex items-center gap-3 opacity-60 hover:opacity-100 transition-opacity duration-300 cursor-pointer" onClick={() => document.getElementById("who-we-are")?.scrollIntoView({ behavior: "smooth" })}>
+            <div className="w-6 h-10 rounded-full border border-white/50 flex items-start justify-center pt-2 backdrop-blur-sm bg-black/20">
+              <div className="w-1 h-2 bg-white rounded-full" style={{ animation: "scrollBob 1.8s ease-in-out infinite" }} />
+            </div>
+            <span className="text-[10px] uppercase tracking-[0.2em] text-white font-bold">Scroll</span>
+          </div>
         </div>
 
-        {/* Right Side Content — Metrics unifiées en Vert Néon */}
-        <div className="relative z-10 flex flex-col justify-center gap-4 p-10 overflow-hidden bg-black/10 backdrop-blur-[1px]" style={{ transform: `translate(${mouse.x * 6}px, ${mouse.y * 3}px)`, transition: "transform 0.15s ease-out" }}>
-          <div aria-hidden className="absolute select-none pointer-events-none font-black text-white/[0.03] leading-none" style={{ fontSize: 200, top: -20, right: -20, letterSpacing: "-0.06em", zIndex: 0 }}>CNT</div>
+        {/* Zone Droite — Cartes de métriques */}
+        <div className="relative z-10 flex flex-col justify-center gap-4 p-10 bg-transparent" style={{ transform: `translate(${mouse.x * 8}px, ${mouse.y * 4}px)`, transition: "transform 0.2s ease-out" }}>
+          <div aria-hidden className="absolute select-none pointer-events-none font-sans font-black leading-none text-[240px] -top-10 -right-5 tracking-tighter opacity-[0.02] text-[#D9FE42]">
+            CNT
+          </div>
           {METRICS.map((m, i) => <MetricCard key={m.label} m={m} idx={i} />)}
         </div>
       </section>
-
-      {/* PARTNERS MARQUEE ENLEVÉ ICI POUR S'ALIGNER SUR VOS DIRECTIVES */}
 
       {/* ── WHO WE ARE ───────────────────────────────────────────────────────── */}
       <section id="who-we-are" className="px-10 py-24 bg-white dark:bg-[#14141B]">
@@ -592,7 +619,7 @@ const Home = () => {
             <ul className="flex flex-col gap-4">
               <li className="flex items-start gap-2 text-[12px] text-[#8a8880]">
                 <FaMapMarkerAlt className="text-[#D9FE42] mt-0.5 shrink-0" size={11} />
-                <span>11, rue de l'Industrie,<br />L-7735 Bissen, Luxembourg</span>
+                <span>2, rue de l'Industrie,<br />L-7735 Bissen, Luxembourg</span>
               </li>
               <li className="flex items-center gap-2">
                 <FaEnvelope className="text-[#D9FE42] shrink-0" size={11} />
@@ -613,6 +640,7 @@ const Home = () => {
       <style>{`
         @keyframes rippleOut { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(4); opacity: 0; } }
         @keyframes ringPulse { 0% { transform: scale(0.5); opacity: 0.8; } 100% { transform: scale(2.5); opacity: 0; } }
+        @keyframes scrollBob { 0%, 100% { transform: translateY(0); opacity: 1; } 50% { transform: translateY(6px); opacity: 0.3; } }
       `}</style>
     </div>
   );
