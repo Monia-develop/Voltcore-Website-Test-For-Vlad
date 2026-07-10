@@ -244,17 +244,6 @@ const VALUECHAIN = [
   },
 ];
 
-const COMPAREROWS = [
-  { label: "Surface uniformity", voltcore: "±4°C", copper: "±16°C", ink: "±10°C" },
-  { label: "Heat delivery to surface", voltcore: "85–95%", copper: "40–60%", ink: "60–70%" },
-  { label: "Profile thickness", voltcore: "2–3 mm", copper: "5–13 mm", ink: "3–8 mm" },
-  { label: "Energy vs copper", voltcore: "40–60%", copper: "Baseline", ink: "15–20%" },
-  { label: "Recyclability", voltcore: "100% mono-material", copper: "Non-recyclable metal", ink: "Non-recyclable composite" },
-  { label: "Corrosion / breakage", voltcore: "Zero", copper: "High flex fatigue", ink: "Medium crack-prone" },
-  { label: "Sensing capability", voltcore: "Intrinsic SensiTerm", copper: "None", ink: "None" },
-  { label: "Industrial compatibility", voltcore: "Drop-in extrusion", copper: "Custom tooling", ink: "Screen-print only" },
-];
-
 /* ─── FOOTER ─────────────────────────────────────────────────────────────── */
 const Footer = () => (
   <footer className="bg-[#f5f4f0] dark:bg-[#0e0e14] border-t border-[#e8e6e0] dark:border-[#2a2a3a] px-10 pt-16 pb-8">
@@ -358,7 +347,56 @@ const Footer = () => (
   </footer>
 );
 
-/* ─── VALUE CHAIN SECTION ────────────────────────────────────────────────── */
+/* ─── VALUE CHAIN SECTION ───────────────────────────────────────────────── */
+const StepIcon = ({ num, dark }) => {
+  const color = dark ? "#d9fe42" : "#12503c";
+  
+  switch(num) {
+    case "01":
+      return (
+        <svg viewBox="0 0 100 60" className="w-full h-16 my-2 opacity-80" fill="none" stroke={color} strokeWidth="1.5">
+          <path d="M15 20h15v10H15zM30 25h35v15H30zM65 30h15v5H65zM20 20l-5-10h25l-5 10" />
+          <circle cx="37" cy="47" r="4" /><circle cx="58" cy="47" r="4" />
+          <path d="M75 35l10 5v-15l-10 5" fill={color} opacity="0.3" />
+        </svg>
+      );
+    case "02":
+      return (
+        <svg viewBox="0 0 100 60" className="w-full h-16 my-2 opacity-80" fill="none" stroke={color} strokeWidth="1.5">
+          <rect x="20" y="15" width="25" height="30" rx="3" />
+          <path d="M25 20h15M25 25h15M25 30h15M25 35h15M25 40h15" strokeWidth="1" />
+          <path d="M45 30c15 0 20-15 35-15s15 15 20 15" />
+        </svg>
+      );
+    case "03":
+      return (
+        <svg viewBox="0 0 100 60" className="w-full h-16 my-2 opacity-80" fill="none" stroke={color} strokeWidth="1.5">
+          <ellipse cx="35" cy="30" rx="12" ry="18" />
+          <path d="M35 12h40c8 0 12 8 12 18s-4 18-12 18H35" />
+          <path d="M47 15c5 5 5 25 0 30" strokeDasharray="3 3" />
+        </svg>
+      );
+    case "04":
+      return (
+        <svg viewBox="0 0 100 60" className="w-full h-16 my-2 opacity-80" fill="none" stroke={color} strokeWidth="1.5">
+          <path d="M20 15h50l15 30H35z" />
+          <path d="M30 20l10 20M40 20l10 20M50 20l10 20M60 20l10 20" strokeWidth="1" strokeDasharray="2 2" />
+          <path d="M25 35h50" strokeWidth="1" />
+        </svg>
+      );
+    case "05":
+      return (
+        <svg viewBox="0 0 100 60" className="w-full h-16 my-2 opacity-80" fill="none" stroke={color} strokeWidth="1.5">
+          <path d="M25 10c3 0 8 4 8 10l-2 15h20l15 15H20L15 25l5-12z" />
+          <path d="M31 15h2v15h-2z" fill={color} opacity="0.4" stroke="none" />
+          <path d="M35 38h15v2H35z" fill={color} opacity="0.4" stroke="none" />
+        </svg>
+      );
+    default:
+      return null;
+  }
+};
+
 const ValueChainSection = () => {
   const dark = useIsDark();
   const [hovered, setHovered] = useState(0);
@@ -391,102 +429,101 @@ const ValueChainSection = () => {
           </p>
         </Reveal>
 
-        <div className="mt-12 relative">
-          <div
-            className="hidden lg:block absolute left-6 right-6 top-1/2 h-px -translate-y-1/2"
-            style={{
-              background: dark
-                ? "linear-gradient(90deg, rgba(217,254,66,0.15), rgba(217,254,66,0.6), rgba(217,254,66,0.15))"
-                : "linear-gradient(90deg, rgba(18,80,60,0.15), rgba(18,80,60,0.55), rgba(18,80,60,0.15))",
-            }}
-          />
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 relative z-10">
-            {VALUECHAIN.map((step, i) => {
-              const active = hovered === i;
-              return (
-                <Reveal key={step.num} delay={i * 80}>
-                  <div
-                    className="relative h-full rounded-2xl border p-5 transition-all duration-300 cursor-default"
-                    onMouseEnter={() => setHovered(i)}
-                    onMouseLeave={() => setHovered(i)}
-                    style={{
-                      background: active ? (dark ? "rgba(217,254,66,0.06)" : "rgba(217,254,66,0.08)") : dark ? "rgba(255,255,255,0.02)" : "white",
-                      borderColor: active ? `${NEON}60` : dark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.07)",
-                      transform: active ? "translateY(-6px)" : "translateY(0)",
-                      boxShadow: active ? "0 20px 50px rgba(217,254,66,0.10)" : "none",
-                    }}
-                  >
-                    <div
-                      className="w-10 h-10 rounded-full flex items-center justify-center mb-4 text-xs font-black"
-                      style={{
-                        background: active ? NEON : dark ? "rgba(217,254,66,0.1)" : "rgba(18,80,60,0.08)",
-                        color: BLACK,
-                      }}
-                    >
-                      {step.num}
+        <div className="mt-16 grid grid-cols-1 lg:grid-cols-5 gap-5 relative z-10">
+          {VALUECHAIN.map((step, i) => {
+            const active = hovered === i;
+            return (
+              <Reveal key={step.num} delay={i * 80}>
+                <div
+                  className="relative h-full rounded-2xl border p-5 transition-all duration-300 cursor-default flex flex-col justify-between"
+                  onMouseEnter={() => setHovered(i)}
+                  onMouseLeave={() => setHovered(i)}
+                  style={{
+                    background: active 
+                      ? (dark ? "#22291a" : "rgba(217,254,66,0.08)") 
+                      : (dark ? "#1c1c24" : "white"),
+                    borderColor: active ? `${NEON}60` : dark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.07)",
+                    transform: active ? "translateY(-6px)" : "translateY(0)",
+                    boxShadow: active ? "0 20px 50px rgba(217,254,66,0.10)" : "none",
+                  }}
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <div
+                        className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-black"
+                        style={{
+                          background: active ? NEON : dark ? "rgba(217,254,66,0.1)" : "rgba(18,80,60,0.08)",
+                          color: BLACK,
+                        }}
+                      >
+                        {step.num}
+                      </div>
+                      
+                      {i !== VALUECHAIN.length - 1 && (
+                        <div 
+                          className="hidden lg:block text-lg font-light translate-x-7"
+                          style={{ color: active ? NEON : dark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.15)" }}
+                        >
+                          →
+                        </div>
+                      )}
                     </div>
 
                     <div
-                      className="text-sm font-black mb-3 leading-snug uppercase"
+                      className="text-sm font-black mb-2 leading-snug uppercase tracking-tight"
                       style={{ color: dark ? "white" : BLACK }}
                     >
                       {step.label}
                     </div>
 
+                    <div className="w-full flex justify-center py-2 border-b border-dashed my-3" style={{ borderColor: dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)" }}>
+                      <StepIcon num={step.num} dark={dark} />
+                    </div>
+
                     <p
-                      className="text-xs leading-relaxed mb-5"
+                      className="text-xs leading-relaxed mb-6"
                       style={{ color: dark ? "rgba(255,255,255,0.55)" : "rgba(20,20,27,0.62)" }}
                     >
                       {step.desc}
                     </p>
+                  </div>
 
-                    <div className="mt-auto space-y-2">
-                      <div>
-                        <div className="text-[9px] uppercase tracking-wider mb-1 font-bold" style={{ color: dark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)" }}>
-                          Design
-                        </div>
-                        <div
-                          className="text-[10px] font-black px-2.5 py-1 rounded-lg w-fit"
-                          style={{ background: `${NEON}20`, color: dark ? NEON : DKGREEN }}
-                        >
-                          {step.design}
-                        </div>
+                  <div className="space-y-2.5 mt-auto pt-2">
+                    <div>
+                      <div className="text-[9px] uppercase tracking-wider mb-1 font-bold" style={{ color: dark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)" }}>
+                        Design
                       </div>
-                      <div>
-                        <div className="text-[9px] uppercase tracking-wider mb-1 font-bold" style={{ color: dark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)" }}>
-                          Production
-                        </div>
-                        <div
-                          className="text-[10px] font-black px-2.5 py-1 rounded-lg w-fit"
-                          style={{
-                            background: step.production.includes("Client")
-                              ? dark
-                                ? "rgba(255,255,255,0.06)"
-                                : "rgba(0,0,0,0.05)"
-                              : `${ORANGE}18`,
-                            color: step.production.includes("Client")
-                              ? dark
-                                ? "rgba(255,255,255,0.4)"
-                                : "rgba(0,0,0,0.4)"
-                              : ORANGE,
-                          }}
-                        >
-                          {step.production}
-                        </div>
+                      <div
+                        className="text-[10px] font-black px-2.5 py-1 rounded-lg w-fit"
+                        style={{ background: `${NEON}20`, color: dark ? NEON : DKGREEN }}
+                      >
+                        {step.design}
                       </div>
                     </div>
-
-                    <div
-                      className="hidden lg:flex absolute -right-4 top-12 -translate-y-1/2 z-10 w-8 h-8 items-center justify-center"
-                      style={{ color: dark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.2)" }}
-                    >
-                      {i !== VALUECHAIN.length - 1 ? <FaChevronRight size={10} /> : null}
+                    <div>
+                      <div className="text-[9px] uppercase tracking-wider mb-1 font-bold" style={{ color: dark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)" }}>
+                        Production
+                      </div>
+                      <div
+                        className="text-[10px] font-black px-2.5 py-1 rounded-lg w-fit"
+                        style={{
+                          background: step.production.includes("Client")
+                            ? dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.05)"
+                            : `${ORANGE}18`,
+                          color: step.production.includes("Client")
+                            ? dark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.4)"
+                            : ORANGE,
+                        }}
+                      >
+                        {step.production}
+                      </div>
                     </div>
                   </div>
-                </Reveal>
-              );
-            })}
-          </div>
+
+                </div>
+              </Reveal>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -750,88 +787,94 @@ const ProductSection = ({ p, idx }) => {
 };
 
 /* ─── COMPARISON SECTION ────────────────────────────────────────────────── */
-const CompareSection = () => {
+const ComparisonSection = () => {
   const dark = useIsDark();
-  const [hovRow, setHovRow] = useState(null);
+
+  const criteria = [
+    {
+      name: "Energy Efficiency",
+      voltcore: "85–95% efficiency (50% energy savings & 40% faster warm up)",
+      legacy: "~40% efficiency (Standard Copper baseline)",
+    },
+    {
+      name: "Flexibility & Uniformity",
+      voltcore: "Smooth, unidirectional heating with zero hotspots",
+      legacy: "Requires heat spreading layers, prone to uneven temperatures",
+    },
+    {
+      name: "Cost Competitiveness",
+      voltcore: "40% cost advantage (Simple polymer-base, no metal)",
+      legacy: "Expensive metal contents, vulnerable to copper inflation",
+    },
+    {
+      name: "Seamless Integration",
+      voltcore: "Ultra-thin (120–250 g/m²), drapable CNT textiles for complex parts",
+      legacy: "Rigid structure, difficult to overmold into foam or plastics",
+    },
+    {
+      name: "Durability & Stability",
+      voltcore: "Maintains stable resistivity across full surface, failure resistant",
+      legacy: "High risk of corrosion, breakage, and flex fatigue",
+    },
+  ];
 
   return (
-    <section className="w-full py-24 bg-[#14141B] relative overflow-hidden">
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: "radial-gradient(ellipse 70% 50% at 50% 100%, rgba(217,254,66,0.04) 0%, transparent 70%)",
-        }}
-      />
-      <div className="relative z-10 container mx-auto px-6 md:px-12 max-w-6xl">
-        <Reveal className="mb-14">
-          <span className="text-xs font-black uppercase tracking-[0.22em] block mb-3 text-[#D9FE42]">
+    <section className={`w-full py-24 relative ${dark ? "bg-[#14141b]" : "bg-white"}`}>
+      <div className="container mx-auto px-6 md:px-12 max-w-7xl">
+        <div className="mb-12">
+          <span
+            className="text-xs font-black uppercase tracking-[0.22em] block mb-3"
+            style={{ color: dark ? NEON : DKGREEN }}
+          >
             Head-to-Head
           </span>
-          <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-white uppercase leading-tight">
-            Voltcore vs legacy tech
+          <h2
+            className="text-4xl md:text-5xl font-black tracking-tighter uppercase"
+            style={{ color: dark ? "white" : BLACK }}
+          >
+            Voltcore vs Legacy Tech
           </h2>
-        </Reveal>
-
-        <div className="grid grid-cols-4 gap-3 mb-2 px-4">
-          <div className="text-[9px] font-black uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.2)" }}>
-            Criterion
-          </div>
-          {[
-            ["Voltcore", NEON],
-            ["Copper Wire", "#E63323"],
-            ["Carbon Ink", ORANGE],
-          ].map(([label, color]) => (
-            <div
-              key={label}
-              className="text-center py-2 px-3 rounded-full text-[10px] font-black uppercase tracking-widest"
-              style={{ background: `${color}14`, color }}
-            >
-              {label}
-            </div>
-          ))}
         </div>
 
-        <div className="rounded-2xl overflow-hidden border" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
-          {COMPAREROWS.map((row, i) => (
-            <div
-              key={row.label}
-              className="grid grid-cols-4 gap-3 px-4 py-4 transition-all duration-200 cursor-default border-b"
-              style={{
-                background: hovRow === i ? "rgba(255,255,255,0.04)" : "transparent",
-                borderColor: "rgba(255,255,255,0.04)",
-              }}
-              onMouseEnter={() => setHovRow(i)}
-              onMouseLeave={() => setHovRow(null)}
-            >
-              <div className="text-xs font-bold flex items-center" style={{ color: "rgba(255,255,255,0.45)" }}>
-                {row.label}
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded-full flex items-center justify-center shrink-0" style={{ background: `${NEON}22` }}>
-                  <FaCheck size={7} color={NEON} />
-                </div>
-                <span className="text-xs font-black" style={{ color: NEON }}>
-                  {row.voltcore}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded-full flex items-center justify-center shrink-0" style={{ background: "rgba(230,51,35,0.15)" }}>
-                  <FaTimes size={7} color="#E63323" />
-                </div>
-                <span className="text-xs" style={{ color: "rgba(255,255,255,0.38)" }}>
-                  {row.copper}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded-full flex items-center justify-center shrink-0" style={{ background: `${ORANGE}18` }}>
-                  <FaTimes size={7} color={ORANGE} />
-                </div>
-                <span className="text-xs" style={{ color: "rgba(255,255,255,0.38)" }}>
-                  {row.ink}
-                </span>
-              </div>
-            </div>
-          ))}
+        <div className="w-full overflow-x-auto rounded-2xl border" style={{ borderColor: dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)" }}>
+          <table className="w-full text-left border-collapse min-w-[700px]">
+            <thead>
+              <tr style={{ background: dark ? "#1c1c24" : "#f5f4f0" }}>
+                <th className="p-5 text-xs font-black uppercase tracking-wider opacity-40" style={{ color: dark ? "white" : BLACK }}>
+                  Key Dimensions
+                </th>
+                <th className="p-5 text-xs font-black uppercase tracking-wider text-center" style={{ color: dark ? NEON : DKGREEN }}>
+                  Voltcore
+                </th>
+                <th className="p-5 text-xs font-black uppercase tracking-wider text-center" style={{ color: ORANGE }}>
+                  Legacy Tech
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y" style={{ borderColor: dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)" }}>
+              {criteria.map((item, idx) => (
+                <tr key={idx} className="transition-colors hover:bg-white/5">
+                  <td className="p-5 text-xs font-black uppercase tracking-tight w-1/4" style={{ color: dark ? "white" : BLACK }}>
+                    {item.name}
+                  </td>
+                  
+                  <td className="p-5 text-xs font-medium leading-relaxed w-2/5">
+                    <div className="flex items-start gap-2.5" style={{ color: dark ? NEON : DKGREEN }}>
+                      <span className="font-black text-sm">✓</span>
+                      <span>{item.voltcore}</span>
+                    </div>
+                  </td>
+
+                  <td className="p-5 text-xs font-medium leading-relaxed w-2/5">
+                    <div className="flex items-start gap-2.5" style={{ color: dark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.5)" }}>
+                      <span style={{ color: ORANGE }} className="font-black text-sm">✕</span>
+                      <span>{item.legacy}</span>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
@@ -885,7 +928,7 @@ export default function Products() {
           <div className="relative z-10 container mx-auto px-6 md:px-12 max-w-6xl pt-32 pb-20">
             <Reveal>
               <span className="text-xs tracking-[0.18em] uppercase font-bold block mb-6 text-[#D9FE42]">
-                Products
+               05 // Products
               </span>
             </Reveal>
 
@@ -895,7 +938,7 @@ export default function Products() {
                 <br />
                 <span style={{ color: NEON }}>One platform.</span>
                 <br />
-                <span style={{ color: "rgba(255,255,255,0.18)" }}>Zero copper.</span>
+                <span style={{ color: "#F07E26" }}>Zero copper.</span>
               </h1>
             </Reveal>
 
@@ -921,7 +964,8 @@ export default function Products() {
           <ProductSection key={p.id} p={p} idx={i} />
         ))}
 
-        <CompareSection />
+        {/* 🛠️ ICI : Correction du nom de l'appel pour éviter l'écran blanc */}
+        <ComparisonSection />
 
         <section className="relative py-24 text-center flex flex-col items-center bg-[#f5f4f0] dark:bg-[#0e0e14] overflow-hidden">
           <Reveal>

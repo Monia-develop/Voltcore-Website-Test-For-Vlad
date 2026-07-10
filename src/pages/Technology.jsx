@@ -11,9 +11,11 @@ import TargetHeatImg      from "../assets/website/platforms/BRD-02-targetheat.pn
 import SensiTermImg       from "../assets/website/platforms/BRD-04-sensiterm.png";
 import ActiveFilPhoto     from "../assets/website/platforms/Filaments_activeFil_.png";
 import TargetHeatPhoto    from "../assets/website/platforms/heatingTextile_targetheat_.png";
+import HeatingMeshPhoto   from "../assets/website/platforms/heatingMesh.png";
+import HeatingTextilePhoto from "../assets/website/platforms/heatingTextile.png";
 import SensiTermPhoto     from "../assets/website/platforms/HeatingSystem_sensiterm_.png";
-import An1Video           from "../assets/website/platforms/An1.mp4";
-import An2Video           from "../assets/website/platforms/An2.mp4";
+import An1Video           from "../assets/website/anim1-2.mp4";
+import An2Video           from "../assets/website/Anim2Automotive.mp4";
 
 /* ─── HELPERS ─────────────────────────────────────────────────────────────── */
 const useIsDark = () => {
@@ -108,23 +110,23 @@ const PLATFORMS = [
     name: "ActiveFil™",
     tag: "Core Material · Patented",
     color: "#94C356",
-    trl: "TRL 7–8",
+    trl: "TRL 7-8",
     image: ActiveFilImg,
     photo: ActiveFilPhoto,
-    desc: "CNT-enhanced conductive polymer filaments with precisely controlled resistivity — flexible, lightweight, and ready for industrial extrusion.",
+    desc: "We infuse and orient nanofillers in the polymer, giving desired conductivity in a controlled manner while keeping the mechanical properties of synthetic yarns.",
     specs: [
-      { label: "Resistance range",   val: "10 kΩ – 2 MΩ/m" },
-      { label: "Weight",             val: "30–60 g/km" },
-      { label: "Tensile strength",   val: "25–30 cN/tex" },
-      { label: "Polymers",           val: "PP · PA · PET" },
-      { label: "Voltage",            val: "5 – 220 V" },
-      { label: "Self-abrasion",      val: "Zero" },
+      { label: "Linear density",   val: "400–600 den / 450–700 dtex" },
+      { label: "Resistance",       val: "10 kΩ – 2 MΩ" },
+      { label: "Polymer matrix",   val: "PP / PA / PET" },
+      { label: "Weight",           val: "30–60 g/km" },
+      { label: "Tensile strength", val: "25–30 cN/tex" },
+      { label: "Voltage range",    val: "5–220 V" },
     ],
     bullets: [
-      "Precise CNT nanofillers infused into standard thermoplastic polymer matrices",
-      "Exact resistance range from 10 kΩ to 2 MΩ/m, fully tunable per application",
-      "100% mono-material — drop-in for standard industrial extrusion lines",
-      "Up to 75% recycled polymer content by mass",
+      "Precisely tunable resistance from 10 kΩ to 2 MΩ.",
+      "100% mono-material drop-in for standard extrusion lines.",
+      "Up to 75% recycled polymer content by mass.",
+      "No metal corrosion, no breakage points.",
     ],
   },
   {
@@ -132,23 +134,65 @@ const PLATFORMS = [
     name: "TargetHeat™",
     tag: "Heating Platform",
     color: "#F07E26",
-    trl: "TRL 7",
+    trl: "TRL 6-7",
     image: TargetHeatImg,
-    photo: TargetHeatPhoto,
-    desc: "Fabric-integrated heating solution generating highly efficient, uniform heat distribution (ΔT ∼4°C) across complex geometries.",
+    photo: HeatingMeshPhoto,
+    desc: "Woven from ActiveFil, TargetHeat is a family of heating textiles using unidirectional heat delivery; almost nothing is lost through the back.",
     specs: [
-      { label: "Structure",      val: "Open mesh / Textile" },
-      { label: "Weight",         val: "120 – 250 g/m²" },
-      { label: "Voltage",        val: "12 – 48 V" },
-      { label: "Uniformity",     val: "ΔT ∼ 4°C" },
-      { label: "Roll width",     val: "Up to 2 m" },
-      { label: "Thermal dir.",   val: "Uni-directional" },
+      { label: "Structure",   val: "Open mesh / Dense weave" },
+      { label: "Weight",      val: "30–250 GSM" },
+      { label: "Voltage",     val: "5–230 V" },
+      { label: "Temp max",    val: "Up to 100°C" },
+      { label: "Uniformity",  val: "±4°C" },
+      { label: "Roll width",  val: "Up to 2 m" },
     ],
     bullets: [
-      "Delivers 85–95% of generated heat directly to the A-surface",
-      "Reaches 100°C homogeneous surface temp, zero copper hotspots",
-      "Open mesh design maximises breathability and ventilation (30–60 g/m²)",
-      "Production rolls up to 2 m wide — compatible with automated lamination lines",
+      "85–95% heat delivery to A-surface, zero energy wasted to back.",
+      "±4°C uniformity, no hotspots, no cold zones across the surface.",
+      "Open mesh 30–60 GSM for automotive airflow breathability.",
+      "Dense weave 120–250 GSM for apparel wearable softness.",
+    ],
+    subProducts: [
+      {
+        num: "2.1",
+        name: "Heating Mesh",
+        photo: HeatingMeshPhoto,
+        color: "#F07E26",
+        trl: "TRL 6",
+        specTags: ["30–60 GSM", "5–230 V", "Up to 100°C"],
+        specs: [
+          { label: "Weight",   val: "30–60 GSM" },
+          { label: "Voltage",  val: "5–230 V" },
+          { label: "Temp max", val: "Up to 100°C" },
+        ],
+        desc: "Open mesh structure with increased spacing between yarns. Used mainly in automotive flooring applications, optimized for airflow, ventilation and multi-layer integration.",
+        bullets: [
+          "Open mesh structure maximizes airflow and ventilation.",
+          "Optimized for automotive flooring and multi-layer integration.",
+          "30–60 GSM lightweight format for breathable applications.",
+          "5–230 V compatible with automotive and domestic voltage.",
+        ],
+      },
+      {
+        num: "2.2",
+        name: "Heating Textile",
+        photo: HeatingTextilePhoto,
+        color: "#F18932",
+        trl: "TRL 6",
+        specTags: ["120–250 GSM", "5–230 V", "Up to 100°C"],
+        specs: [
+          { label: "Weight",   val: "120–250 GSM" },
+          { label: "Voltage",  val: "5–230 V" },
+          { label: "Temp max", val: "Up to 100°C" },
+        ],
+        desc: "Controlled yarn layout with engineered heating patterns for maximum comfort at the lowest energy density W/m². For soft, wearable applications like apparel.",
+        bullets: [
+          "Engineered heating patterns for maximum comfort at lowest energy density.",
+          "Dense weave 120–250 GSM for soft wearable applications.",
+          "Designed for apparel, medical and flexible panel integration.",
+          "5–230 V compatible for portable and domestic use.",
+        ],
+      },
     ],
   },
   {
@@ -159,20 +203,20 @@ const PLATFORMS = [
     trl: "TRL 6",
     image: SensiTermImg,
     photo: SensiTermPhoto,
-    desc: "Advanced fabric platform co-designing electrical heating and intrinsic resistance-based sensing for zoned control without external sensors.",
+    desc: "SensiTerm co-designs electrical heating and intrinsic piezoresistive sensing in the same textile; the resistance of the filament itself becomes the sensor.",
     specs: [
-      { label: "Sensing type",   val: "Piezoresistive" },
-      { label: "Zones",          val: "Adaptive multi-zone" },
-      { label: "Mapping",        val: "Occupancy detection" },
-      { label: "Fault detect",   val: "Loop integrity alerts" },
-      { label: "Integration",    val: "No external sensors" },
-      { label: "Power ctrl",     val: "Zoned adaptive" },
+      { label: "Sensing type",    val: "Piezoresistive" },
+      { label: "Zones",           val: "Adaptive multi-zone" },
+      { label: "Mapping",         val: "Occupancy detection" },
+      { label: "Fault detection", val: "Loop integrity alerts" },
+      { label: "Integration",     val: "No external sensors" },
+      { label: "Power control",   val: "Zoned adaptive" },
     ],
     bullets: [
-      "Utilises piezoresistive behaviour for direct resistance telemetry",
-      "Occupancy mapping — heats only where contact is detected",
-      "Loop integrity alerts instantly mitigate overheat or overcurrent faults",
-      "No additional sensor layer required — sensing is intrinsic to the textile",
+      "Intrinsic resistance telemetry, no separate sensor layer.",
+      "Occupancy mapping heats only where contact is detected.",
+      "Loop integrity alerts mitigate overheat and overcurrent faults.",
+      "Zoned adaptive control reduces energy in unoccupied areas.",
     ],
   },
 ];
@@ -578,13 +622,68 @@ const SecondSkinSection = () => {
 /* ─── PLATFORM SECTION ─────────────────────────────────────────────────────── */
 const PlatformSection = ({ p, idx }) => {
   const [activeTab, setActiveTab] = useState("overview");
+  const [subActive, setSubActive] = useState(0);
   const dark = useIsDark();
   const isEven = idx % 2 === 0;
+
+  const currentSub = p.subProducts ? p.subProducts[subActive] : null;
+  const displayPhoto = currentSub ? currentSub.photo : p.photo;
+  const displayTrl = currentSub ? currentSub.trl : p.trl;
+  const displaySpecs = currentSub ? currentSub.specs : p.specs;
+  const displayBullets = currentSub ? currentSub.bullets : p.bullets;
 
   return (
     <section className={`w-full py-20 relative overflow-hidden ${idx % 2 === 0 ? "bg-white dark:bg-[#14141B]" : "bg-[#f5f4f0] dark:bg-[#1a1a22]"}`}>
       <div className="relative z-10 container mx-auto px-6 md:px-12 max-w-6xl">
-        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${!isEven ? "lg:[&>*:first-child]:order-2" : ""}`}>
+        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-start ${!isEven ? "lg:[&>*:first-child]:order-2" : ""}`}>
+          <div className="flex flex-col gap-5">
+            <Reveal delay={40}>
+              <div className="relative rounded-3xl overflow-hidden group aspect-[4/3]" style={{ boxShadow: `0 40px 80px ${p.color}15` }}>
+                <SafeImage src={displayPhoto} alt={currentSub ? currentSub.name : p.name} color={p.color}
+                  className="transition-transform duration-700 group-hover:scale-105" />
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                  style={{ background: `radial-gradient(circle at 30% 70%, ${p.color}18, transparent 60%)` }} />
+                <div className="absolute top-5 right-5 backdrop-blur-md rounded-full px-4 py-2 border"
+                  style={{ background: "rgba(0,0,0,0.6)", borderColor: `${p.color}40` }}>
+                  <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: p.color }}>{displayTrl}</span>
+                </div>
+              </div>
+            </Reveal>
+
+            {p.subProducts && (
+              <Reveal delay={80}>
+                <div className="grid grid-cols-2 gap-3">
+                  {p.subProducts.map((sub, si) => (
+                    <div
+                      key={sub.name}
+                      className="rounded-2xl border p-4 cursor-pointer transition-all duration-300"
+                      style={{
+                        background: subActive === si ? `${sub.color}12` : dark ? "rgba(255,255,255,0.02)" : "white",
+                        borderColor: subActive === si ? `${sub.color}60` : dark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.08)",
+                        transform: subActive === si ? "translateY(-3px)" : "none",
+                        boxShadow: subActive === si ? `0 8px 30px ${sub.color}15` : "none",
+                      }}
+                      onMouseEnter={() => setSubActive(si)}
+                    >
+                      <div className="text-[10px] font-black uppercase tracking-widest mb-1" style={{ color: sub.color }}>
+                        {sub.num} {sub.name}
+                      </div>
+                      <p className="text-[11px] leading-relaxed mb-3"
+                        style={{ color: dark ? "rgba(255,255,255,0.45)" : "rgba(20,20,27,0.5)" }}>
+                        {sub.desc}
+                      </p>
+                      <ul className="space-y-1">
+                        {sub.specTags.map((s) => (
+                          <li key={s} className="text-[10px] font-bold" style={{ color: sub.color }}>{s}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </Reveal>
+            )}
+          </div>
+
           <div>
             <Reveal>
               <span className="text-[10px] font-black uppercase tracking-[0.22em] block mb-3" style={{ color: p.color }}>{p.tag}</span>
@@ -592,10 +691,10 @@ const PlatformSection = ({ p, idx }) => {
                 <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-[#14141B] dark:text-white uppercase">{p.name}</h2>
                 <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest"
                   style={{ background: `${p.color}20`, color: p.color, border: `1px solid ${p.color}40` }}>
-                  {p.trl}
+                  {displayTrl}
                 </span>
               </div>
-              <p className="text-base leading-relaxed text-[#14141B]/70 dark:text-[#B8B7A4] leading-relaxed mb-6">{p.desc}</p>
+              <p className="text-base leading-relaxed text-[#14141B]/70 dark:text-[#B8B7A4] mb-6">{p.desc}</p>
             </Reveal>
             <Reveal delay={80}>
               <div className="flex gap-1 mb-6 p-1 rounded-full border border-[#14141B]/8 dark:border-white/8 w-fit"
@@ -615,7 +714,7 @@ const PlatformSection = ({ p, idx }) => {
             <Reveal delay={120} className="min-h-[220px]">
               {activeTab === "overview" ? (
                 <ul className="space-y-3">
-                  {p.bullets.map((b, i) => (
+                  {displayBullets.map((b, i) => (
                     <li key={i} className="flex items-start gap-3 text-sm text-[#14141B]/70 dark:text-[#B8B7A4]">
                       <span className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 text-[10px] font-black"
                         style={{ background: `${p.color}20`, color: p.color }}>{i + 1}</span>
@@ -625,7 +724,7 @@ const PlatformSection = ({ p, idx }) => {
                 </ul>
               ) : (
                 <div className="grid grid-cols-2 gap-2">
-                  {p.specs.map(({ label, val }) => (
+                  {displaySpecs.map(({ label, val }) => (
                     <div key={label} className="p-3 rounded-xl border"
                       style={{ borderColor: dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.07)", background: dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)" }}>
                       <div className="text-[9px] font-black uppercase tracking-wider mb-1"
@@ -637,18 +736,6 @@ const PlatformSection = ({ p, idx }) => {
               )}
             </Reveal>
           </div>
-          <Reveal delay={60}>
-            <div className="relative rounded-3xl overflow-hidden group aspect-[4/3]" style={{ boxShadow: `0 40px 80px ${p.color}15` }}>
-              <SafeImage src={p.photo} alt={p.name} color={p.color}
-                className="transition-transform duration-700 group-hover:scale-105" />
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                style={{ background: `radial-gradient(circle at 30% 70%, ${p.color}18, transparent 60%)` }} />
-              <div className="absolute top-5 right-5 backdrop-blur-md rounded-full px-4 py-2 border"
-                style={{ background: "rgba(0,0,0,0.6)", borderColor: `${p.color}40` }}>
-                <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: p.color }}>{p.trl}</span>
-              </div>
-            </div>
-          </Reveal>
         </div>
       </div>
     </section>

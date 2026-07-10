@@ -7,10 +7,15 @@ import {
 
 /* ─── DATA ────────────────────────────────────────────────────────────────── */
 const VALUES = [
-  { label: "Efficiency",     stat: "2×",     statLabel: "less energy demand vs. legacy metal wire", desc: "Maximizing thermal performance while cutting energy demand by up to 2× compared to legacy metal wire configurations." },
-  { label: "Sustainability", stat: "75%",    statLabel: "recycled content, mono-material design",   desc: "Driving a circular economy through a mono-material polymer approach that integrates up to 75% recycled content and ensures total end-of-lifecycle recyclability." },
-  { label: "Precision",      stat: "ΔT~4°C", statLabel: "zero-hotspot surface uniformity",           desc: "Delivering continuous, zero-hotspot surface warmth (ΔT∼4°C) with advanced, fabric-integrated intrinsic state regulation." },
-  { label: "Scalability",    stat: "100%",   statLabel: "standard industrial line compatible",       desc: "Designing CNT solutions fully compatible with standard industrial extrusion, lamination, and injection co-molding processes." },
+  { label: "Energy Efficiency", stat: "2×", statLabel: "less energy consumed", desc: "Up to 2 times less energy consumed, setting a new standard for eco-friendly heating solutions." },
+  { label: "Lightweight", stat: "30-60g/km", statLabel: "filament · 120-250g/m² fabrics", desc: "Ultra-light filament design at 30-60g/km, with fabrics at 120-250g/m² for minimal weight impact." },
+  { label: "Cost-Competitiveness", stat: "Co-molding", statLabel: "seamless surface integration", desc: "Cost-effective to integrate into any surface including via co-molding processes." },
+  { label: "Homogeneous Heating", stat: "ΔT 3-4°C", statLabel: "temperature uniformity", desc: "Temperature deviation across the entire heating area within 3-4°C for consistent comfort." },
+  { label: "Mechanical Durability", stat: "25-30 cN/tex", statLabel: "tensile strength · no self-abrasion", desc: "High tensile strength of 25-30 cN/tex with no self-abrasion for long-lasting performance." },
+  { label: "Recyclability", stat: "100%", statLabel: "mono-material · 75% recycled", desc: "100% mono-material for easy end-of-lifecycle recycling & up to 75% of recycled polymers." },
+  { label: "Fast Heating", stat: "40-70%", statLabel: "faster than copper cable", desc: "Up to 40%-70% faster heating than copper cable with the same energy consumption." },
+  { label: "Multiple Power Sources", stat: "7-230V", statLabel: "universal compatibility", desc: "Compatible with multiple sources: car battery & lighter (12-48V), e-bike power socket (36V), separate battery (7-12V), domestic current (110-230V)." },
+  { label: "LCA", stat: "50%", statLabel: "lower CO₂ footprint vs. copper", desc: "50% lower CO₂ footprint compared to copper across the full lifecycle." },
 ];
 
 const MILESTONES = [
@@ -56,99 +61,179 @@ const MILESTONES = [
   },
 ];
 
-/* ─── ARTICLES — dates vérifiées sur les vrais articles ──────────────────── */
+/* ─── ARTICLES ────────────────────────────────────────────────────────────── */
 const ARTICLES = [
   {
     source: "Forbes Luxembourg",
-    date:   "January 2025",
-    title:  "Luxembourg's Voltcore Heats Up EV Innovation Across Europe",
-    desc:   "Voltcore is scaling its conductive polymer technology from Luxembourg, with growing traction in the automotive sector and plans to convert pilot engagements into confirmed OEM programs.",
-    link:   "https://www.forbes.lu/luxembourg-voltcore-heats-up-ev-innovation-across-europe/",
+    date: "January 2025",
+    title: "Luxembourg's Voltcore Heats Up EV Innovation Across Europe",
+    desc: "Voltcore is scaling its conductive polymer technology from Luxembourg, with growing traction in the automotive sector and plans to convert pilot engagements into confirmed OEM programs.",
+    link: "https://www.forbes.lu/luxembourg-voltcore-heats-up-ev-innovation-across-europe/",
     imgUrl: "https://www.forbes.lu/wp-content/uploads/2025/01/Voltcore-Forbes-Luxembourg.jpg",
   },
   {
     source: "Silicon Luxembourg",
-    date:   "May 2024",
-    title:  "Voltcore Reveals 'Last-Mile' Plans For Its Unique Green Heating Technology",
-    desc:   "An in-depth profile on founder Vlad Batkhin and the company's roadmap: from pilot plant ambitions to first sales, and a Q3 2025 fundraising round to scale production volumes.",
-    link:   "https://www.siliconluxembourg.lu/voltcore-reveals-last-mile-plans-for-its-unique-green-heating-technology/",
+    date: "May 2024",
+    title: "Voltcore Reveals 'Last-Mile' Plans For Its Unique Green Heating Technology",
+    desc: "An in-depth profile on founder Vlad Batkhin and the company's roadmap: from pilot plant ambitions to first sales, and a Q3 2025 fundraising round to scale production volumes.",
+    link: "https://www.siliconluxembourg.lu/voltcore-reveals-last-mile-plans-for-its-unique-green-heating-technology/",
     imgUrl: "https://www.siliconluxembourg.lu/wp-content/uploads/2024/05/voltcore.jpg",
   },
   {
     source: "Chronicle.lu",
-    date:   "October 2024",
-    title:  "Luxembourg Startup Launches TargetHeat Energy-Efficient Heating Technology",
-    desc:   "Voltcore officially launches TargetHeat at Batimat Paris — a new generation of unidirectional heating materials using 40% less energy than best-in-class solutions.",
-    link:   "https://chronicle.lu/category/energy/51712-luxembourg-startup-launches-targetheat-energy-efficient-heating-technology",
+    date: "October 2024",
+    title: "Luxembourg Startup Launches TargetHeat Energy-Efficient Heating Technology",
+    desc: "Voltcore officially launches TargetHeat at Batimat Paris — a new generation of unidirectional heating materials using 40% less energy than best-in-class solutions.",
+    link: "https://chronicle.lu/category/energy/51712-luxembourg-startup-launches-targetheat-energy-efficient-heating-technology",
     imgUrl: "https://chronicle.lu/wp-content/uploads/2024/10/voltcore-targetheat.jpg",
   },
   {
     source: "Startup Valley",
-    date:   "September 2024",
-    title:  "Voltcore: Revolutionizing Heating Technology with Smart Materials",
-    desc:   "How Voltcore's ultra-thin conductive polymer filament delivers precision heating from EV batteries to smart homes — with a 2.5M m² pilot plant and industrial certifications on the horizon.",
-    link:   "https://startupvalley.news/uk/voltcore/",
+    date: "September 2024",
+    title: "Voltcore: Revolutionizing Heating Technology with Smart Materials",
+    desc: "How Voltcore's ultra-thin conductive polymer filament delivers precision heating from EV batteries to smart homes — with a 2.5M m² pilot plant and industrial certifications on the horizon.",
+    link: "https://startupvalley.news/uk/voltcore/",
     imgUrl: "https://startupvalley.news/wp-content/uploads/2024/09/voltcore-heating.jpg",
   },
   {
     source: "Luxembourg Official",
-    date:   "September 2024",
-    title:  "Vlad Batkhin (Voltcore): Pioneering Sustainable Heating Solutions with Advanced Nanocomposites",
-    desc:   "A deep-dive into Voltcore's technology vision, roadmap to TRL-9, and ambition to become the industrial standard for oriented heating laminates by 2027.",
-    link:   "https://luxembourgofficial.com/voltcore/",
+    date: "September 2024",
+    title: "Vlad Batkhin (Voltcore): Pioneering Sustainable Heating Solutions with Advanced Nanocomposites",
+    desc: "A deep-dive into Voltcore's technology vision, roadmap to TRL-9, and ambition to become the industrial standard for oriented heating laminates by 2027.",
+    link: "https://luxembourgofficial.com/voltcore/",
     imgUrl: "https://luxembourgofficial.com/wp-content/uploads/2024/09/voltcore-batkhin.jpg",
   },
   {
     source: "Luxembourg Trade & Invest",
-    date:   "March 2025",
-    title:  "Luxembourg's AutoMobility Incubator: A Gateway to Europe",
-    desc:   "Voltcore highlighted as a standout innovation at Luxembourg's AutoMobility Incubator, developing conductive polymer filaments for EV cabin and battery heating.",
-    link:   "https://luxembourgtradeandinvest.com/news/luxembourg-s-automobility-incubator-a-gateway-to-europe",
+    date: "March 2025",
+    title: "Luxembourg's AutoMobility Incubator: A Gateway to Europe",
+    desc: "Voltcore highlighted as a standout innovation at Luxembourg's AutoMobility Incubator, developing conductive polymer filaments for EV cabin and battery heating.",
+    link: "https://luxembourgtradeandinvest.com/news/luxembourg-s-automobility-incubator-a-gateway-to-europe",
     imgUrl: "https://luxembourgtradeandinvest.com/wp-content/uploads/automobility-incubator.jpg",
   },
 ];
 
 /* ─── TEAM ────────────────────────────────────────────────────────────────── */
 const GROUP_STYLE = {
-  "Leadership":       { accent: "#D9FE42", ink: "#14141B" },
+  "Leadership": { accent: "#D9FE42", ink: "#14141B" },
   "Board & Advisors": { accent: "#12503C", ink: "#FFFFFF" },
-  "Business":         { accent: "#4A5DA7", ink: "#FFFFFF" },
-  "Engineering":      { accent: "#F07E26", ink: "#14141B" },
-  "Operations":       { accent: "#902053", ink: "#FFFFFF" },
-  "Digital":          { accent: "#ED6EA7", ink: "#14141B" },
-  "Finance":          { accent: "#B8B7A4", ink: "#14141B" },
+  "Business": { accent: "#4A5DA7", ink: "#FFFFFF" },
+  "Engineering": { accent: "#F07E26", ink: "#14141B" },
+  "Operations": { accent: "#902053", ink: "#FFFFFF" },
+  "Interns": { accent: "#ED6EA7", ink: "#14141B" },
 };
-const GROUP_ORDER = ["Leadership","Board & Advisors","Business","Engineering","Operations","Digital","Finance"];
+const GROUP_ORDER = ["Leadership", "Board & Advisors", "Business", "Engineering", "Operations", "Interns"];
 
 const TEAM = [
-  { name: "Fabrice Bertinchamps", role: "Co-founder and CEO",                             detail: "ex-TotalEnergies, SABIC",                        group: "Leadership",       photo: null },
-  { name: "Vlad Batkhin",         role: "Co-founder and CTO",                             detail: "ex-Sibur",                                       group: "Leadership",       photo: null },
-  { name: "Georges De Pelsemaeker", role: "Advisor and Tech board head",                  detail: "ex-Valeo",                                       group: "Board & Advisors", photo: null },
-  { name: "Thierry Goniva",       role: "Advisor",                                        detail: "ex-IEE",                                         group: "Board & Advisors", photo: null },
-  { name: "Pierre Orlewski",      role: "Advisor",                                        detail: "ex-Goodyear",                                    group: "Board & Advisors", photo: null },
-  { name: "Dmitrii Prokopiuk",    role: "Advisor & International Lawyer",                 detail: "International legal advisory",                   group: "Board & Advisors", photo: null },
-  { name: "Daria Voronina",       role: "Sustainability and Business Development Manager",detail: "Sustainability, LCA, and commercial development", group: "Business",         photo: null },
-  { name: "Aviral Kapoor",        role: "Business Development Manager",                   detail: "Partnerships and business development",           group: "Business",         photo: null },
-  { name: "Arjun Chandra",        role: "Sales Manager",                                  detail: "Sales development and client relationships",      group: "Business",         photo: null },
-  { name: "Andrey Zanko",         role: "Electrical Engineer",                            detail: "Electrical engineering and technical integration", group: "Engineering",      photo: null },
-  { name: "Sachin Kumar Enganati",role: "Polymer Process Engineer",                       detail: "Polymer processing and material scale-up",        group: "Engineering",      photo: null },
-  { name: "Anastasia Batkhina",   role: "QMS & Operations Consultant",                    detail: "Quality management systems and operations",       group: "Operations",       photo: null },
-  { name: "Monia Azzaiz",         role: "Computer Sciences Intern",                       detail: "Digital, web, and technical support",             group: "Digital",          photo: null },
-  { name: "Lina El Keddah",       role: "Financial Accountant and AI Intern",             detail: "Finance, accounting, and AI support",             group: "Finance",          photo: null },
+  { 
+    name: "Fabrice Bertinchamps", 
+    role: "Co-founder and CEO", 
+    detail: "ex-TotalEnergies, SABIC", 
+    group: "Leadership", 
+    photo: new URL("../assets/website/team/Fabrice.png", import.meta.url).href 
+  },
+  { 
+    name: "Vlad Batkhin", 
+    role: "Co-founder and CTO", 
+    detail: "ex-Sibur", 
+    group: "Leadership", 
+    photo: new URL("../assets/website/team/vlad.png", import.meta.url).href 
+  },
+  { 
+    name: "Georges De Pelsemaeker", 
+    role: "Advisor and Tech board head", 
+    detail: "ex-Valeo", 
+    group: "Board & Advisors", 
+    photo: new URL("../assets/website/team/Georges.png", import.meta.url).href 
+  },
+  { 
+    name: "Thierry Goniva", 
+    role: "Advisor", 
+    detail: "ex-IEE", 
+    group: "Board & Advisors", 
+    photo: new URL("../assets/website/team/Thierry.png", import.meta.url).href 
+  },
+  { 
+    name: "Pierre Orlewski", 
+    role: "Advisor", 
+    detail: "ex-Goodyear", 
+    group: "Board & Advisors", 
+    photo: new URL("../assets/website/team/Pierre.png", import.meta.url).href 
+  },
+  { 
+    name: "Dmitrii Prokopiuk", 
+    role: "Advisor & International Lawyer", 
+    detail: "International legal advisory", 
+    group: "Board & Advisors", 
+    photo: new URL("../assets/website/team/Dmitrii.png", import.meta.url).href 
+  },
+  { 
+    name: "Daria Voronina", 
+    role: "Sustainability and Business Development Manager", 
+    detail: "Sustainability, LCA, and commercial development", 
+    group: "Business", 
+    photo: new URL("../assets/website/team/Daria.png", import.meta.url).href 
+  },
+  { 
+    name: "Aviral Kapoor", 
+    role: "Business Development Manager", 
+    detail: "Partnerships and business development", 
+    group: "Business", 
+    photo: new URL("../assets/website/team/Aviral.png", import.meta.url).href 
+  },
+  { 
+    name: "Arjun Chandra", 
+    role: "Sales Manager", 
+    detail: "Sales development and client relationships", 
+    group: "Business", 
+    photo: new URL("../assets/website/team/Arjun.png", import.meta.url).href 
+  },
+  { 
+    name: "Andrei Zanko", 
+    role: "Electrical Engineer", 
+    detail: "Electrical engineering and technical integration", 
+    group: "Engineering", 
+    photo: new URL("../assets/website/team/Andrei.png", import.meta.url).href 
+  },
+  { 
+    name: "Sachin Kumar Enganati", 
+    role: "Polymer Process Engineer", 
+    detail: "Polymer processing and material scale-up", 
+    group: "Engineering", 
+    photo: new URL("../assets/website/team/Sachin.png", import.meta.url).href 
+  },
+  { 
+    name: "Anastasia Batkhina", 
+    role: "QMS & Operations Consultant", 
+    detail: "Quality management systems and operations", 
+    group: "Operations", 
+    photo: new URL("../assets/website/team/AnastasiaBatkhina.png", import.meta.url).href 
+  },
+  { 
+    name: "Monia Azzaiz", 
+    role: "Computer Sciences Intern", 
+    detail: "Digital, web, and technical support", 
+    group: "Interns", 
+    photo: new URL("../assets/website/team/monia.png", import.meta.url).href 
+  },
+  { 
+    name: "Lina El Keddah", 
+    role: "Financial Accountant and AI Intern", 
+    detail: "Finance, accounting, and AI support", 
+    group: "Interns", 
+    photo: new URL("../assets/website/team/lina.png", import.meta.url).href 
+  },
 ];
 
 const HQ_FACTS = [
-  { label: "HQ",     value: "Bissen"    },
-  { label: "Focus",  value: "Scale-up"  },
-  { label: "Access", value: "EU"        },
+  { label: "HQ", value: "Bissen" },
+  { label: "Focus", value: "Scale-up" },
+  { label: "Access", value: "EU" },
 ];
-
-const MAP_URL           = "https://www.google.com/maps?q=2%20Rue%20de%20l'Industrie%2C%207735%20Bissen%2C%20Luxembourg&output=embed";
-const MAP_DIRECTIONS_URL= "https://www.google.com/maps/dir/?api=1&destination=2%20Rue%20de%20l'Industrie%2C%207735%20Bissen%2C%20Luxembourg";
+const MAP_URL = "https://www.google.com/maps?q=2%20Rue%20de%20l'Industrie%2C%207735%20Bissen%2C%20Luxembourg&output=embed";
+const MAP_DIRECTIONS_URL = "https://www.google.com/maps/dir/?api=1&destination=2%20Rue%20de%20l'Industrie%2C%207735%20Bissen%2C%20Luxembourg";
 
 /* ─── HELPERS ─────────────────────────────────────────────────────────────── */
-
-/** Couleur lisible selon le fond : vert foncé #12503C en light, neon en dark */
 const useIsDark = () => {
   const [dark, setDark] = useState(() =>
     typeof document !== "undefined" && document.documentElement.classList.contains("dark")
@@ -163,7 +248,6 @@ const useIsDark = () => {
   return dark;
 };
 
-/** Accent lisible : #12503C sur blanc, #D9FE42 sur noir */
 const accent = (dark) => dark ? "#D9FE42" : "#12503C";
 
 /* ─── SCROLL REVEAL ───────────────────────────────────────────────────────── */
@@ -189,7 +273,7 @@ const Reveal = ({ children, delay = 0, y = 24, className = "", as: Tag = "div" }
   );
 };
 
-/* ─── SECTION LABEL — lisible en light ET dark ────────────────────────────── */
+/* ─── SECTION LABEL ───────────────────────────────────────────────────────── */
 const SectionLabel = ({ children }) => {
   const dark = useIsDark();
   return (
@@ -219,7 +303,6 @@ const ValuesSection = () => {
             </p>
           </div>
         </Reveal>
-
         <div className="border-t border-[#14141B]/8 dark:border-[#2a2a35]">
           {VALUES.map((v, i) => {
             const [hovered, setHovered] = React.useState(false);
@@ -233,14 +316,11 @@ const ValuesSection = () => {
                 >
                   <div className="absolute left-0 top-0 bottom-0 w-[3px] origin-bottom transition-transform duration-500"
                     style={{ background: accent(dark), transform: hovered ? "scaleY(1)" : "scaleY(0)" }} />
-
-                  <span className="text-xs font-black tracking-widest text-[#14141B]/20 dark:text-white/15 select-none pl-3">0{i+1}</span>
-
+                  <span className="text-xs font-black tracking-widest text-[#14141B]/20 dark:text-white/15 select-none pl-3">0{i + 1}</span>
                   <h3 className="text-2xl md:text-3xl font-black tracking-tighter uppercase transition-colors duration-300"
                     style={{ color: hovered ? accent(dark) : (dark ? "#fff" : "#14141B") }}>
                     {v.label}
                   </h3>
-
                   <div className="hidden lg:block text-right transition-all duration-300" style={{ opacity: hovered ? 1 : 0.3 }}>
                     <div className="text-3xl font-black tracking-tighter"
                       style={{ color: accent(dark), transform: hovered ? "scale(1.1)" : "scale(1)", display: "inline-block", transition: "transform 0.3s" }}>
@@ -248,7 +328,6 @@ const ValuesSection = () => {
                     </div>
                     <div className="text-[10px] font-bold uppercase tracking-wider text-[#14141B]/40 dark:text-white/30 mt-0.5">{v.statLabel}</div>
                   </div>
-
                   <p className="hidden lg:block text-xs font-antonym leading-relaxed text-[#14141B]/60 dark:text-[#B8B7A4]/70 transition-all duration-400"
                     style={{ opacity: hovered ? 1 : 0, transform: hovered ? "translateX(0)" : "translateX(16px)" }}>
                     {v.desc}
@@ -278,7 +357,6 @@ const TimelineSection = () => {
     window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
   return (
     <section id="milestones" className="w-full py-24 bg-white dark:bg-[#14141B]">
       <div className="container mx-auto px-6 md:px-12 max-w-6xl">
@@ -386,26 +464,44 @@ const PressSection = () => {
   );
 };
 
-/* ─── TEAM CARDS ──────────────────────────────────────────────────────────── */
+/* ─── TEAM CARDS (FOND NOIR UNIFORME AVEC BORDURE) ───────────────────────── */
 const MemberCard = ({ member, delay = 0 }) => {
   const { accent: acc } = GROUP_STYLE[member.group] ?? GROUP_STYLE["Business"];
   const initials = member.name.split(" ").map((p) => p[0]).slice(0, 2).join("");
+  
   return (
     <Reveal delay={delay}>
+      {/* Carte avec fond noir pur et bordure subtile pour garder la forme */}
       <article className="group relative rounded-2xl p-5 border text-center flex flex-col items-center cursor-default transition-all duration-400
-        bg-white border-[#14141B]/8 hover:-translate-y-1.5 hover:shadow-xl hover:border-transparent
-        dark:bg-[#1c1c24] dark:border-white/8">
+        bg-black border-white/10 hover:-translate-y-1.5 hover:shadow-xl hover:border-white/20">
+        
+        {/* Glow de la couleur du groupe au hover */}
+        <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-40 transition-opacity duration-500 blur-xl" 
+          style={{ background: acc }} />
+        
+        {/* Conteneur photo - même noir que la carte */}
         <div className="relative mb-4">
-          <div className="absolute inset-0 rounded-full blur-lg opacity-0 group-hover:opacity-40 transition-opacity duration-400" style={{ background: acc }} />
-          <div className="relative w-16 h-16 rounded-full flex items-center justify-center font-black text-base overflow-hidden ring-2 ring-offset-2 ring-offset-white dark:ring-offset-[#1c1c24] transition-all duration-400 group-hover:scale-110"
-            style={{ background: `${acc}22`, color: acc, boxShadow: `inset 0 0 0 1.5px ${acc}55` }}>
-            {member.photo ? <img src={member.photo} alt={member.name} className="w-full h-full object-cover" /> : initials}
+          <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-black transition-all duration-400 group-hover:scale-110">
+            {member.photo ? (
+              <img 
+                src={member.photo} 
+                alt={member.name} 
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center font-black text-base" 
+                style={{ background: `${acc}20`, color: acc }}>
+                {initials}
+              </div>
+            )}
           </div>
         </div>
-        <h4 className="text-sm font-black tracking-tight text-[#14141B] dark:text-white leading-snug">{member.name}</h4>
-        <p className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.06em] leading-snug text-[#14141B]/55 dark:text-white/55">{member.role}</p>
+        
+        <h4 className="text-sm font-black tracking-tight text-white leading-snug">{member.name}</h4>
+        <p className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.06em] leading-snug text-white/55">{member.role}</p>
+        
         <div className="overflow-hidden max-h-0 opacity-0 group-hover:max-h-16 group-hover:opacity-100 group-hover:mt-3 transition-all duration-400">
-          <p className="text-[11px] font-antonym leading-relaxed text-[#14141B]/55 dark:text-[#B8B7A4]">{member.detail}</p>
+          <p className="text-[11px] font-antonym leading-relaxed text-[#B8B7A4]">{member.detail}</p>
         </div>
       </article>
     </Reveal>
@@ -415,32 +511,49 @@ const MemberCard = ({ member, delay = 0 }) => {
 const LeaderCard = ({ member, delay = 0 }) => {
   const { accent: acc } = GROUP_STYLE["Leadership"];
   const initials = member.name.split(" ").map((p) => p[0]).slice(0, 2).join("");
+  
   return (
     <Reveal delay={delay}>
+      {/* Carte avec fond noir pur et bordure subtile */}
       <article className="group relative flex items-center gap-6 rounded-3xl p-6 md:p-7 border overflow-hidden transition-all duration-400
-        bg-white border-[#14141B]/8 hover:shadow-2xl hover:-translate-y-1
-        dark:bg-[#1c1c24] dark:border-white/10">
+        bg-black border-white/10 hover:shadow-2xl hover:-translate-y-1 hover:border-white/20">
+        
+        {/* Glow radial au hover */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-          style={{ background: `radial-gradient(circle at 0% 0%, ${acc}18, transparent 60%)` }} />
+          style={{ background: `radial-gradient(circle at 0% 0%, ${acc}15, transparent 60%)` }} />
+        
+        {/* Conteneur photo - même noir que la carte */}
         <div className="relative shrink-0">
-          <div className="absolute inset-0 rounded-full blur-xl opacity-30" style={{ background: acc }} />
-          <div className="relative w-20 h-20 rounded-full flex items-center justify-center font-black text-2xl overflow-hidden"
-            style={{ background: acc, color: "#14141B" }}>
-            {member.photo ? <img src={member.photo} alt={member.name} className="w-full h-full object-cover" /> : initials}
+          <div className="absolute inset-0 rounded-xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500" 
+            style={{ background: acc }} />
+          <div className="relative w-24 h-24 rounded-xl overflow-hidden bg-black">
+            {member.photo ? (
+              <img 
+                src={member.photo} 
+                alt={member.name} 
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center font-black text-2xl" 
+                style={{ background: acc, color: "#000000" }}>
+                {initials}
+              </div>
+            )}
           </div>
         </div>
+        
+        {/* Info */}
         <div className="relative z-10 min-w-0">
           <span className="inline-block mb-2 rounded-full px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em]"
-            style={{ background: `${acc}22`, color: "#12503C" }}>Leadership</span>
-          <h3 className="text-xl font-black tracking-tight text-[#14141B] dark:text-white truncate">{member.name}</h3>
-          <p className="mt-1 text-xs font-black uppercase tracking-[0.06em] text-[#14141B]/65 dark:text-white/70">{member.role}</p>
-          <p className="mt-2 text-xs font-antonym leading-relaxed text-[#14141B]/55 dark:text-[#B8B7A4]">{member.detail}</p>
+            style={{ background: `${acc}22`, color: acc }}>Leadership</span>
+          <h3 className="text-xl font-black tracking-tight text-white truncate">{member.name}</h3>
+          <p className="mt-1 text-xs font-black uppercase tracking-[0.06em] text-white/70">{member.role}</p>
+          <p className="mt-2 text-xs font-antonym leading-relaxed text-[#B8B7A4]">{member.detail}</p>
         </div>
       </article>
     </Reveal>
   );
 };
-
 /* ─── 04 TEAM ─────────────────────────────────────────────────────────────── */
 const TeamSection = () => {
   const leaders = TEAM.filter((m) => m.group === "Leadership");
@@ -448,11 +561,11 @@ const TeamSection = () => {
     .map((g) => ({ group: g, members: TEAM.filter((m) => m.group === g) }))
     .filter((g) => g.members.length > 0);
   return (
-    <section id="team" className="w-full py-24 bg-white dark:bg-[#14141B]">
+    <section id="team" className="w-full py-24 bg-[#14141B]">
       <div className="container mx-auto px-6 md:px-12 max-w-6xl">
         <Reveal className="mb-14">
           <SectionLabel>04 // Team & Governance</SectionLabel>
-          <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-[#14141B] dark:text-white uppercase leading-tight">
+          <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-white uppercase leading-tight">
             The People Behind Voltcore
           </h2>
         </Reveal>
@@ -466,8 +579,8 @@ const TeamSection = () => {
               <div key={group}>
                 <div className="flex items-center gap-3 mb-5">
                   <span className="w-2 h-2 rounded-full shrink-0" style={{ background: acc }} />
-                  <h3 className="text-xs font-black uppercase tracking-[0.16em] text-[#14141B]/55 dark:text-white/55 whitespace-nowrap">{group}</h3>
-                  <span className="flex-1 h-px bg-[#14141B]/8 dark:bg-white/10" />
+                  <h3 className="text-xs font-black uppercase tracking-[0.16em] text-white/55 whitespace-nowrap">{group}</h3>
+                  <span className="flex-1 h-px bg-white/10" />
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                   {members.map((m, i) => <MemberCard key={m.name} member={m} delay={i * 60} />)}
@@ -496,7 +609,7 @@ const LocationMap = () => {
           <SectionLabel>05 // Location</SectionLabel>
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
             <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase leading-tight">
-              Voltcore HQ<br /><span className="text-white/25">Bissen, Luxembourg</span>
+              Voltcore HQ <br /> <span className="text-white/25">Bissen, Luxembourg</span>
             </h2>
             <p className="text-sm font-antonym leading-relaxed text-[#B8B7A4] max-w-md">
               Our team develops and scales smart heating material systems from Luxembourg, close to European industrial partners and manufacturing networks.
@@ -556,47 +669,47 @@ const LocationMap = () => {
 
 /* ─── FOOTER ──────────────────────────────────────────────────────────────── */
 const Footer = () => (
-  <footer className="bg-[#f5f4f0] dark:bg-[#0e0e14] border-t border-[#e8e6e0] dark:border-[#2a2a3a] px-10 pt-16 pb-8">
+  <footer className="bg-[#0e0e14] border-t border-[#2a2a3a] px-10 pt-16 pb-8">
     <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-14">
       <div>
-        <div className="text-sm font-black tracking-widest text-[#14141B] dark:text-white mb-3">VOLTCORE™</div>
+        <div className="text-sm font-black tracking-widest text-white mb-3">VOLTCORE™</div>
         <p className="text-xs text-[#8a8880] leading-relaxed max-w-[200px] mb-5">
           Next-generation polymer matrix smart heating configurations replacing traditional metal wire infrastructures.
         </p>
         <div className="flex gap-2">
           {[
             { href: "https://www.linkedin.com/company/voltcore-tech/posts/?feedView=all", Icon: FaLinkedin },
-            { href: "https://www.youtube.com/channel/UCpsmhxcP-_XRV9fFRuIZXCA",          Icon: FaYoutube  },
+            { href: "https://www.youtube.com/channel/UCpsmhxcP-_XRV9fFRuIZXCA", Icon: FaYoutube },
           ].map(({ href, Icon }) => (
             <a key={href} href={href} target="_blank" rel="noreferrer"
-              className="w-8 h-8 rounded-lg border border-[#e8e6e0] dark:border-[#2a2a3a] flex items-center justify-center text-[#8a8880] transition-all duration-200 hover:border-[#D9FE42] hover:text-[#D9FE42]">
+              className="w-8 h-8 rounded-lg border border-[#2a2a3a] flex items-center justify-center text-[#8a8880] transition-all duration-200 hover:border-[#D9FE42] hover:text-[#D9FE42]">
               <Icon size={12} />
             </a>
           ))}
         </div>
       </div>
       <div>
-        <h4 className="text-xs font-bold uppercase tracking-widest text-[#14141B] dark:text-white mb-4">// Sitemap</h4>
+        <h4 className="text-xs font-bold uppercase tracking-widest text-white mb-4">// Sitemap</h4>
         <ul className="flex flex-col gap-2.5">
-          {[["Home","/"],["Technology","/technology"],["Industries","/industries"],["About us","/about"],["News","/news"],["Contact","/contact"]].map(([l,to]) => (
-            <li key={to}><Link to={to} className="text-sm text-[#8a8880] hover:text-[#D9FE42] transition-colors">{l}</Link></li>
+          {[["Home", "/"], ["Technology", "/technology"], ["Industries", "/industries"], ["About us", "/about"], ["News", "/news"], ["Contact", "/contact"]].map(([l, to]) => (
+            <li key={to}> <Link to={to} className="text-sm text-[#8a8880] hover:text-[#D9FE42] transition-colors">{l}</Link> </li>
           ))}
         </ul>
       </div>
       <div>
-        <h4 className="text-xs font-bold uppercase tracking-widest text-[#14141B] dark:text-white mb-4">// Platforms</h4>
+        <h4 className="text-xs font-bold uppercase tracking-widest text-white mb-4">// Platforms</h4>
         <ul className="flex flex-col gap-2.5">
-          {[["ActiveFil™","/technology"],["TargetHeat™","/technology"],["SensiTerm","/technology"]].map(([l,to]) => (
-            <li key={l}><Link to={to} className="text-sm text-[#8a8880] hover:text-[#D9FE42] transition-colors">{l}</Link></li>
+          {[["ActiveFil™", "/technology"], ["TargetHeat™", "/technology"], ["SensiTerm", "/technology"]].map(([l, to]) => (
+            <li key={l}> <Link to={to} className="text-sm text-[#8a8880] hover:text-[#D9FE42] transition-colors">{l}</Link> </li>
           ))}
         </ul>
       </div>
       <div>
-        <h4 className="text-xs font-bold uppercase tracking-widest text-[#14141B] dark:text-white mb-4">// Contact HQ</h4>
+        <h4 className="text-xs font-bold uppercase tracking-widest text-white mb-4">// Contact HQ</h4>
         <ul className="flex flex-col gap-4">
           <li className="flex items-start gap-2 text-[12px] text-[#8a8880]">
             <FaMapMarkerAlt className="text-[#D9FE42] mt-0.5 shrink-0" size={11} />
-            <span>2, rue de l'Industrie,<br />L-7735 Bissen, Luxembourg</span>
+            <span>2, rue de l'Industrie, <br />L-7735 Bissen, Luxembourg</span>
           </li>
           <li className="flex items-center gap-2">
             <FaEnvelope className="text-[#D9FE42] shrink-0" size={11} />
@@ -605,11 +718,11 @@ const Footer = () => (
         </ul>
       </div>
     </div>
-    <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-6 border-t border-[#e8e6e0] dark:border-[#2a2a3a] text-[10px] text-[#8a8880]/60">
+    <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-6 border-t border-[#2a2a3a] text-[10px] text-[#8a8880]/60">
       <span>© {new Date().getFullYear()} Voltcore™ S.A. All rights reserved. Registered trademark.</span>
       <div className="flex gap-5">
-        <a href="#privacy" className="hover:text-[#14141B] dark:hover:text-white transition-colors">Privacy Policy</a>
-        <a href="#terms"   className="hover:text-[#14141B] dark:hover:text-white transition-colors">Terms of Service</a>
+        <a href="#privacy" className="hover:text-white transition-colors">Privacy Policy</a>
+        <a href="#terms" className="hover:text-white transition-colors">Terms of Service</a>
       </div>
     </div>
   </footer>
@@ -617,9 +730,9 @@ const Footer = () => (
 
 /* ─── 06 CAREERS ──────────────────────────────────────────────────────────── */
 const OPEN_POSITIONS = [
-  { title: "Senior Polymer Process Engineer",           type: "Full-time · On-site",  location: "Bissen, Luxembourg",    desc: "Lead industrial scale-up of CNT-based polymer compounds and fibers. 5+ years in polymer extrusion or compounding required." },
-  { title: "Business Development Manager — Automotive", type: "Full-time · Hybrid",   location: "Luxembourg / Remote EU", desc: "Drive Tier-1 and OEM partnerships. Manage technical sales cycles and PoC pipeline from qualification to nomination." },
-  { title: "Materials R&D Engineer",                    type: "Full-time · On-site",  location: "Bissen, Luxembourg",    desc: "Develop next-generation nanocomposite formulations. Work alongside CTO on characterisation, process optimisation, and new application development." },
+  { title: "Senior Polymer Process Engineer", type: "Full-time · On-site", location: "Bissen, Luxembourg", desc: "Lead industrial scale-up of CNT-based polymer compounds and fibers. 5+ years in polymer extrusion or compounding required." },
+  { title: "Business Development Manager — Automotive", type: "Full-time · Hybrid", location: "Luxembourg / Remote EU", desc: "Drive Tier-1 and OEM partnerships. Manage technical sales cycles and PoC pipeline from qualification to nomination." },
+  { title: "Materials R&D Engineer", type: "Full-time · On-site", location: "Bissen, Luxembourg", desc: "Develop next-generation nanocomposite formulations. Work alongside CTO on characterisation, process optimisation, and new application development." },
 ];
 
 const CareersSection = () => (
@@ -629,11 +742,10 @@ const CareersSection = () => (
     </div>
     <div className="relative z-10 container mx-auto px-6 md:px-12 max-w-6xl">
       <Reveal className="mb-14">
-        {/* Careers est sur fond sombre → neon lisible */}
         <span className="text-xs tracking-[0.18em] uppercase font-bold block mb-3 text-[#D9FE42]">06 // Careers</span>
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6">
           <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-white uppercase leading-tight">
-            Join the<br /><span style={{ color: "#D9FE42" }}>Voltcore Team</span>
+            Join the <br /> <span style={{ color: "#D9FE42" }}>Voltcore Team</span>
           </h2>
           <p className="text-base font-antonym text-white/55 leading-relaxed max-w-lg">
             At Voltcore, we are shifting the paradigms of industrial thermal management. We foster an environment of high-performance engineering, scientific rigor, and bold execution in Luxembourg's deep-tech ecosystem.
@@ -642,9 +754,9 @@ const CareersSection = () => (
       </Reveal>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/5 rounded-2xl overflow-hidden mb-16">
         {[
-          { emoji: "🔬", title: "Science First",     desc: "We never compromise on material quality. Every decision is grounded in rigorous polymer science and real-world testing." },
+          { emoji: "🔬", title: "Science First", desc: "We never compromise on material quality. Every decision is grounded in rigorous polymer science and real-world testing." },
           { emoji: "🌍", title: "Sustainable Impact", desc: "Our work directly reduces global CO₂ emissions. You'll contribute to something that matters at a planetary scale." },
-          { emoji: "🚀", title: "Fast Execution",    desc: "Startup energy with deep-tech credibility. We move fast, iterate hard, and trust everyone to own their domain." },
+          { emoji: "🚀", title: "Fast Execution", desc: "Startup energy with deep-tech credibility. We move fast, iterate hard, and trust everyone to own their domain." },
         ].map(({ emoji, title, desc }, i) => {
           const [h, setH] = React.useState(false);
           return (
@@ -714,7 +826,7 @@ const CareersSection = () => (
 
 /* ─── PAGE ────────────────────────────────────────────────────────────────── */
 const About = () => (
-  <div className="w-full bg-white dark:bg-[#14141B] text-[#14141B] dark:text-white min-h-screen font-sans selection:bg-[#D9FE42] selection:text-[#14141B]">
+  <div className="w-full bg-[#14141B] text-white min-h-screen font-sans selection:bg-[#D9FE42] selection:text-[#14141B]">
     <section id="about-hero" className="relative w-full min-h-[88vh] flex items-center overflow-hidden bg-[#14141B]">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] rounded-full blur-[120px] opacity-10" style={{ background: "#D9FE42" }} />
@@ -726,12 +838,11 @@ const About = () => (
       }} />
       <div className="relative z-10 container mx-auto px-6 md:px-12 max-w-6xl pt-32 pb-24">
         <Reveal>
-          {/* Hero = fond noir → neon OK */}
           <span className="text-xs tracking-[0.18em] uppercase font-bold block mb-6 text-[#D9FE42]">02 // About Voltcore</span>
         </Reveal>
         <Reveal delay={80}>
           <h1 className="text-5xl md:text-6xl font-black tracking-tighter leading-[0.95] text-white uppercase mb-6">
-            Empowering<br /><span style={{ color: "#D9FE42" }}>Sustainable</span><br />Material Systems.
+            Empowering <br /> <span style={{ color: "#D9FE42" }}>Sustainable</span> <br />Material Systems.
           </h1>
         </Reveal>
         <Reveal delay={180}>

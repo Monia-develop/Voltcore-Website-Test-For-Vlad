@@ -37,9 +37,9 @@ const INDUSTRIES = [
 ];
 
 const NEWS = [
-  { date:"May 2026",   tag:"Commercial Scale-Up", title:"Voltcore™ Graduates 7th Industrial PoC into Full Commercial Production",   summary:"Top-tier global Tier-1 automotive and industrial partners officially transition from pilot testing to volume manufacturing.", link:"/news" },
-  { date:"April 2026", tag:"Sustainability",       title:"LCA Assessment Confirms up to 75% Lower CO₂ Footprint vs Copper",        summary:"Third-party Life Cycle Assessments validate our mono-material polymer approach for total end-of-life recyclability.",     link:"/news" },
-  { date:"June 2026",  tag:"Global Events",        title:"Meet Voltcore™'s Executive and Tech Team at VivaTech 2026",               summary:"Join us in Paris to experience live demonstrations of our interactive smart seating and flexible heating mesh platforms.",   link:"/news" },
+  { date:"May 2026",   tag:"Commercial Scale-Up", title:"Voltcore™ Graduates 7th Industrial PoC into Full Commercial Production",   summary:"Top-tier global Tier-1 automotive and industrial partners officially transition from pilot testing to volume manufacturing.", link:"/about#press" },
+  { date:"April 2026", tag:"Sustainability",       title:"LCA Assessment Confirms up to 75% Lower CO₂ Footprint vs Copper",        summary:"Third-party Life Cycle Assessments validate our mono-material polymer approach for total end-of-life recyclability.",     link:"/about#press" },
+  { date:"June 2026",  tag:"Global Events",        title:"Meet Voltcore™'s Executive and Tech Team at VivaTech 2026",               summary:"Join us in Paris to experience live demonstrations of our interactive smart seating and flexible heating mesh platforms.",   link:"/about#press" },
 ];
 
 const TEAM = [
@@ -132,16 +132,45 @@ const MetricCard = ({ m, idx }) => {
     >
       <div className="absolute top-0 right-0 pointer-events-none rounded-full" style={{ width: 120, height: 120, top: -30, right: -30, background: `radial-gradient(circle, ${m.barColor}30, transparent 70%)`, opacity: hovered ? 1 : 0, transition: "opacity 0.4s" }} />
       {ripple && <div className="absolute pointer-events-none rounded-full" style={{ left: ripple.x - 50, top: ripple.y - 50, width: 100, height: 100, background: `${m.barColor}25`, animation: "rippleOut 0.6s ease-out forwards" }} />}
-      <div className="p-7 relative z-10">
-        <div className="text-5xl font-black tracking-tighter mb-3 text-white" style={{ color: hovered ? m.barColor : undefined }}>
+      <div className="p-5 relative z-10">
+        <div className="text-4xl font-black tracking-tighter mb-2 text-white" style={{ color: hovered ? m.barColor : undefined }}>
           {visible ? <CountUp prefix={m.numPrefix} end={m.numEnd} suffix={m.numSuffix} /> : <span>{m.numPrefix}0{m.numSuffix}</span>}
         </div>
-        <div className="text-sm font-bold uppercase tracking-widest text-white/80 mb-1">{m.label}</div>
-        <div className="text-xs text-[#B8B7A4]/60">{m.sub}</div>
-        <div className="mt-4 h-px bg-white/10 rounded-full overflow-hidden">
+        <div className="text-[11px] font-bold uppercase tracking-widest text-white/80 mb-1">{m.label}</div>
+        <div className="text-[10px] text-[#B8B7A4]/60">{m.sub}</div>
+        <div className="mt-3 h-px bg-white/10 rounded-full overflow-hidden">
           <div style={{ height: "100%", background: m.barColor, width: hovered ? "100%" : "28%", transition: "width 0.6s cubic-bezier(0.34,1.56,0.64,1)" }} />
         </div>
       </div>
+    </div>
+  );
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SCROLL PROGRESS BAR
+// ─────────────────────────────────────────────────────────────────────────────
+const ScrollProgress = () => {
+  const [progress, setProgress] = useState(0);
+  useEffect(() => {
+    const onScroll = () => {
+      const h = document.documentElement;
+      const scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+      setProgress(Math.min(scrolled, 1));
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return (
+    <div className="fixed top-0 left-0 right-0 z-50 h-[3px] pointer-events-none">
+      <div
+        className="h-full origin-left"
+        style={{
+          transform: `scaleX(${progress})`,
+          background: "linear-gradient(90deg, #D9FE42, #94C356)",
+          transition: "transform 0.1s linear",
+        }}
+      />
     </div>
   );
 };
@@ -306,9 +335,11 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="bg-white dark:bg-[#14141B] text-[#14141B] dark:text-[#B8B7A4] min-h-screen overflow-x-hidden font-sans selection:bg-[#D9FE42] selection:text-[#14141B]">
+    <div className="bg-white dark:bg-[#14141B] text-[#14141B] dark:text-[#B8B7A4] min-h-screen overflow-x-hidden font-['AkkuratLL',_sans-serif] selection:bg-[#D9FE42] selection:text-[#14141B]">
 
-      {/* Lueur d'ambiance interactive exclusive qui suit précisément la souris */}
+      <ScrollProgress />
+
+      {/* Lueur d'ambiance interactive exclusive */}
       <div className="fixed pointer-events-none z-50 rounded-full mix-blend-screen" 
         style={{ 
           width: 650, 
@@ -319,91 +350,100 @@ const Home = () => {
         }} 
       />
 
-      {/* ── HERO OPTIMISÉ POUR METTRE EN VALEUR LA VIDÉO ET LE LOGO ──────────────── */}
+      {/* ── HERO ─────────────────────────────────────────────────────────────── */}
       <section
         id="hero"
-        className="relative grid grid-cols-1 lg:grid-cols-2 min-h-[780px] lg:min-h-[850px] border-b border-[#2a2a3a] bg-[#14141B] text-white overflow-hidden"
+        className="relative w-full min-h-[88vh] flex items-center overflow-hidden bg-[#14141B] text-white"
         onMouseMove={handleMouseMove}
       >
-        {/* LA VIDÉO - Opacité augmentée de 70% à 95% pour une visibilité totale */}
-        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-95">
-          <video autoPlay loop muted playsInline className="w-full h-full object-cover">
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          <video autoPlay loop muted playsInline className="w-full h-full object-cover opacity-60">
             <source src={HeroVideo} type="video/mp4" />
           </video>
-          {/* Masque dégradé adouci : protège le texte à gauche tout en ouvrant complètement le centre */}
-          <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(20,20,27,0.7) 0%, rgba(20,20,27,0.3) 45%, transparent 100%)" }} />
-          <div className="absolute inset-0 bg-black/10" />
+          <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, rgba(20,20,27,0.55) 0%, rgba(20,20,27,0.25) 50%, rgba(20,20,27,0.65) 100%)" }} />
         </div>
 
-        {/* Zone de Contenu Gauche */}
-        <div className="relative z-10 flex flex-col justify-center px-10 py-20 border-b lg:border-b-0 lg:border-r border-white/5 overflow-hidden bg-transparent">
-          
-          {/* Grille Nanotech Interactive - S'illumine au passage du curseur */}
-          <div
-            className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"
-            style={{ 
-              transform: `translate(${mouse.x * 24}px, ${mouse.y * 24}px)`, 
-              transition: "transform 0.5s cubic-bezier(0.1, 0.8, 0.2, 1)",
-              maskImage: `radial-gradient(circle 180px at ${(mouse.x + 0.5) * 100}% ${(mouse.y + 0.5) * 100}%, black 20%, transparent 100%)`,
-              WebkitMaskImage: `radial-gradient(circle 180px at ${(mouse.x + 0.5) * 100}% ${(mouse.y + 0.5) * 100}%, black 20%, transparent 100%)`
-            }}
-          />
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] rounded-full blur-[120px] opacity-10" style={{ background: "#D9FE42" }} />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full blur-3xl opacity-5" style={{ background: "#94C356" }} />
+          <div className="absolute top-1/2 right-0 w-64 h-64 rounded-full blur-3xl opacity-5" style={{ background: "#4A5DA7" }} />
+        </div>
 
-          {/* Badge Localisation */}
-          <div className="inline-flex items-center gap-2 mb-8 bg-black/40 border border-white/10 px-4 py-1.5 rounded-full w-fit backdrop-blur-sm">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#D9FE42] opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#D9FE42]" />
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.03]"
+          style={{
+            backgroundImage: "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
+            transform: `translate(${mouse.x * 20}px, ${mouse.y * 20}px)`,
+            transition: "transform 0.6s cubic-bezier(0.1, 0.8, 0.2, 1)",
+          }}
+        />
+
+        <div className="relative z-10 container mx-auto px-6 md:px-12 max-w-6xl pt-32 pb-24 w-full">
+          <Reveal>
+            <div className="inline-flex items-center gap-2 mb-6 bg-black/40 border border-white/10 px-4 py-1.5 rounded-full w-fit backdrop-blur-sm">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#D9FE42] opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#D9FE42]" />
+              </span>
+              <span className="text-[11px] tracking-[0.16em] uppercase text-white/90 font-medium">Advanced Materials — Bissen, Luxembourg</span>
+            </div>
+          </Reveal>
+
+          <Reveal delay={40}>
+            <span className="text-xs tracking-[0.18em] uppercase font-bold block mb-6 text-[#D9FE42]">
+              {displayed}<span className="animate-pulse ml-px">|</span>
             </span>
-            <span className="text-[11px] tracking-[0.16em] uppercase text-white/90 font-medium">Advanced Materials — Bissen, Luxembourg</span>
-          </div>
+          </Reveal>
 
-          {/* Écriture dynamique mise à jour */}
-          <div className="text-[12px] tracking-[0.25em] uppercase text-[#D9FE42] font-black mb-3 h-5">
-            {displayed}<span className="animate-pulse ml-px">|</span>
-          </div>
+          <Reveal delay={80}>
+            <h1
+              className="text-5xl md:text-6xl font-black tracking-tighter leading-[0.95] text-white uppercase mb-6"
+              style={{ transform: `translate(${mouse.x * -12}px, ${mouse.y * -6}px)`, transition: "transform 0.2s ease-out" }}
+            >
+              Heat Smart. <br />
+              <span style={{ color: "#D9FE42" }}>Go Green.</span>
+            </h1>
+          </Reveal>
 
-          {/* Titre Principal Impactant */}
-          <h1 className="text-5xl md:text-6.5xl font-black tracking-tighter leading-[0.92] text-white uppercase mb-6 max-w-xl"
-            style={{ transform: `translate(${mouse.x * -12}px, ${mouse.y * -6}px)`, transition: "transform 0.2s ease-out" }}
+          <Reveal delay={180}>
+            <p className="text-base leading-relaxed max-w-2xl mb-10" style={{ color: "#B8B7A4" }}>
+              Voltcore is an advanced materials company. Our mission is to create the most sustainable and energy-efficient surface{" "}
+              <strong className="text-white font-black">HEATING SOLUTIONS.</strong>
+            </p>
+          </Reveal>
+
+          <Reveal delay={260} className="flex flex-wrap gap-4 mb-16">
+            <Link
+              to="/technology"
+              className="group inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-sm font-black uppercase tracking-widest transition-all duration-300 hover:opacity-90 hover:scale-105 hover:shadow-[0_0_30px_rgba(217,254,66,0.25)]"
+              style={{ background: "#D9FE42", color: "#14141B" }}
+            >
+              Discover Our Technology <FaArrowRight size={9} className="transition-transform group-hover:translate-x-1" />
+            </Link>
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-xs font-black uppercase tracking-widest border border-white/20 text-white hover:border-white/50 transition-all duration-300"
+            >
+              Contact Us <FaArrowRight size={9} />
+            </Link>
+          </Reveal>
+
+          <Reveal delay={340}>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl">
+              {METRICS.map((m, i) => <MetricCard key={m.label} m={m} idx={i} />)}
+            </div>
+          </Reveal>
+
+          <div
+            className="absolute bottom-8 left-12 flex items-center gap-3 opacity-60 hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+            onClick={() => document.getElementById("who-we-are")?.scrollIntoView({ behavior: "smooth" })}
           >
-            HEAT SMART<br />
-            <span className="text-[#D9FE42] drop-shadow-[0_0_30px_rgba(217,254,66,0.2)]">GO GREEN</span>
-          </h1>
-
-          <p className="text-base font-antonym text-white/90 leading-relaxed max-w-[440px] mb-10 drop-shadow-md">
-            Voltcore is an advanced materials and mobility-tech start-up. Our mission is to create the most sustainable and energy-efficient surface <strong className="text-white font-black font-sans">HEATING SOLUTIONS.</strong>
-          </p>
-
-          <div className="flex flex-wrap gap-4">
-            <Link to="/technology"
-              className="group inline-flex items-center gap-3 px-8 py-4 bg-[#D9FE42] text-[#14141B] rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300 hover:scale-105 hover:shadow-[0_0_35px_rgba(217,254,66,0.45)]"
-            >
-              Discover Our Technology
-              <FaArrowRight size={10} className="transition-transform duration-300 group-hover:translate-x-1.5" />
-            </Link>
-            <Link to="/contact"
-              className="inline-flex items-center gap-3 px-8 py-4 border border-white/30 text-white backdrop-blur-sm rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300 hover:border-[#D9FE42] hover:text-[#D9FE42] hover:bg-white/10"
-            >
-              Contact Us
-            </Link>
-          </div>
-
-          {/* Défilement Indicateur Bas */}
-          <div className="absolute bottom-8 left-10 flex items-center gap-3 opacity-60 hover:opacity-100 transition-opacity duration-300 cursor-pointer" onClick={() => document.getElementById("who-we-are")?.scrollIntoView({ behavior: "smooth" })}>
             <div className="w-6 h-10 rounded-full border border-white/50 flex items-start justify-center pt-2 backdrop-blur-sm bg-black/20">
               <div className="w-1 h-2 bg-white rounded-full" style={{ animation: "scrollBob 1.8s ease-in-out infinite" }} />
             </div>
             <span className="text-[10px] uppercase tracking-[0.2em] text-white font-bold">Scroll</span>
           </div>
-        </div>
-
-        {/* Zone Droite — Cartes de métriques */}
-        <div className="relative z-10 flex flex-col justify-center gap-4 p-10 bg-transparent" style={{ transform: `translate(${mouse.x * 8}px, ${mouse.y * 4}px)`, transition: "transform 0.2s ease-out" }}>
-          <div aria-hidden className="absolute select-none pointer-events-none font-sans font-black leading-none text-[240px] -top-10 -right-5 tracking-tighter opacity-[0.02] text-[#D9FE42]">
-            CNT
-          </div>
-          {METRICS.map((m, i) => <MetricCard key={m.label} m={m} idx={i} />)}
         </div>
       </section>
 
@@ -415,7 +455,7 @@ const Home = () => {
             Deep-tech advanced materials,{" "}
             <span className="text-[#14141B]/20 dark:text-white/20">built in Luxembourg.</span>
           </h2>
-          <p className="text-base font-antonym text-[#4a4a46] dark:text-[#B8B7A4]/70 leading-relaxed max-w-2xl">
+          <p className="text-base text-[#4a4a46] dark:text-[#B8B7A4]/70 leading-relaxed max-w-2xl">
             Based in the deep-tech hub of Luxembourg, Voltcore™ is a pioneering advanced materials company that eliminates the weight, cost, and design limitations of traditional metal heating elements. By integrating conductive nanofillers directly into standard polymer matrices, we deliver uniform, flexible, and highly energy-efficient smart surfaces designed for seamless industrial scale-up.
           </p>
         </Reveal>
@@ -445,7 +485,7 @@ const Home = () => {
           <Reveal delay={160} className="bg-[#B8B7A4] dark:bg-[#14141B] p-10 flex flex-col justify-between">
             <div>
               <div className="text-4xl text-[#12503C] dark:text-[#D9FE42] font-black leading-none mb-5">"</div>
-              <p className="text-base font-antonym text-[#14141B]/70 dark:text-[#B8B7A4] leading-relaxed">
+              <p className="text-base text-[#14141B]/70 dark:text-[#B8B7A4] leading-relaxed">
                 Third-party Life Cycle Assessments validate our mono-material polymer approach for total end-of-life recyclability and a carbon footprint up to{" "}
                 <span className="text-[#12503C] dark:text-[#D9FE42] font-bold inline-block transition-transform duration-300 hover:scale-110 cursor-default">75% lower than copper</span> alternatives.
               </p>
@@ -517,7 +557,7 @@ const Home = () => {
         </div>
         <Reveal delay={280}>
           <div className="mt-10 text-center">
-            <Link to="/news" className="group inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-[#12503C] dark:text-[#D9FE42] hover:text-[#14141B] dark:hover:text-white transition-colors">
+            <Link to="/about#press" className="group inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-[#12503C] dark:text-[#D9FE42] hover:text-[#14141B] dark:hover:text-white transition-colors">
               See All News <FaArrowRight size={10} className="transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
