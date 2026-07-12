@@ -4,7 +4,6 @@ import {
   FaArrowRight, FaArrowLeft,
   FaSnowflake, FaWeightHanging, FaThermometerHalf,
 } from "react-icons/fa";
-import AutomotiveCaseStudies from "../../Components/AutomotiveCaseStudy";
 import AutomotivePOCTracker  from "../../Components/AutomotivePOCTracker";
 import AutomotiveHero        from "../../assets/website/industries/automotive-hero.jpg";
 
@@ -33,31 +32,76 @@ const PROBLEMS = [
   { icon: FaThermometerHalf, sub: "The Comfort Gap",    title: "Poor Thermal Dynamics",   desc: "Copper networks run ΔT > 10°C — slow to heat, uneven, and full of hot spots next to cold zones." },
 ];
 
+// Positions are % of the image's width/height — tuned to sit on the actual
+// heated zones in the Cabin Cocoon photo. Nudge x/y here if you swap the hero image.
 const HOTSPOTS = [
-  { id: "seats",     x: 32, y: 60, num: "01", title: "Seat Heating & Presence Detection", desc: "Deployed within the seat upholstery matrix for simultaneous high-velocity heating and occupancy/posture sensing." },
-  { id: "touch",     x: 60, y: 38, num: "02", title: "Heated Sensing / Touch Elements",   desc: "Sensing and touch controls incorporated directly into the heated surface — no separate sensor mat required." },
-  { id: "surfaces",  x: 84, y: 42, num: "03", title: "Heated Surfaces",                   desc: "Armrests, door panels, gloveboxes and cupholders — laminated, over-molded, or compression-molded into the trim." },
-  { id: "doorpanel", x:  9, y: 80, num: "04", title: "Heated Door Panel",                 desc: "Ultra-thin heating fabric beneath the door card A-surface as part of the Cabin Cocoon." },
+  { id: "seats",     x: 30, y: 64, num: "01", title: "Seat Heating & Presence Detection", desc: "Deployed within the seat upholstery matrix for simultaneous high-velocity heating and occupancy/posture sensing." },
+  { id: "touch",     x: 57, y: 34, num: "02", title: "Heated Sensing / Touch Elements",   desc: "Sensing and touch controls incorporated directly into the heated surface — no separate sensor mat required." },
+  { id: "surfaces",  x: 89, y: 47, num: "03", title: "Heated Surfaces",                   desc: "Armrests, door panels, gloveboxes and cupholders — laminated, over-molded, or compression-molded into the trim." },
+  { id: "doorpanel", x:  7, y: 87, num: "04", title: "Heated Door Panel",                 desc: "Ultra-thin heating fabric beneath the door card A-surface as part of the Cabin Cocoon." },
 ];
 
 /* ─── COMPONENTS ─────────────────────────────────────────────────────────── */
 
+// Hotspots reveal on hover (desktop) and on tap (touch devices, since there's no hover
+// event there). Clicking directly on a marker never navigates — only the surrounding
+// image / CTA badge links through to the full case studies page.
 const HotspotMap = ({ src, dark }) => {
   const [active, setActive] = useState(null);
+  const [loaded, setLoaded] = useState(false);
+  const [broken, setBroken] = useState(!src);
   const borderCol = dark ? "border-zinc-700" : "border-zinc-300";
   return (
-    <div className={`relative w-full rounded-2xl overflow-hidden select-none border shadow-xl ${borderCol}`}>
-      <img src={src} alt="Cabin Cocoon" className="w-full h-auto block" draggable={false} />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#14141B]/50 via-transparent to-transparent pointer-events-none" />
+    <div className={`relative w-full aspect-[16/9] rounded-2xl overflow-hidden select-none border shadow-xl group/map ${borderCol}`}>
+      {/* Always-visible base layer so the section never collapses/looks blank,
+          even if the source image fails to load (missing/renamed asset). */}
+      <div className="absolute inset-0 flex items-center justify-center" style={{ background: "linear-gradient(135deg, rgba(148,195,86,0.18), #14141B)" }}>
+        {broken && (
+          <span className="text-xs font-bold uppercase tracking-widest text-white/40 px-4 text-center">
+            Image not found — check automotive-hero.jpg in assets/website/industries/
+          </span>
+        )}
+      </div>
+
+      <Link to="/industries/automotive/case-studies" className="absolute inset-0 z-0" aria-label="Explore automotive case studies">
+        {!broken && (
+          <img
+            src={src}
+            alt="Cabin Cocoon"
+            className={`absolute inset-0 w-full h-full object-cover block transition-opacity duration-500 group-hover/map:scale-[1.03] ${loaded ? "opacity-100" : "opacity-0"}`}
+            style={{ transitionProperty: "opacity, transform" }}
+            draggable={false}
+            onLoad={() => setLoaded(true)}
+            onError={() => setBroken(true)}
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#14141B]/50 via-transparent to-transparent pointer-events-none" />
+      </Link>
+
+      {/* Corner CTA — the explicit, discoverable link into the case studies page */}
+      <Link
+        to="/industries/automotive/case-studies"
+        className="absolute top-4 right-4 z-30 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#14141B]/85 backdrop-blur-md border border-[#94C356]/40 text-[11px] font-black uppercase tracking-widest text-white hover:bg-[#94C356] hover:text-[#14141B] transition-all duration-300"
+      >
+        Explore Case Studies <FaArrowRight size={9} />
+      </Link>
+
       {HOTSPOTS.map((h) => {
         const isActive = active === h.id;
         const flipX = h.x > 60;
-        const flipY = h.y > 60;
+        const flipY = h.y > 55;
         return (
-          <div key={h.id} className="absolute" style={{ left: `${h.x}%`, top: `${h.y}%`, transform: "translate(-50%,-50%)" }}>
+          <div
+            key={h.id}
+            className="absolute z-20"
+            style={{ left: `${h.x}%`, top: `${h.y}%`, transform: "translate(-50%,-50%)" }}
+            onMouseEnter={() => setActive(h.id)}
+            onMouseLeave={() => setActive((cur) => (cur === h.id ? null : cur))}
+          >
             {!isActive && <span className="absolute inset-0 rounded-full animate-ping bg-[#94C356] opacity-60 pointer-events-none" />}
             <button
-              onClick={() => setActive(isActive ? null : h.id)}
+              type="button"
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); setActive((cur) => (cur === h.id ? null : h.id)); }}
               className={`relative z-10 w-9 h-9 rounded-full border-2 flex items-center justify-center text-[11px] font-black transition-all duration-200 ${
                 isActive
                   ? "bg-[#94C356] border-[#94C356] text-[#14141B] scale-110 shadow-[0_0_15px_rgba(148,195,86,0.6)]"
@@ -66,7 +110,7 @@ const HotspotMap = ({ src, dark }) => {
             >{h.num}</button>
             {isActive && (
               <div
-                className="absolute z-20 w-56 rounded-xl bg-[#14141B]/95 backdrop-blur-md border border-[#94C356]/30 shadow-2xl p-4"
+                className="absolute z-30 w-56 rounded-xl bg-[#14141B]/95 backdrop-blur-md border border-[#94C356]/30 shadow-2xl p-4 pointer-events-none"
                 style={{
                   left:   flipX ? "auto" : "calc(100% + 12px)",
                   right:  flipX ? "calc(100% + 12px)" : "auto",
@@ -78,7 +122,6 @@ const HotspotMap = ({ src, dark }) => {
                 <span className="text-[10px] font-black uppercase tracking-widest text-[#94C356] block mb-1">{h.num}</span>
                 <h4 className="text-sm font-bold text-white mb-1 leading-snug">{h.title}</h4>
                 <p className="text-xs text-[#B8B7A4]/80 leading-relaxed">{h.desc}</p>
-                <button onClick={(e) => { e.stopPropagation(); setActive(null); }} className="absolute top-2 right-3 text-[#B8B7A4]/40 hover:text-white text-sm">×</button>
               </div>
             )}
           </div>
@@ -169,29 +212,7 @@ const Automotive = () => {
         </div>
       </section>
 
-      {/* ── 2. HOTSPOT ──────────────────────────────────────── */}
-      <section className={`py-24 px-6 border-b ${
-        dark
-          ? "bg-[#1C1C24] border-zinc-800"
-          : "bg-[#E8E7E0] border-zinc-300"
-      }`}>
-        <div className="container mx-auto max-w-6xl">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-            <div>
-              <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#94C356] block mb-3">// Interactive Map</span>
-              <h2 className={`text-3xl md:text-4xl font-black uppercase tracking-tight ${dark ? "text-white" : "text-[#14141B]"}`}>
-                Every Surface. Heated.
-              </h2>
-            </div>
-            <p className={`text-sm max-w-xs leading-relaxed ${dark ? "text-zinc-400" : "text-zinc-600"}`}>
-              Click the numbered markers to explore each heated zone inside the Cabin Cocoon.
-            </p>
-          </div>
-          <HotspotMap src={AutomotiveHero} dark={dark} />
-        </div>
-      </section>
-
-      {/* ── 3. PROBLEMS ─────────────────────────────────────── */}
+      {/* ── 2. PROBLEMS ─────────────────────────────────────── */}
       <section className={`py-24 px-6 ${dark ? "bg-[#14141B]" : "bg-[#F0EFEA]"}`}>
         <div className="container mx-auto max-w-6xl">
           <div className="mb-14">
@@ -279,16 +300,23 @@ const Automotive = () => {
         </div>
       </section>
 
-      {/* ── 5. CASE STUDIES ─────────────────────────────────────────── */}
-      <section className="py-24 px-6 bg-[#14141B] text-[#B8B7A4]">
+      {/* ── 5. HOTSPOT MAP ──────────────────────────────────── */}
+      <section className={`py-24 px-6 border-t ${
+        dark ? "bg-[#1C1C24] border-zinc-800" : "bg-[#E8E7E0] border-zinc-300"
+      }`}>
         <div className="container mx-auto max-w-6xl">
-          <div className="mb-14">
-            <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#94C356] block mb-3">4.3 // Case Studies</span>
-            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight text-white">
-              Head-to-head. <span className="text-white/20">By product.</span>
-            </h2>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#94C356] block mb-3">4.3 // Interactive Map</span>
+              <h2 className={`text-3xl md:text-4xl font-black uppercase tracking-tight ${dark ? "text-white" : "text-[#14141B]"}`}>
+                Every Surface. Heated.
+              </h2>
+            </div>
+            <p className={`text-sm max-w-xs leading-relaxed ${dark ? "text-zinc-400" : "text-zinc-600"}`}>
+              Hover the numbered markers to explore each heated zone inside the Cabin Cocoon — or open the full case studies.
+            </p>
           </div>
-          <AutomotiveCaseStudies />
+          <HotspotMap src={AutomotiveHero} dark={dark} />
         </div>
       </section>
 

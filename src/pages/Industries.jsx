@@ -56,7 +56,7 @@ const INDUSTRIES = [
     accent: "#94C356",
   },
   {
-    slug: "food-delivery",
+    slug: "thermal-logistics",
     num: "02",
     title: "Food & Delivery",
     tagline: "Active heating inserts maintaining ≥65°C for over 3 hours",
