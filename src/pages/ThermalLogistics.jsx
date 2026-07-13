@@ -436,7 +436,7 @@ const ThermalLogistics = () => {
           </Reveal>
           <Reveal y={40}>
             <ThermalLogisticsPOCTracker dark={dark} />
-          </Reveal>
+          </Reveal>x
         </div>
       </section>
 

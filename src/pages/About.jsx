@@ -125,103 +125,103 @@ const GROUP_STYLE = {
 const GROUP_ORDER = ["Leadership", "Board & Advisors", "Business", "Engineering", "Operations", "Interns"];
 
 const TEAM = [
-  { 
-    name: "Fabrice Bertinchamps", 
-    role: "Co-founder and CEO", 
-    detail: "ex-TotalEnergies, SABIC", 
-    group: "Leadership", 
-    photo: new URL("../assets/website/team/Fabrice.png", import.meta.url).href 
+  {
+    name: "Fabrice Bertinchamps",
+    role: "Co-founder and CEO",
+    detail: "Fabrice holds a PhD in Catalysis from UCLouvain and completed executive programs at Harvard, London Business School, INSEAD, and HEC Paris. He has 20+ years in the polymer industry, leading global strategy, R&D, and business units at SABIC and TotalEnergies. His expertise spans transformative research, scaling innovations from pilot to full commercial deployment, and developing advanced solutions for the automotive sector.",
+    group: "Leadership",
+    photo: new URL("../assets/website/team/Fabrice.png", import.meta.url).href
   },
-  { 
-    name: "Vlad Batkhin", 
-    role: "Co-founder and CTO", 
-    detail: "ex-Sibur", 
-    group: "Leadership", 
-    photo: new URL("../assets/website/team/vlad.png", import.meta.url).href 
+  {
+    name: "Vlad Batkhin",
+    role: "Co-founder and CTO",
+    detail: "Vlad holds an MSc degree in applied physics from Moscow Institute of Physics and Technology and a diploma from CWC School for Energy (London). Vlad brings 15+ years in the chemical industry, bringing R&D developments to successful launches of new plants and businesses. Vlad has extensive expertise in recycled polymers and the high-end compounds value chain, with several plants engineered and launched before starting Voltcore.",
+    group: "Leadership",
+    photo: new URL("../assets/website/team/vlad.png", import.meta.url).href
   },
-  { 
-    name: "Georges De Pelsemaeker", 
-    role: "Advisor and Tech board head", 
-    detail: "ex-Valeo", 
-    group: "Board & Advisors", 
-    photo: new URL("../assets/website/team/Georges.png", import.meta.url).href 
+  {
+    name: "Georges De Pelsemaeker",
+    role: "Advisor and Tech board head",
+    detail: "Georges holds a PhD from École polytechnique de Louvain (EPL) and an MBA degree from HEC Paris. Georges spent 27+ years at Valeo, focusing on thermal management, comfort, and well-being. Georges is the godfather of the comfort cocoon concept and author of a row of patents in the thermal management field.",
+    group: "Board & Advisors",
+    photo: new URL("../assets/website/team/Georges.png", import.meta.url).href
   },
-  { 
-    name: "Thierry Goniva", 
-    role: "Advisor", 
-    detail: "ex-IEE", 
-    group: "Board & Advisors", 
-    photo: new URL("../assets/website/team/Thierry.png", import.meta.url).href 
+  {
+    name: "Thierry Goniva",
+    role: "Advisor",
+    detail: "Thierry holds an MSc in Electrical Engineering from ETH Zürich and is completing the Chief Strategy Officer Programme at INSEAD. He brings 25+ years of end-to-end leadership at IEE (automotive sensor company that grew from 120 to 4,000 people during his tenure) and most recently served as CTO of B Medical Systems. His expertise spans concept-to-production product development, cross-functional team building, market entry, strategy, and intrapreneurship.",
+    group: "Board & Advisors",
+    photo: new URL("../assets/website/team/Thierry.png", import.meta.url).href
   },
-  { 
-    name: "Pierre Orlewski", 
-    role: "Advisor", 
-    detail: "ex-Goodyear", 
-    group: "Board & Advisors", 
-    photo: new URL("../assets/website/team/Pierre.png", import.meta.url).href 
+  {
+    name: "Pierre Orlewski",
+    role: "Advisor",
+    detail: "Pierre holds a PhD in biophysics and computational chemistry from ENSIC Polytechnics in France, further completed by an industrial innovation management program in Luxembourg. Pierre is a seasoned innovation manager and technology ventures architect in automotive IoT safety sensing systems, corporate venture funding, and startup investments. He totals 28+ years in automotive innovations, new products, and process developments, backed with 40+ patents. Pierre acts as a private investor, mentor, and adviser across several EU technology startups.",
+    group: "Board & Advisors",
+    photo: new URL("../assets/website/team/Pierre.png", import.meta.url).href
   },
-  { 
-    name: "Dmitrii Prokopiuk", 
-    role: "Advisor & International Lawyer", 
-    detail: "International legal advisory", 
-    group: "Board & Advisors", 
-    photo: new URL("../assets/website/team/Dmitrii.png", import.meta.url).href 
+  {
+    name: "Dmitrii Prokopiuk",
+    role: "Advisor & International Lawyer",
+    detail: "Dmitrii holds degrees in Computer Systems Engineering and International Law and completed executive training at Canterbury Business School, University of Kent. He brings 20+ years of experience advising international companies on corporate structuring, cross-border M&A, and deep-tech commercialization. His expertise covers investor relations, corporate governance, AI and digital regulation, as well as legal support for advanced materials, additive manufacturing, and space technologies.",
+    group: "Board & Advisors",
+    photo: new URL("../assets/website/team/Dmitrii.png", import.meta.url).href
   },
-  { 
-    name: "Daria Voronina", 
-    role: "Sustainability and Business Development Manager", 
-    detail: "Sustainability, LCA, and commercial development", 
-    group: "Business", 
-    photo: new URL("../assets/website/team/Daria.png", import.meta.url).href 
+  {
+    name: "Daria Voronina",
+    role: "Sustainability and Business Development Manager",
+    detail: "Daria holds a Master's degree from the University of Geneva and has a background in international relations. She leads Voltcore's commercial development across Europe and represents the company at key industry events, trade fairs, and conferences. Daria also drives Voltcore's sustainability strategy, bringing strong expertise in project coordination and climate impact metrics.",
+    group: "Business",
+    photo: new URL("../assets/website/team/Daria.png", import.meta.url).href
   },
-  { 
-    name: "Aviral Kapoor", 
-    role: "Business Development Manager", 
-    detail: "Partnerships and business development", 
-    group: "Business", 
-    photo: new URL("../assets/website/team/Aviral.png", import.meta.url).href 
+  {
+    name: "Aviral Kapoor",
+    role: "Business Development Manager",
+    detail: "Aviral has over 10 years of experience in international B2B sales across high-tech and green-energy sectors, including Tata Group. He leads Voltcore's commercial development in North America and Asia.",
+    group: "Business",
+    photo: new URL("../assets/website/team/Aviral.png", import.meta.url).href
   },
-  { 
-    name: "Arjun Chandra", 
-    role: "Sales Manager", 
-    detail: "Sales development and client relationships", 
-    group: "Business", 
-    photo: new URL("../assets/website/team/Arjun.png", import.meta.url).href 
+  {
+    name: "Arjun Chandra",
+    role: "Sales Manager",
+    detail: "Arjun is a Business Studies graduate with over 15 years of experience driving business growth across the automotive, defence, and technology sectors. He brings extensive expertise in global sourcing, strategic procurement, and developing resilient supply chains, with a proven track record in business development, market expansion, and building long-term partnerships across international markets.",
+    group: "Business",
+    photo: new URL("../assets/website/team/Arjun.png", import.meta.url).href
   },
-  { 
-    name: "Andrei Zanko", 
-    role: "Electrical Engineer", 
-    detail: "Electrical engineering and technical integration", 
-    group: "Engineering", 
-    photo: new URL("../assets/website/team/Andrei.png", import.meta.url).href 
+  {
+    name: "Andrei Zanko",
+    role: "Electrical Engineer",
+    detail: "Andrey is an expert in electrical engineering, with deep hands-on experience in developing heating technologies for automotive and industrial applications. At Voltcore, he leads integration of active heating materials into electronic and thermal control systems.",
+    group: "Engineering",
+    photo: new URL("../assets/website/team/Andrei.png", import.meta.url).href
   },
-  { 
-    name: "Sachin Kumar Enganati", 
-    role: "Polymer Process Engineer", 
-    detail: "Polymer processing and material scale-up", 
-    group: "Engineering", 
-    photo: new URL("../assets/website/team/Sachin.png", import.meta.url).href 
+  {
+    name: "Sachin Kumar Enganati",
+    role: "Polymer Process Engineer",
+    detail: "Sachin holds a PhD in Materials Science from the University of Luxembourg and a Master of Science (M.Sc.) in Novel Materials from Delft University of Technology. He brings an analytical, hands-on engineering approach and practical problem-solving to the development of advanced materials, processes, and products. His professional experience spans high-performance polymer fibers at DSM, carcass composite adhesive characterization with Goodyear at LIST, and polyester thin film R&D process development at Mylar Specialty Films.",
+    group: "Engineering",
+    photo: new URL("../assets/website/team/Sachin.png", import.meta.url).href
   },
-  { 
-    name: "Anastasia Batkhina", 
-    role: "QMS & Operations Consultant", 
-    detail: "Quality management systems and operations", 
-    group: "Operations", 
-    photo: new URL("../assets/website/team/AnastasiaBatkhina.png", import.meta.url).href 
+  {
+    name: "Anastasia Batkhina",
+    role: "QMS & Operations Consultant",
+    detail: "Anastasia holds a PhD from National Research University Higher School of Economics, Moscow. She brings 10+ years of experience in operations, administration, management, and business process development across US-based startups, educational institutions, and UN agencies. At Voltcore, Anastasia supports QMS implementation, process governance, documentation, and the development of scalable operational practices.",
+    group: "Operations",
+    photo: new URL("../assets/website/team/AnastasiaBatkhina.png", import.meta.url).href
   },
-  { 
-    name: "Monia Azzaiz", 
-    role: "Computer Sciences Intern", 
-    detail: "Digital, web, and technical support", 
-    group: "Interns", 
-    photo: new URL("../assets/website/team/monia.png", import.meta.url).href 
+  {
+    name: "Monia Azzaiz",
+    role: "Computer Sciences Intern",
+    detail: "Monia is a second-year (L2) student in Computer Science and Mathematics Applied to Social Sciences at the Université de Lorraine in Nancy, France.",
+    group: "Interns",
+    photo: new URL("../assets/website/team/monia.png", import.meta.url).href
   },
-  { 
-    name: "Lina El Keddah", 
-    role: "Financial Accountant and AI Intern", 
-    detail: "Finance, accounting, and AI support", 
-    group: "Interns", 
-    photo: new URL("../assets/website/team/lina.png", import.meta.url).href 
+  {
+    name: "Lina El Keddah",
+    role: "Financial Accountant and AI Intern",
+    detail: "Lina is a student in the Programme Grande École at KEDGE Business School, majoring in Financial Mathematics. As Treasurer of the Phoenix Égalité des Chances association, she has developed practical experience in financial management, budgeting, and organisational planning. Passionate about finance, data, and artificial intelligence, Lina is excited to contribute to innovative and sustainable solutions at Voltcore.",
+    group: "Interns",
+    photo: new URL("../assets/website/team/lina.png", import.meta.url).href
   },
 ];
 
@@ -468,39 +468,24 @@ const PressSection = () => {
 const MemberCard = ({ member, delay = 0 }) => {
   const { accent: acc } = GROUP_STYLE[member.group] ?? GROUP_STYLE["Business"];
   const initials = member.name.split(" ").map((p) => p[0]).slice(0, 2).join("");
-  
   return (
     <Reveal delay={delay}>
-      {/* Carte avec fond noir pur et bordure subtile pour garder la forme */}
-      <article className="group relative rounded-2xl p-5 border text-center flex flex-col items-center cursor-default transition-all duration-400
-        bg-black border-white/10 hover:-translate-y-1.5 hover:shadow-xl hover:border-white/20">
-        
-        {/* Glow de la couleur du groupe au hover */}
-        <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-40 transition-opacity duration-500 blur-xl" 
-          style={{ background: acc }} />
-        
-        {/* Conteneur photo - même noir que la carte */}
+      <article className="group relative rounded-2xl p-5 border text-center flex flex-col items-center cursor-default transition-all duration-400 bg-black border-white/10 hover:-translate-y-1.5 hover:shadow-xl hover:border-white/20">
+        <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-40 transition-opacity duration-500 blur-xl" style={{ background: acc }} />
         <div className="relative mb-4">
           <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-black transition-all duration-400 group-hover:scale-110">
             {member.photo ? (
-              <img 
-                src={member.photo} 
-                alt={member.name} 
-                className="w-full h-full object-cover"
-              />
+              <img src={member.photo} alt={member.name} className="w-full h-full object-cover" />
             ) : (
-              <div className="w-full h-full flex items-center justify-center font-black text-base" 
-                style={{ background: `${acc}20`, color: acc }}>
+              <div className="w-full h-full flex items-center justify-center font-black text-base" style={{ background: `${acc}20`, color: acc }}>
                 {initials}
               </div>
             )}
           </div>
         </div>
-        
         <h4 className="text-sm font-black tracking-tight text-white leading-snug">{member.name}</h4>
         <p className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.06em] leading-snug text-white/55">{member.role}</p>
-        
-        <div className="overflow-hidden max-h-0 opacity-0 group-hover:max-h-16 group-hover:opacity-100 group-hover:mt-3 transition-all duration-400">
+        <div className="overflow-hidden max-h-0 opacity-0 group-hover:max-h-[260px] group-hover:opacity-100 group-hover:mt-3 transition-all duration-500">
           <p className="text-[11px] font-antonym leading-relaxed text-[#B8B7A4]">{member.detail}</p>
         </div>
       </article>
@@ -511,13 +496,16 @@ const MemberCard = ({ member, delay = 0 }) => {
 const LeaderCard = ({ member, delay = 0 }) => {
   const { accent: acc } = GROUP_STYLE["Leadership"];
   const initials = member.name.split(" ").map((p) => p[0]).slice(0, 2).join("");
+  const [hovered, setHovered] = useState(false);
   
   return (
     <Reveal delay={delay}>
-      {/* Carte avec fond noir pur et bordure subtile */}
-      <article className="group relative flex items-center gap-6 rounded-3xl p-6 md:p-7 border overflow-hidden transition-all duration-400
-        bg-black border-white/10 hover:shadow-2xl hover:-translate-y-1 hover:border-white/20">
-        
+      <article 
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        className="group relative flex items-start gap-6 rounded-3xl p-6 md:p-7 border overflow-hidden transition-all duration-400 cursor-default
+          bg-black border-white/10 hover:shadow-2xl hover:-translate-y-1 hover:border-white/20"
+      >
         {/* Glow radial au hover */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
           style={{ background: `radial-gradient(circle at 0% 0%, ${acc}15, transparent 60%)` }} />
@@ -531,7 +519,7 @@ const LeaderCard = ({ member, delay = 0 }) => {
               <img 
                 src={member.photo} 
                 alt={member.name} 
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-400 group-hover:scale-110"
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center font-black text-2xl" 
@@ -543,12 +531,27 @@ const LeaderCard = ({ member, delay = 0 }) => {
         </div>
         
         {/* Info */}
-        <div className="relative z-10 min-w-0">
+        <div className="relative z-10 min-w-0 flex-1">
           <span className="inline-block mb-2 rounded-full px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em]"
             style={{ background: `${acc}22`, color: acc }}>Leadership</span>
           <h3 className="text-xl font-black tracking-tight text-white truncate">{member.name}</h3>
           <p className="mt-1 text-xs font-black uppercase tracking-[0.06em] text-white/70">{member.role}</p>
-          <p className="mt-2 text-xs font-antonym leading-relaxed text-[#B8B7A4]">{member.detail}</p>
+          
+          {/* Bio cachée qui apparaît au hover - hauteur augmentée pour les bios longues */}
+          <div className="overflow-hidden max-h-0 opacity-0 transition-all duration-500"
+            style={{ 
+              maxHeight: hovered ? "400px" : "0", 
+              opacity: hovered ? 1 : 0,
+              marginTop: hovered ? "12px" : "0"
+            }}>
+            <p className="text-xs font-antonym leading-relaxed text-[#B8B7A4]">{member.detail}</p>
+          </div>
+          
+          {/* Indicateur visuel "Hover pour voir plus" */}
+          {!hovered && (
+            <div className="mt-2 text-[10px] font-bold uppercase tracking-widest text-white/30">
+            </div>
+          )}
         </div>
       </article>
     </Reveal>
@@ -730,9 +733,12 @@ const Footer = () => (
 
 /* ─── 06 CAREERS ──────────────────────────────────────────────────────────── */
 const OPEN_POSITIONS = [
-  { title: "Senior Polymer Process Engineer", type: "Full-time · On-site", location: "Bissen, Luxembourg", desc: "Lead industrial scale-up of CNT-based polymer compounds and fibers. 5+ years in polymer extrusion or compounding required." },
-  { title: "Business Development Manager — Automotive", type: "Full-time · Hybrid", location: "Luxembourg / Remote EU", desc: "Drive Tier-1 and OEM partnerships. Manage technical sales cycles and PoC pipeline from qualification to nomination." },
-  { title: "Materials R&D Engineer", type: "Full-time · On-site", location: "Bissen, Luxembourg", desc: "Develop next-generation nanocomposite formulations. Work alongside CTO on characterisation, process optimisation, and new application development." },
+  {
+    title: "Chief Commercial Officer",
+    type: "OPEN · HIRING 2026",
+    location: "Luxembourg · Hybrid",
+    desc: "Senior commercial leader to convert PoCs and JDAs into serial contracts; diverse & female candidates prioritised.",
+  },
 ];
 
 const CareersSection = () => (
