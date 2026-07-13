@@ -20,6 +20,7 @@ import HeatedApparelCaseStudies from "./pages/HeatedApparelCaseStudies";
 import Technology from "./pages/Technology";
 import News from "./pages/News";
 import ThermalLogistics from "./pages/ThermalLogistics";
+import FoodDeliveryCaseStudies from "./pages/industries/FoodDeliveryCaseStudies"; // Import corrigé ici
 import FloorHeating from "./pages/FloorHeating";
 import FloorHeatingCaseStudiesPage from "./pages/industries/FloorHeatingCaseStudiesPage";
 import Defense from "./pages/industries/Defense";
@@ -72,8 +73,8 @@ const App = () => {
           <Route path="/industries/automotive/case-studies"        element={<AutomotiveCaseStudiesPage />} />
           <Route path="/industries/heated-apparel"                 element={<HeatedApparel />} />
           <Route path="/industries/heated-apparel/case-studies"    element={<HeatedApparelCaseStudies />} />
-          <Route path="/industries/floorheating" element={<FloorHeating />} />
-          <Route path="/industries/floorheating/case-studies" element={<FloorHeatingCaseStudiesPage />} />
+          <Route path="/industries/floorheating"                   element={<FloorHeating />} />
+          <Route path="/industries/floorheating/case-studies"      element={<FloorHeatingCaseStudiesPage />} />
           <Route path="/industries/thermal-logistics"              element={<ThermalLogistics />} />
           <Route path="/industries/thermal-logistics/case-studies" element={<FoodDeliveryCaseStudies />} />
           <Route path="/industries/defense"                        element={<Defense />} />
