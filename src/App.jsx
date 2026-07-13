@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Navbar from "./Components/Navbar/Navbar";
 import PopupPlayer from "./Components/PopupPlayer/PopupPlayer";
@@ -16,12 +16,28 @@ import About from "./pages/About";
 import Automotive from "./pages/industries/Automotive";
 import AutomotiveCaseStudiesPage from "./pages/industries/AutomotiveCaseStudiesPage";
 import HeatedApparel from "./pages/HeatedApparel";
+import HeatedApparelCaseStudies from "./pages/HeatedApparelCaseStudies";
 import Technology from "./pages/Technology";
 import News from "./pages/News";
 import ThermalLogistics from "./pages/ThermalLogistics";
-import FoodDeliveryCaseStudies from "./pages/industries/FoodDeliveryCaseStudies";
 import FloorHeating from "./pages/FloorHeating";
+import FloorHeatingCaseStudiesPage from "./pages/industries/FloorHeatingCaseStudiesPage";
 import Defense from "./pages/industries/Defense";
+
+const ScrollToTop = () => {
+  const { pathname, hash } = useLocation();
+  useEffect(() => {
+    if (hash) {
+      setTimeout(() => {
+        const element = document.getElementById(hash.slice(1));
+        if (element) element.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, hash]);
+  return null;
+};
 
 const App = () => {
   const [isPlay, setIsPlay] = useState(false);
@@ -36,6 +52,7 @@ const App = () => {
 
   return (
     <div className="relative bg-white dark:bg-black text-black dark:text-white duration-300 min-h-screen">
+      <ScrollToTop /> 
       <AnimatePresence>
         {!hasEntered && <Intro onEnter={() => setHasEntered(true)} />}
       </AnimatePresence>
@@ -54,7 +71,9 @@ const App = () => {
           <Route path="/industries/automotive"                     element={<Automotive />} />
           <Route path="/industries/automotive/case-studies"        element={<AutomotiveCaseStudiesPage />} />
           <Route path="/industries/heated-apparel"                 element={<HeatedApparel />} />
-          <Route path="/industries/underfloor-heating"             element={<FloorHeating />} />
+          <Route path="/industries/heated-apparel/case-studies"    element={<HeatedApparelCaseStudies />} />
+          <Route path="/industries/floorheating" element={<FloorHeating />} />
+          <Route path="/industries/floorheating/case-studies" element={<FloorHeatingCaseStudiesPage />} />
           <Route path="/industries/thermal-logistics"              element={<ThermalLogistics />} />
           <Route path="/industries/thermal-logistics/case-studies" element={<FoodDeliveryCaseStudies />} />
           <Route path="/industries/defense"                        element={<Defense />} />

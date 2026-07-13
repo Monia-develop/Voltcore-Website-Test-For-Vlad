@@ -50,9 +50,6 @@ const TEAM = [
 
 const WORDS = ["GO GREEN.", "DRIVE SMART.", "HEAT EFFICIENTLY."];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SCROLL REVEAL
-// ─────────────────────────────────────────────────────────────────────────────
 const Reveal = ({ children, delay = 0, className = "" }) => {
   const [v, setV] = useState(false);
   const ref = useRef(null);
@@ -68,9 +65,6 @@ const Reveal = ({ children, delay = 0, className = "" }) => {
   );
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// COUNT UP
-// ─────────────────────────────────────────────────────────────────────────────
 const CountUp = ({ end, duration = 1300, prefix = "", suffix = "", decimals = 0 }) => {
   const [count, setCount] = useState(0);
   const [started, setStarted] = useState(false);
@@ -87,7 +81,7 @@ const CountUp = ({ end, duration = 1300, prefix = "", suffix = "", decimals = 0 
           if (progress < 1) requestAnimationFrame(animate);
           else setCount(end);
         };
-        requestAnimationFrame(animate);
+        animate(startTime);
       }
     }, { threshold: 0.4 });
     if (ref.current) obs.observe(ref.current);
@@ -96,9 +90,6 @@ const CountUp = ({ end, duration = 1300, prefix = "", suffix = "", decimals = 0 
   return <span ref={ref}>{prefix}{count.toFixed(decimals)}{suffix}</span>;
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// METRIC CARD
-// ─────────────────────────────────────────────────────────────────────────────
 const MetricCard = ({ m, idx }) => {
   const [hovered, setHovered] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -146,9 +137,6 @@ const MetricCard = ({ m, idx }) => {
   );
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SCROLL PROGRESS BAR
-// ─────────────────────────────────────────────────────────────────────────────
 const ScrollProgress = () => {
   const [progress, setProgress] = useState(0);
   useEffect(() => {
@@ -175,9 +163,6 @@ const ScrollProgress = () => {
   );
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// INDUSTRY CARD
-// ─────────────────────────────────────────────────────────────────────────────
 const IndustryCard = ({ ind }) => {
   const [hovered, setHovered] = useState(false);
   const [mp, setMp] = useState({ x: 0.5, y: 0.5 });
@@ -187,13 +172,13 @@ const IndustryCard = ({ ind }) => {
     setMp({ x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height });
   };
   return (
-    <Link to={`/industries/${ind.slug}`} ref={ref}
+    <a href="#contact-form" ref={ref}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => { setHovered(false); setMp({ x: 0.5, y: 0.5 }); }}
       onMouseMove={handleMove}
       className={`${ind.span} ${ind.h} group relative rounded-2xl overflow-hidden block`}
       style={{
-        border: hovered ? "1px solid rgba(217,254,66,0.7)" : "1px solid rgba(0,0,0,0.1)",
+        border: hovered ? "1px solid #12503B" : "1px solid rgba(0,0,0,0.1)",
         boxShadow: hovered ? "0 25px 60px rgba(0,0,0,0.35)" : "0 4px 20px rgba(0,0,0,0.08)",
         transform: hovered ? `perspective(600px) rotateX(${(mp.y - 0.5) * -4}deg) rotateY(${(mp.x - 0.5) * 4}deg) translateY(-4px)` : "perspective(600px) rotateX(0) rotateY(0)",
         transition: "border-color 0.3s, box-shadow 0.3s, transform 0.2s ease-out",
@@ -202,20 +187,17 @@ const IndustryCard = ({ ind }) => {
       <img src={ind.image} alt={ind.title} className="absolute inset-0 w-full h-full object-cover"
         style={{ transform: hovered ? "scale(1.1)" : "scale(1)", filter: hovered ? "grayscale(0%) brightness(1.05)" : "grayscale(12%) brightness(0.8)", transition: "transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.5s" }}
       />
-      {hovered && <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(circle at ${mp.x * 100}% ${mp.y * 100}%, rgba(217,254,66,0.18) 0%, transparent 60%)` }} />}
+      {hovered && <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(circle at ${mp.x * 100}% ${mp.y * 100}%, rgba(18,80,59,0.18) 0%, transparent 60%)` }} />}
       <div className="absolute inset-0" style={{ background: hovered ? "linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.1) 50%, transparent 100%)" : "linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.38) 60%, transparent 100%)", transition: "background 0.5s" }} />
-      <div className="absolute top-4 right-4 bg-[#D9FE42] text-[#14141B] text-[10px] font-bold tracking-widest uppercase rounded-full px-3 py-1" style={{ opacity: hovered ? 1 : 0, transform: hovered ? "translateY(0) scale(1)" : "translateY(-10px) scale(0.9)", transition: "opacity 0.3s, transform 0.3s cubic-bezier(0.34,1.56,0.64,1)" }}>Explore →</div>
+      <div className="absolute top-4 right-4 bg-[#12503B] text-white text-[10px] font-bold tracking-widest uppercase rounded-full px-3 py-1" style={{ opacity: hovered ? 1 : 0, transform: hovered ? "translateY(0) scale(1)" : "translateY(-10px) scale(0.9)", transition: "opacity 0.3s, transform 0.3s cubic-bezier(0.34,1.56,0.64,1)" }}>Explore →</div>
       <div className="absolute bottom-0 left-0 right-0 p-5">
         <div className="text-xs text-[#D9FE42] font-medium tracking-wide mb-1.5" style={{ opacity: hovered ? 1 : 0.75, transform: hovered ? "translateY(0)" : "translateY(4px)", transition: "opacity 0.3s, transform 0.3s" }}>{ind.tagline}</div>
         <div className="text-white font-semibold text-base tracking-tight" style={{ transform: hovered ? "translateY(0)" : "translateY(6px)", transition: "transform 0.35s" }}>{ind.title}</div>
       </div>
-    </Link>
+    </a>
   );
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// PLATFORM ROW
-// ─────────────────────────────────────────────────────────────────────────────
 const PlatformRow = ({ p }) => {
   const [hovered, setHovered] = useState(false);
   return (
@@ -239,9 +221,6 @@ const PlatformRow = ({ p }) => {
   );
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// NEWS ROW
-// ─────────────────────────────────────────────────────────────────────────────
 const NewsRow = ({ n }) => {
   const [hovered, setHovered] = useState(false);
   return (
@@ -254,7 +233,7 @@ const NewsRow = ({ n }) => {
       <div className="relative z-10">
         <span className="inline-block text-[10px] tracking-[0.12em] uppercase font-bold text-[#12503C] dark:text-[#D9FE42] bg-[#12503C]/10 dark:bg-[#D9FE42]/10 px-2.5 py-0.5 rounded-full mb-2">{n.tag}</span>
         <div className="text-base font-semibold tracking-tight mb-1.5 transition-colors duration-200 text-[#14141B] dark:text-white" style={{ color: hovered ? "#D9FE42" : undefined }}>{n.title}</div>
-        <div className="text-sm text-[#8a8880] leading-relaxed">{n.summary}</div>
+        <div className="text-sm text-[#8a8880] leading-relaxedzy">{n.summary}</div>
       </div>
       <div className="w-10 h-10 rounded-full border flex items-center justify-center flex-shrink-0 relative z-10 transition-all duration-300"
         style={{ borderColor: hovered ? "#D9FE42" : "#e8e6e0", color: hovered ? "#D9FE42" : "#c0beb8", transform: hovered ? "translateX(4px) scale(1.1)" : "translateX(0) scale(1)", background: hovered ? "rgba(217,254,66,0.08)" : "transparent" }}
@@ -265,9 +244,6 @@ const NewsRow = ({ n }) => {
   );
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// TEAM CARD
-// ─────────────────────────────────────────────────────────────────────────────
 const TeamCard = ({ m }) => {
   const [hovered, setHovered] = useState(false);
   return (
@@ -295,9 +271,6 @@ const TeamCard = ({ m }) => {
   );
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HOME MAIN COMPONENT
-// ─────────────────────────────────────────────────────────────────────────────
 const Home = () => {
   const [wordIdx, setWordIdx]   = useState(0);
   const [displayed, setDisplayed] = useState("");
@@ -339,7 +312,6 @@ const Home = () => {
 
       <ScrollProgress />
 
-      {/* Lueur d'ambiance interactive exclusive */}
       <div className="fixed pointer-events-none z-50 rounded-full mix-blend-screen" 
         style={{ 
           width: 650, 
@@ -350,7 +322,6 @@ const Home = () => {
         }} 
       />
 
-      {/* ── HERO ─────────────────────────────────────────────────────────────── */}
       <section
         id="hero"
         className="relative w-full min-h-[88vh] flex items-center overflow-hidden bg-[#14141B] text-white"
@@ -421,12 +392,12 @@ const Home = () => {
             >
               Discover Our Technology <FaArrowRight size={9} className="transition-transform group-hover:translate-x-1" />
             </Link>
-            <Link
-              to="/contact"
+            <a
+              href="#contact-form"
               className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-xs font-black uppercase tracking-widest border border-white/20 text-white hover:border-white/50 transition-all duration-300"
             >
               Contact Us <FaArrowRight size={9} />
-            </Link>
+            </a>
           </Reveal>
 
           <Reveal delay={340}>
@@ -447,7 +418,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ── WHO WE ARE ───────────────────────────────────────────────────────── */}
       <section id="who-we-are" className="px-10 py-24 bg-white dark:bg-[#14141B]">
         <Reveal>
           <div className="text-xs tracking-[0.18em] uppercase font-bold mb-4 text-[#12503C] dark:text-[#D9FE42]">01 // Who we are</div>
@@ -499,7 +469,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ── TECHNOLOGY PLATFORMS ─────────────────────────────────────────────── */}
       <section id="technology" className="px-10 py-24" style={{ background: "#14141B" }}>
         <Reveal>
           <div className="text-xs tracking-[0.18em] uppercase font-bold mb-4 text-[#12503C] dark:text-[#D9FE42]">02 // Technology platforms</div>
@@ -525,7 +494,6 @@ const Home = () => {
         </Reveal>
       </section>
 
-      {/* ── INDUSTRIES ───────────────────────────────────────────────────────── */}
       <section id="industries" className="px-10 py-24 bg-white dark:bg-[#14141B]">
         <Reveal>
           <div className="text-xs tracking-[0.18em] uppercase font-bold mb-4 text-[#12503C] dark:text-[#D9FE42]">03 // Industry presence</div>
@@ -546,7 +514,6 @@ const Home = () => {
         </Reveal>
       </section>
 
-      {/* ── NEWS ─────────────────────────────────────────────────────────────── */}
       <section id="news" className="px-10 py-24 bg-[#f5f4f0] dark:bg-[#1a1a22] border-t border-[#e8e6e0] dark:border-[#2a2a3a]">
         <Reveal>
           <div className="text-xs tracking-[0.18em] uppercase font-bold mb-4 text-[#12503C] dark:text-[#D9FE42]">04 // News & recognition</div>
@@ -564,7 +531,6 @@ const Home = () => {
         </Reveal>
       </section>
 
-      {/* ── NEWSLETTER ───────────────────────────────────────────────────────── */}
       <section className="px-10 py-20 bg-white dark:bg-[#14141B] border-t border-[#e8e6e0] dark:border-[#2a2a3a]">
         <Reveal>
           <div className="max-w-xl mx-auto text-center flex flex-col items-center gap-5">
@@ -583,7 +549,6 @@ const Home = () => {
         </Reveal>
       </section>
 
-      {/* ── LEADERSHIP ───────────────────────────────────────────────────────── */}
       <section id="leadership" className="px-10 py-24 bg-[#f5f4f0] dark:bg-[#1a1a22] border-t border-[#e8e6e0] dark:border-[#2a2a3a]">
         <Reveal>
           <div className="flex justify-between items-end mb-14">
@@ -601,7 +566,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ── CTA ──────────────────────────────────────────────────────────────── */}
       <section className="relative px-10 py-24 text-center flex flex-col items-center gap-6 overflow-hidden" style={{ background: "#14141B" }}>
         <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 100%, rgba(217,254,66,0.06) 0%, transparent 70%)" }} />
         <Reveal>
@@ -610,15 +574,32 @@ const Home = () => {
           <p className="text-base text-[#B8B7A4]/50 max-w-lg mx-auto mb-8 leading-relaxed">
             Request detailed technology specifications, discuss custom geometry integrations, or order your material samples today.
           </p>
-          <Link to="/contact"
+          <a href="#contact-form"
             className="group inline-flex items-center gap-3 px-8 py-4 bg-[#D9FE42] text-[#14141B] rounded-full text-[12px] font-black uppercase tracking-widest transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_rgba(217,254,66,0.2)] hover:bg-white hover:text-[#14141B]"
           >
             Contact Our Team <FaArrowRight size={11} className="transition-transform group-hover:translate-x-1" />
-          </Link>
+          </a>
         </Reveal>
       </section>
 
-      {/* ── FOOTER ───────────────────────────────────────────────────────────── */}
+      <section id="contact-form" className="px-10 py-24 bg-white dark:bg-[#14141B] border-t border-[#e8e6e0] dark:border-[#2a2a3a]">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-5xl font-black tracking-tighter mb-6 uppercase text-[#14141B] dark:text-white">Contact us</h2>
+          <p className="text-lg mb-12 text-[#4a4a46] dark:text-[#B8B7A4]/70">Ready to take the next step? Fill out our feedback form to order or ask questions!</p>
+          <form className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6" onSubmit={(e) => e.preventDefault()}>
+            <input type="text" placeholder="name" className="bg-transparent border-b border-black dark:border-white/20 py-2 outline-none text-[#14141B] dark:text-white" />
+            <input type="email" placeholder="email" className="bg-transparent border-b border-black dark:border-white/20 py-2 outline-none text-[#14141B] dark:text-white" />
+            <input type="tel" placeholder="phone" className="bg-transparent border-b border-black dark:border-white/20 py-2 outline-none text-[#14141B] dark:text-white" />
+            <input type="text" placeholder="subject" className="bg-transparent border-b border-black dark:border-white/20 py-2 outline-none text-[#14141B] dark:text-white" />
+            <textarea placeholder="message" className="col-span-1 md:col-span-2 bg-transparent border-b border-black dark:border-white/20 py-2 outline-none text-[#14141B] dark:text-white" rows="4"></textarea>
+            <div className="col-span-1 md:col-span-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4">
+              <label className="text-sm text-[#4a4a46] dark:text-[#B8B7A4]/70"><input type="checkbox" className="mr-2" /> By submitting the form, you agree to the privacy policy</label>
+              <button type="submit" className="bg-[#12503B] text-white px-10 py-3 rounded-full font-black uppercase tracking-widest hover:opacity-90 transition-all">Send →</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
       <footer className="bg-[#f5f4f0] dark:bg-[#0e0e14] border-t border-[#e8e6e0] dark:border-[#2a2a3a] px-10 pt-16 pb-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-14">
           <div>

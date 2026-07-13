@@ -7,8 +7,8 @@ import {
 
 import Armrest               from "../../assets/website/industries/Armrest.png";
 import TouchDemo             from "../../assets/website/industries/TouchDemo.png";
-import DoorPanelsPhoto       from "../../assets/website/industries/image35.png";
-import GloveboxPhoto         from "../../assets/website/industries/image37.png";
+import DoorPanelsPhoto       from "../../assets/website/industries/DoorPannel.png";
+import GloveboxPhoto         from "../../assets/website/industries/Glovebox.png";
 import SeatsOverviewPhoto    from "../../assets/website/industries/image55.png";
 import SeatsMeshZoom         from "../../assets/website/industries/image61.png";
 import CopperThermalSeats    from "../../assets/website/industries/AutoHeatCopSystem.png";
