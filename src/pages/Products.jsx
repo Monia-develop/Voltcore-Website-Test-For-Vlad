@@ -1,19 +1,26 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FaArrowRight,
   FaLinkedin,
   FaYoutube,
   FaEnvelope,
   FaMapMarkerAlt,
-  FaCheck,
-  FaTimes,
-  FaChevronRight,
+  FaMountain,
+  FaMotorcycle,
+  FaRunning,
+  FaHardHat,
+  FaBriefcaseMedical,
+  FaGem,
 } from "react-icons/fa";
 
-import FilamentsPhoto from "../assets/website/platforms/Filaments.png";
-import HeatingMeshPhoto from "../assets/website/platforms/heatingMesh.png";
-import HeatingTextilePhoto from "../assets/website/platforms/heatingTextile.png";
+// Industry photos — same imports already used in each industry page.
+import AutomotiveHero  from "../assets/website/industries/automotive-hero.jpg";
+import LivreurImg      from "../assets/website/industries/Livreur.png";
+import ScootImg        from "../assets/website/industries/Scoot.png";
+import BImg            from "../assets/website/industries/B.png";
+import ApparelHero     from "../assets/website/industries/image40.png";
+import FloorHeroImage  from "../assets/website/industries/underfloor-Heating2.png";
 
 /* ─── COLORS ─────────────────────────────────────────────────────────────── */
 const GREEN = "#94C356";
@@ -70,142 +77,7 @@ const Reveal = ({ children, delay = 0, y = 28, className = "" }) => {
   );
 };
 
-const useMouseGlow = (enabled) => {
-  const [pos, setPos] = useState({ x: 50, y: 50 });
-  useEffect(() => {
-    if (!enabled) return;
-    const handler = (e) => {
-      setPos({
-        x: (e.clientX / window.innerWidth) * 100,
-        y: (e.clientY / window.innerHeight) * 100,
-      });
-    };
-    window.addEventListener("mousemove", handler);
-    return () => window.removeEventListener("mousemove", handler);
-  }, [enabled]);
-  return pos;
-};
-
 /* ─── DATA ───────────────────────────────────────────────────────────────── */
-const PRODUCTS = [
-  {
-    id: "activefil",
-    num: 1,
-    name: "ActiveFil",
-    subtitle: "Conductive Polymer Filament",
-    tag: "Core Material Patented",
-    color: GREEN,
-    trl: "TRL 7-8",
-    photo: FilamentsPhoto,
-    tagline: "The yarn that replaced copper wire.",
-    intro:
-      "We infuse and orient nanofillers in the polymer, giving desired conductivity in a controlled manner while keeping the mechanical properties of synthetic yarns.",
-    desc:
-      "CNT nanofillers are infused and oriented inside a thermoplastic polymer matrix, giving the filament precise, tunable conductivity while keeping every mechanical property of standard synthetic yarn. No metal. No brittleness. No compromise.",
-    highlight: "4 patent families, 2 granted, 2 PCTs, 1 EP, 3 trademarks.",
-    specs: [
-      { label: "Linear density", val: "400–600 den / 450–700 dtex" },
-      { label: "Resistance", val: "10 kΩ – 2 MΩ" },
-      { label: "Polymer matrix", val: "PP / PA / PET" },
-      { label: "Weight", val: "30–60 g/km" },
-      { label: "Tensile strength", val: "25–30 cN/tex" },
-      { label: "Voltage range", val: "5–220 V" },
-    ],
-    advantages: [
-      "Precisely tunable resistance from 10 kΩ to 2 MΩ.",
-      "100% mono-material drop-in for standard extrusion lines.",
-      "Up to 75% recycled polymer content by mass.",
-      "No metal corrosion, no breakage points.",
-    ],
-  },
-  {
-    id: "targetheat",
-    num: 2,
-    name: "TargetHeat",
-    subtitle: "Heating Textile Platform",
-    tag: "Heating Platform",
-    color: ORANGE,
-    trl: "TRL 6-7",
-    photo: HeatingMeshPhoto,
-    tagline: "85–95% of heat reaches the surface. Nothing wasted.",
-    intro:
-      "Woven from ActiveFil, TargetHeat is a family of heating textiles using unidirectional heat delivery; almost nothing is lost through the back.",
-    desc:
-      "Open mesh structure for automotive flooring, dense weave for apparel and medical. Engineered heating patterns for maximum comfort at the lowest energy density.",
-    highlight:
-      "Hard to copy: four patent families protect the platform end to end — compound, process, monofilament, laminate and engineered heating patterns.",
-    specs: [
-      { label: "Structure", val: "Open mesh / Dense weave" },
-      { label: "Weight", val: "30–250 GSM" },
-      { label: "Voltage", val: "5–230 V" },
-      { label: "Temp max", val: "Up to 100°C" },
-      { label: "Uniformity", val: "±4°C" },
-      { label: "Roll width", val: "Up to 2 m" },
-    ],
-    advantages: [
-      "85–95% heat delivery to A-surface, zero energy wasted to back.",
-      "±4°C uniformity, no hotspots, no cold zones across the surface.",
-      "Open mesh 30–60 GSM for automotive airflow breathability.",
-      "Dense weave 120–250 GSM for apparel wearable softness.",
-    ],
-    subProducts: [
-      {
-        num: "2.1",
-        name: "Heating Mesh",
-        platform: "TargetHeat",
-        photo: HeatingMeshPhoto,
-        color: ORANGE,
-        trl: "TRL 6",
-        specs: ["30–60 GSM", "5–230 V", "Up to 100°C"],
-        desc:
-          "Open mesh structure with increased spacing between yarns. Used mainly in automotive flooring applications, optimized for airflow, ventilation and multi-layer integration.",
-      },
-      {
-        num: "2.2",
-        name: "Heating Textile",
-        platform: "TargetHeat",
-        photo: HeatingTextilePhoto,
-        color: "#F18932",
-        trl: "TRL 6",
-        specs: ["120–250 GSM", "5–230 V", "Up to 100°C"],
-        desc:
-          "Controlled yarn layout with engineered heating patterns for maximum comfort at the lowest energy density W/m². For soft, wearable applications like apparel.",
-      },
-    ],
-  },
-  {
-    id: "sensiterm",
-    num: 3,
-    name: "SensiTerm",
-    subtitle: "Sensing Heating Platform",
-    tag: "Sensing Heating",
-    color: BLUE,
-    trl: "TRL 6",
-    photo: HeatingTextilePhoto,
-    tagline: "One textile. Heat and sense. No extra layer.",
-    intro:
-      "SensiTerm co-designs electrical heating and intrinsic piezoresistive sensing in the same textile; the resistance of the filament itself becomes the sensor.",
-    desc:
-      "Occupancy detection, zoned control, and fault monitoring without any additional sensor hardware. The resistance of the filament itself changes under pressure, enabling intrinsic sensing.",
-    highlight:
-      "Zero external sensors required: sensing is intrinsic to the CNT filaments piezoresistive behaviour.",
-    specs: [
-      { label: "Sensing type", val: "Piezoresistive" },
-      { label: "Zones", val: "Adaptive multi-zone" },
-      { label: "Mapping", val: "Occupancy detection" },
-      { label: "Fault detection", val: "Loop integrity alerts" },
-      { label: "Integration", val: "No external sensors" },
-      { label: "Power control", val: "Zoned adaptive" },
-    ],
-    advantages: [
-      "Intrinsic resistance telemetry, no separate sensor layer.",
-      "Occupancy mapping heats only where contact is detected.",
-      "Loop integrity alerts mitigate overheat and overcurrent faults.",
-      "Zoned adaptive control reduces energy in unoccupied areas.",
-    ],
-  },
-];
-
 const VALUECHAIN = [
   {
     num: "01",
@@ -530,261 +402,246 @@ const ValueChainSection = () => {
   );
 };
 
-/* ─── PRODUCT SECTION ───────────────────────────────────────────────────── */
-const ProductSection = ({ p, idx }) => {
-  const dark = useIsDark();
-  const [tab, setTab] = useState("benefits");
-  const [subActive, setSubActive] = useState(0);
-  const isEven = idx % 2 === 0;
-  const bg = isEven ? (dark ? BLACK : "white") : dark ? "#1a1a22" : "#f5f4f0";
-  const displayPhoto = p.subProducts ? p.subProducts[subActive].photo : p.photo;
+/* ─── DATA — every product is what's actually deployed inside each industry
+       page (the hotspot photo / application grid), not a separate catalog ── */
+const AMBER = "#D9A441";
+
+const INDUSTRY_PRODUCTS = [
+  {
+    id: "automotive",
+    kicker: "01 // Automotive",
+    name: "Cabin Cocoon",
+    tagline: "Every heated surface inside the vehicle, mapped to one integration.",
+    color: GREEN,
+    route: "/industries/automotive",
+    visual: "pins",
+    hero: AutomotiveHero,
+    items: [
+      { num: "01", title: "Seat Heating & Presence Detection", desc: "2-in-1 heating and occupancy sensing woven into the seat matrix.", x: 30, y: 64 },
+      { num: "02", title: "Heated Sensing / Touch Elements",   desc: "Touch controls incorporated directly into the heated surface.", x: 57, y: 34 },
+      { num: "03", title: "Heated Surfaces",                    desc: "Armrests, door panels, gloveboxes and cupholders.", x: 89, y: 47 },
+      { num: "04", title: "Heated Door Panel",                  desc: "Ultra-thin heating fabric beneath the door card A-surface.", x: 7, y: 87 },
+    ],
+  },
+  {
+    id: "food-delivery",
+    kicker: "02 // Food Delivery",
+    name: "Thermal Logistics",
+    tagline: "Active heating across the hot-meal value chain — rider bag to institutional cart.",
+    color: ORANGE,
+    route: "/industries/thermal-logistics",
+    visual: "mosaic",
+    items: [
+      { num: "01", title: "Soft Food Delivery Backpacks & Boxes", desc: "For cyclists and on-foot couriers — removable or integrated heater.", img: LivreurImg },
+      { num: "02", title: "Hard Food Delivery Boxes & Containers", desc: "For motorcycle and scooter couriers — side-wall + base radiant layer.", img: ScootImg },
+      { num: "03", title: "Institutional Hot Food Transport", desc: "For catering, hospitals and school food service — cart-integrated heating.", img: BImg },
+    ],
+  },
+  {
+    id: "heated-apparel",
+    kicker: "03 // Heated Apparel",
+    name: "Wearable Heating",
+    tagline: "One heating textile platform, deployed across six very different markets.",
+    color: BLUE,
+    route: "/industries/heated-apparel",
+    visual: "grid",
+    hero: ApparelHero,
+    items: [
+      { icon: FaMountain,         title: "Outdoor",               desc: "Hiking, fishing, hunting, etc." },
+      { icon: FaMotorcycle,       title: "Motorcycle",             desc: "Jackets, vests, gloves, liners, trousers." },
+      { icon: FaRunning,          title: "Sports & Performance",    desc: "Skiwear, cycling, running, sailing." },
+      { icon: FaHardHat,          title: "Workwear & Industrial",   desc: "Construction, logistics, cold storage, etc." },
+      { icon: FaBriefcaseMedical, title: "Medical & Wellness",      desc: "Back warmers, therapeutic heat pads, recovery garments." },
+      { icon: FaGem,              title: "Accessories",             desc: "Gloves, socks, insoles, scarves, collars, heated cushions." },
+    ],
+  },
+  {
+    id: "underfloor-heating",
+    kicker: "04 // Underfloor Heating",
+    name: "TargetHeat",
+    tagline: "Voltcore's unidirectional heating laminate — no heat is wasted.",
+    color: AMBER,
+    route: "/industries/floorheating",
+    visual: "layers",
+    hero: FloorHeroImage,
+    items: [
+      { num: "01", title: "Heated Surface Finish", desc: "Laminate, tile, parquet or vinyl — receives 85–95% of the mesh's energy." },
+      { num: "02", title: "Voltcore TargetHeat Mesh", desc: "2.2mm CNT nanocomposite mesh — reaches 28°C in 3 minutes on 56 Wh." },
+      { num: "03", title: "Substrate", desc: "Existing subfloor or concrete slab — near-zero heat wasted downward." },
+    ],
+  },
+];
+
+/* ─── INDUSTRY PRODUCTS SECTION ──────────────────────────────────────────
+   An alternating editorial layout — one full-width row per industry, photo
+   and product list swapping sides down the page. Deliberately different
+   from the hotspot-map / tab patterns used on the industry pages themselves,
+   since this is a catalog view that always links back out to them. ────── */
+const PinDot = ({ x, y, num, title, color, active, onHover }) => (
+  <div
+    className="absolute z-10"
+    style={{ left: `${x}%`, top: `${y}%`, transform: "translate(-50%,-50%)" }}
+    onMouseEnter={() => onHover(num)}
+    onMouseLeave={() => onHover(null)}
+  >
+    {!active && <span className="absolute inset-0 rounded-full animate-ping opacity-50" style={{ background: color }} />}
+    <div
+      className="relative w-7 h-7 rounded-full border-2 flex items-center justify-center text-[10px] font-black transition-all duration-200"
+      style={{
+        background: active ? color : "rgba(20,20,27,0.9)",
+        borderColor: active ? color : "rgba(255,255,255,0.8)",
+        color: active ? BLACK : "white",
+        transform: active ? "scale(1.15)" : "scale(1)",
+      }}
+    >
+      {num}
+    </div>
+  </div>
+);
+
+const IndustryRow = ({ industry, idx, dark }) => {
+  const [ref, shown] = useInView(0.1);
+  const [hoveredNum, setHoveredNum] = useState(null);
+  const flip = idx % 2 === 1;
+  const c = industry.color;
 
   return (
-    <section
-      id={p.id}
-      className="w-full py-24 relative overflow-hidden"
-      style={{ background: bg }}
+    <div
+      ref={ref}
+      className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center py-16 border-t"
+      style={{
+        borderColor: dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)",
+        opacity: shown ? 1 : 0,
+        transform: shown ? "translateY(0)" : "translateY(30px)",
+        transition: "opacity 0.7s cubic-bezier(.22,.61,.36,1), transform 0.7s cubic-bezier(.22,.61,.36,1)",
+      }}
     >
-      <div
-        className="absolute pointer-events-none rounded-full"
-        style={{
-          width: 600,
-          height: 600,
-          filter: "blur(140px)",
-          opacity: 0.05,
-          background: p.color,
-          top: -10,
-          right: isEven ? -15 : "auto",
-          left: isEven ? "auto" : -15,
-        }}
-      />
-
-      <div className="relative z-10 container mx-auto px-6 md:px-12 max-w-7xl">
-        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-start ${!isEven ? "lg:[&>*:first-child]:order-2" : ""}`}>
-          <div className="flex flex-col gap-5">
-            <Reveal delay={40}>
-              <div
-                className="relative rounded-3xl overflow-hidden group aspect-[4/3]"
-                style={{ border: `1px solid ${dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.07)"}` }}
-              >
-                <img
-                  src={displayPhoto}
-                  alt={p.subProducts ? p.subProducts[subActive].name : p.name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  onError={(e) => (e.target.style.opacity = 0)}
-                />
-                <div
-                  className="absolute top-4 right-4 backdrop-blur-md rounded-full px-4 py-1.5"
-                  style={{
-                    background: "rgba(20,20,27,0.70)",
-                    border: `1px solid ${p.color}40`,
-                  }}
-                >
-                  <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: p.color }}>
-                    {p.subProducts ? p.subProducts[subActive].trl : p.trl}
-                  </span>
+      {/* Visual */}
+      <div className={flip ? "lg:order-2" : ""}>
+        {industry.visual === "mosaic" ? (
+          <div className="grid grid-cols-3 gap-3 h-[340px]">
+            <div className="col-span-2 rounded-2xl overflow-hidden relative">
+              <img src={industry.items[0].img} alt={industry.items[0].title} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              <span className="absolute bottom-3 left-3 text-white text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full" style={{ background: `${c}CC` }}>{industry.items[0].num}</span>
+            </div>
+            <div className="grid grid-rows-2 gap-3">
+              {industry.items.slice(1).map((it) => (
+                <div key={it.num} className="rounded-2xl overflow-hidden relative">
+                  <img src={it.img} alt={it.title} className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <span className="absolute bottom-2 left-2 text-white text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full" style={{ background: `${c}CC` }}>{it.num}</span>
                 </div>
-                <div
-                  className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none"
-                  style={{ background: `linear-gradient(to top, ${p.color}15, transparent)` }}
-                />
-              </div>
-            </Reveal>
-
-            {p.subProducts && (
-              <Reveal delay={80}>
-                <div className="grid grid-cols-2 gap-3">
-                  {p.subProducts.map((sub, si) => (
-                    <div
-                      key={sub.name}
-                      className="rounded-2xl border p-4 cursor-pointer transition-all duration-300"
-                      style={{
-                        background: subActive === si ? `${sub.color}12` : dark ? "rgba(255,255,255,0.02)" : "white",
-                        borderColor: subActive === si ? `${sub.color}60` : dark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.08)",
-                        transform: subActive === si ? "translateY(-3px)" : "none",
-                        boxShadow: subActive === si ? `0 8px 30px ${sub.color}15` : "none",
-                      }}
-                      onMouseEnter={() => setSubActive(si)}
-                    >
-                      <div
-                        className="text-[10px] font-black uppercase tracking-widest mb-1"
-                        style={{ color: sub.color }}
-                      >
-                        {sub.num} {sub.name}
-                      </div>
-                      <p
-                        className="text-[11px] leading-relaxed mb-3"
-                        style={{ color: dark ? "rgba(255,255,255,0.45)" : "rgba(20,20,27,0.5)" }}
-                      >
-                        {sub.desc}
-                      </p>
-                      <ul className="space-y-1">
-                        {sub.specs.map((s) => (
-                          <li key={s} className="text-[10px] font-bold" style={{ color: sub.color }}>
-                            {s}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              </Reveal>
-            )}
-
-            <Reveal delay={120}>
-              <div
-                className="rounded-2xl p-5 border"
-                style={{
-                  background: `${p.color}08`,
-                  borderColor: `${p.color}25`,
-                }}
-              >
-                <div className="text-[9px] font-black uppercase tracking-[0.18em] mb-2" style={{ color: p.color }}>
-                  Why it&apos;s hard to copy
-                </div>
-                <p className="text-xs leading-relaxed" style={{ color: dark ? "rgba(255,255,255,0.55)" : "rgba(20,20,27,0.6)" }}>
-                  {p.highlight}
-                </p>
-              </div>
-            </Reveal>
+              ))}
+            </div>
           </div>
+        ) : industry.visual === "pins" ? (
+          <div className="relative w-full h-[340px] rounded-2xl overflow-hidden border" style={{ borderColor: dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)" }}>
+            <img src={industry.hero} alt={industry.name} className="absolute inset-0 w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+            {industry.items.map((it) => (
+              <PinDot key={it.num} x={it.x} y={it.y} num={it.num} title={it.title} color={c} active={hoveredNum === it.num} onHover={setHoveredNum} />
+            ))}
+          </div>
+        ) : industry.visual === "layers" ? (
+          <div className="relative w-full h-[340px] rounded-2xl overflow-hidden border" style={{ borderColor: dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)" }}>
+            <img src={industry.hero} alt={industry.name} className="absolute inset-0 w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 p-5 flex flex-col gap-2">
+              {industry.items.map((it) => (
+                <div key={it.num} className="flex items-center gap-2.5 px-3 py-2 rounded-full backdrop-blur-md text-[10px] font-black uppercase tracking-widest w-fit" style={{ background: "rgba(20,20,27,0.75)", color: "white" }}>
+                  <span style={{ color: c }}>{it.num}</span> {it.title}
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          // grid (heated apparel) — hero photo with 6 category chips below
+          <div className="rounded-2xl overflow-hidden border" style={{ borderColor: dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)" }}>
+            <div className={`relative flex items-center justify-center overflow-hidden ${dark ? "bg-[#0c0c11]" : "bg-[#eeede7]"}`} style={{ height: 300 }}>
+              <img src={industry.hero} alt={industry.name} className="max-h-full max-w-full w-auto h-auto object-contain" />
+            </div>
+            <div className={`grid grid-cols-3 gap-px ${dark ? "bg-zinc-800" : "bg-zinc-200"}`}>
+              {industry.items.map((it) => {
+                const Icon = it.icon;
+                return (
+                  <div key={it.title} className={`flex flex-col items-center justify-center gap-1.5 py-4 px-2 text-center ${dark ? "bg-[#1C1C24]" : "bg-white"}`}>
+                    <Icon size={13} style={{ color: c }} />
+                    <span className={`text-[9px] font-black uppercase tracking-wide leading-tight ${dark ? "text-white" : "text-[#14141B]"}`}>{it.title}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
 
-          <div className="flex flex-col gap-7">
-            <Reveal>
-              <span className="text-[10px] font-black uppercase tracking-[0.22em] block mb-4" style={{ color: p.color }}>
-                {p.tag}
-              </span>
-              <div className="flex items-center gap-4 flex-wrap mb-2">
-                <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase leading-[0.95]" style={{ color: dark ? "white" : BLACK }}>
-                  {p.num} {p.name}
-                </h2>
-                <span
-                  className="px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest"
-                  style={{
-                    background: `${p.color}18`,
-                    color: p.color,
-                    border: `1px solid ${p.color}35`,
-                  }}
-                >
-                  {p.trl}
-                </span>
-              </div>
-              <p className="text-base font-bold mb-1" style={{ color: dark ? "rgba(255,255,255,0.4)" : "rgba(20,20,27,0.4)" }}>
-                {p.subtitle}
-              </p>
-              <p className="text-sm italic" style={{ color: p.color }}>
-                &quot;{p.tagline}&quot;
-              </p>
-            </Reveal>
+      {/* Text */}
+      <div className={flip ? "lg:order-1" : ""}>
+        <span className="text-[10px] font-black uppercase tracking-[0.3em] block mb-3" style={{ color: c }}>{industry.kicker}</span>
+        <h3 className={`text-3xl md:text-4xl font-black uppercase tracking-tight mb-3 ${dark ? "text-white" : "text-[#14141B]"}`}>{industry.name}</h3>
+        <p className={`text-sm leading-relaxed mb-7 max-w-md ${dark ? "text-zinc-400" : "text-zinc-600"}`}>{industry.tagline}</p>
 
-            <Reveal delay={50}>
-              <p className="text-sm leading-relaxed" style={{ color: dark ? CRAFT : "rgba(20,20,27,0.65)" }}>
-                {p.intro}
-              </p>
-            </Reveal>
-
-            <Reveal delay={80}>
-              <div className="flex gap-1 p-1 rounded-xl border w-fit mb-4" style={{ background: dark ? "#111118" : "#f0eee8", borderColor: dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)" }}>
-                {[
-                  ["benefits", "Key Benefits"],
-                  ["specs", "Specifications"],
-                ].map(([id, label]) => (
-                  <button
-                    key={id}
-                    onMouseEnter={() => setTab(id)}
-                    onClick={() => setTab(id)}
-                    className="px-5 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all duration-200"
-                    style={{
-                      background: tab === id ? p.color : "transparent",
-                      color: tab === id ? BLACK : dark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.4)",
-                    }}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-
-              {tab === "benefits" ? (
-                <ul className="space-y-3">
-                  {p.advantages.map((a, i) => (
-                    <li
-                      key={i}
-                      className="flex items-start gap-3 p-4 rounded-xl border transition-all duration-250"
-                      style={{
-                        background: `${p.color}07`,
-                        borderColor: `${p.color}22`,
-                      }}
-                    >
-                      <div
-                        className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5"
-                        style={{ background: p.color }}
-                      >
-                        <FaCheck size={7} color={BLACK} />
-                      </div>
-                      <span className="text-sm leading-relaxed" style={{ color: dark ? "rgba(255,255,255,0.78)" : "rgba(20,20,27,0.72)" }}>
-                        {a}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+        <div className="space-y-3 mb-8">
+          {industry.items.map((it) => (
+            <div
+              key={it.title}
+              className={`flex items-start gap-3 rounded-xl p-3.5 border transition-colors duration-200 ${dark ? "border-zinc-800 hover:border-zinc-600" : "border-zinc-200 hover:border-zinc-400"}`}
+              onMouseEnter={() => it.num && setHoveredNum(it.num)}
+              onMouseLeave={() => setHoveredNum(null)}
+            >
+              {it.num ? (
+                <span className="shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black" style={{ background: `${c}20`, color: c }}>{it.num}</span>
               ) : (
-                <div className="grid grid-cols-2 gap-2.5">
-                  {p.specs.map(({ label, val }) => (
-                    <div
-                      key={label}
-                      className="p-4 rounded-xl border transition-all duration-250"
-                      style={{
-                        borderColor: dark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.07)",
-                        background: dark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)",
-                      }}
-                    >
-                      <div className="text-[9px] font-black uppercase tracking-wider mb-1.5" style={{ color: dark ? "rgba(255,255,255,0.28)" : "rgba(0,0,0,0.32)" }}>
-                        {label}
-                      </div>
-                      <div className="text-xs font-black" style={{ color: p.color }}>
-                        {val}
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <span className="shrink-0 w-6 h-6 rounded-full flex items-center justify-center" style={{ background: `${c}20`, color: c }}><it.icon size={11} /></span>
               )}
-            </Reveal>
-
-            <Reveal delay={130}>
-              <div className="flex gap-3 flex-wrap pt-2">
-                <Link
-                  to="/contact"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-[11px] font-black uppercase tracking-widest transition-all duration-300 hover:scale-105"
-                  style={{ background: p.color, color: BLACK }}
-                >
-                  Request samples <FaArrowRight size={9} />
-                </Link>
-                <Link
-                  to="/technology"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-[11px] font-black uppercase tracking-widest border transition-all duration-300 hover:scale-[1.02]"
-                  style={{
-                    borderColor: dark ? "rgba(255,255,255,0.14)" : "rgba(0,0,0,0.14)",
-                    color: dark ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.5)",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = p.color;
-                    e.currentTarget.style.color = p.color;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.14)" : "rgba(0,0,0,0.14)";
-                    e.currentTarget.style.color = dark ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.5)";
-                  }}
-                >
-                  See in Technology <FaChevronRight size={9} />
-                </Link>
+              <div>
+                <h4 className={`text-xs font-bold mb-0.5 ${dark ? "text-white" : "text-[#14141B]"}`}>{it.title}</h4>
+                <p className={`text-[11px] leading-relaxed ${dark ? "text-zinc-500" : "text-zinc-500"}`}>{it.desc}</p>
               </div>
-            </Reveal>
-          </div>
+            </div>
+          ))}
+        </div>
+
+        <Link
+          to={industry.route}
+          className="group inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full text-[11px] font-black uppercase tracking-widest transition-all duration-300 hover:scale-105"
+          style={{ background: c, color: BLACK }}
+        >
+          Explore {industry.name} <FaArrowRight size={10} className="transition-transform group-hover:translate-x-1" />
+        </Link>
+      </div>
+    </div>
+  );
+};
+
+const IndustryProductsSection = () => {
+  const dark = useIsDark();
+  return (
+    <section className={`py-24 px-6 ${dark ? "bg-[#14141B]" : "bg-white"}`}>
+      <div className="container mx-auto max-w-6xl">
+        <Reveal>
+          <span className="text-xs tracking-[0.18em] uppercase font-bold block mb-4" style={{ color: dark ? NEON : DKGREEN }}>
+            // Products By Industry
+          </span>
+          <h2 className={`text-4xl md:text-5xl font-black uppercase tracking-tight leading-tight mb-4 max-w-2xl ${dark ? "text-white" : "text-[#14141B]"}`}>
+            Where the platform ships.
+          </h2>
+          <p className={`text-sm max-w-xl leading-relaxed mb-6 ${dark ? "text-zinc-400" : "text-zinc-600"}`}>
+            Every Voltcore deployment, grouped by the industry it lives in. Hover a marker or a line item, then jump straight into the full story.
+          </p>
+        </Reveal>
+
+        <div>
+          {INDUSTRY_PRODUCTS.map((industry, i) => (
+            <IndustryRow key={industry.id} industry={industry} idx={i} dark={dark} />
+          ))}
         </div>
       </div>
     </section>
   );
 };
+
 
 /* ─── COMPARISON SECTION ────────────────────────────────────────────────── */
 const ComparisonSection = () => {
@@ -884,143 +741,92 @@ const ComparisonSection = () => {
 /* ─── PAGE ──────────────────────────────────────────────────────────────── */
 export default function Products() {
   const dark = useIsDark();
-  const glow = useMouseGlow(dark);
+  const navigate = useNavigate();
 
-  const visibleProducts = PRODUCTS.filter((p) => p.id !== "sensiterm");
+  const [cursor, setCursor] = useState({ x: -300, y: -300 });
+  useEffect(() => {
+    const move = (e) => setCursor({ x: e.clientX, y: e.clientY });
+    window.addEventListener("mousemove", move);
+    return () => window.removeEventListener("mousemove", move);
+  }, []);
+
+  const scrollToHomeContact = () => {
+    navigate("/");
+    setTimeout(() => {
+      const element = document.getElementById("contact-form");
+      if (element) element.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  };
 
   return (
-    <div
-      className="w-full bg-white dark:bg-[#14141B] text-[#14141B] dark:text-white min-h-screen"
-      style={{
-        fontFamily: "Akurat, sans-serif",
-      }}
-    >
-      {dark && (
-        <div
-          className="pointer-events-none fixed inset-0 z-0 transition-opacity duration-300"
-          style={{
-            background: `radial-gradient(circle 320px at ${glow.x}% ${glow.y}%, rgba(217,254,66,0.12), rgba(217,254,66,0.04) 25%, transparent 65%)`,
-          }}
-        />
-      )}
+    <div className="w-full bg-white dark:bg-[#14141B] text-[#14141B] dark:text-white min-h-screen font-['AkkuratLL',_sans-serif] selection:bg-[#D9FE42] selection:text-[#14141B]">
+      {/* Cursor light — same as Home / About */}
+      <div className="fixed pointer-events-none z-50 rounded-full mix-blend-screen"
+        style={{
+          width: 650,
+          height: 650,
+          left: cursor.x - 325,
+          top: cursor.y - 325,
+          background: "radial-gradient(circle, rgba(217,254,66,0.06) 0%, transparent 65%)",
+        }}
+      />
 
       <main className="relative z-10">
-        <section className="relative w-full min-h-[88vh] flex items-center overflow-hidden bg-[#14141B]">
+        <section id="products-hero" className="relative w-full min-h-[88vh] flex items-center overflow-hidden bg-[#14141B]">
           <div className="absolute inset-0 pointer-events-none">
-            <div
-              className="absolute top-14 left-14 w-96 h-96 rounded-full blur-[120px] opacity-10"
-              style={{ background: GREEN }}
-            />
-            <div
-              className="absolute bottom-0 right-14 w-80 h-80 rounded-full blur-[100px] opacity-10"
-              style={{ background: ORANGE }}
-            />
-            <div
-              className="absolute inset-0 opacity-[0.025]"
-              style={{
-                backgroundImage:
-                  "linear-gradient(rgba(255,255,255,0.16) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.16) 1px, transparent 1px)",
-                backgroundSize: "60px 60px",
-              }}
-            />
+            <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] rounded-full blur-[120px] opacity-10" style={{ background: GREEN }} />
+            <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full blur-3xl opacity-5" style={{ background: ORANGE }} />
           </div>
+          <div className="absolute inset-0 opacity-[0.03]" style={{
+            backgroundImage: "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
+          }} />
 
-          <div className="relative z-10 container mx-auto px-6 md:px-12 max-w-6xl pt-32 pb-20">
+          <div className="relative z-10 container mx-auto px-6 md:px-12 max-w-6xl pt-32 pb-24">
             <Reveal>
               <span className="text-xs tracking-[0.18em] uppercase font-bold block mb-6 text-[#D9FE42]">
-               05 // Products
+                05 // Products
               </span>
             </Reveal>
 
-            <Reveal delay={70}>
-              <h1 className="text-5xl md:text-6xl font-black tracking-tighter leading-[0.92] text-white uppercase mb-6">
-                Three products.
-                <br />
-                <span style={{ color: NEON }}>One platform.</span>
-                <br />
-                <span style={{ color: "#F07E26" }}>Zero copper.</span>
+            <Reveal delay={80}>
+              <h1 className="text-5xl md:text-6xl font-black tracking-tighter leading-[0.95] text-white uppercase mb-6">
+                One platform. <br /> <span style={{ color: NEON }}>Four industries.</span>
               </h1>
             </Reveal>
 
-            <Reveal delay={150}>
-              <p className="text-base leading-relaxed max-w-lg mb-10" style={{ color: CRAFT }}>
-                With the help of Carbon NanoTubes (CNTs), we make synthetic yarn that can replace copper wire and create fabrics and textiles that can be used as heaters — engineered and patented in Europe.
+            <Reveal delay={180}>
+              <p className="text-base leading-relaxed max-w-2xl mb-10" style={{ color: CRAFT }}>
+                The same conductive polymer heating platform, shaped into a different product for every industry we ship to — automotive, food delivery, heated apparel, and underfloor heating. See where it lives.
               </p>
             </Reveal>
 
-            <Reveal delay={220}>
-              <div className="inline-flex items-center gap-3 px-5 py-3 rounded-2xl border mb-10" style={{ background: "rgba(217,254,66,0.10)", borderColor: "rgba(217,254,66,0.30)" }}>
-                <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: NEON }}>
-                  4 patent families • 2 granted • 2 PCTs • 1 EP • 3 trademarks
-                </span>
-              </div>
+            <Reveal delay={260} className="flex flex-wrap gap-4">
+              <Link to="/industries"
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-sm font-black uppercase tracking-widest transition-all duration-300 hover:opacity-90 hover:scale-105 hover:shadow-[0_0_30px_rgba(217,254,66,0.25)]"
+                style={{ background: NEON, color: BLACK }}>
+                Explore Industries <FaArrowRight size={9} />
+              </Link>
+              <button
+                onClick={scrollToHomeContact}
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-xs font-black uppercase tracking-widest border border-white/20 text-white hover:border-white/50 transition-all duration-300">
+                Contact Us <FaArrowRight size={9} />
+              </button>
             </Reveal>
           </div>
         </section>
 
         <ValueChainSection />
 
-        {visibleProducts.map((p, i) => (
-          <ProductSection key={p.id} p={p} idx={i} />
-        ))}
+        <IndustryProductsSection />
 
-        {/* 🛠️ ICI : Correction du nom de l'appel pour éviter l'écran blanc */}
         <ComparisonSection />
-
-        <section className="relative py-24 text-center flex flex-col items-center bg-[#f5f4f0] dark:bg-[#0e0e14] overflow-hidden">
-          <Reveal>
-            <div className="text-xs tracking-[0.18em] uppercase font-bold mb-3" style={{ color: dark ? NEON : DKGREEN }}>
-              Request technical samples
-            </div>
-            <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase leading-tight max-w-2xl mx-auto mb-5" style={{ color: dark ? "white" : BLACK }}>
-              Ready to integrate
-              <br />
-              <span style={{ color: dark ? NEON : DKGREEN }}>Voltcore materials?</span>
-            </h2>
-            <p className="text-base max-w-lg mx-auto mb-8 leading-relaxed" style={{ color: dark ? "rgba(184,183,164,0.6)" : "rgba(20,20,27,0.5)" }}>
-              Our application engineering team will identify which product configuration fits your geometry, voltage, and performance requirements and ship a calibrated sample kit.
-            </p>
-            <div className="flex flex-wrap gap-4 justify-center">
-              <Link
-                to="/contact"
-                className="group inline-flex items-center gap-3 px-8 py-4 rounded-full text-[12px] font-black uppercase tracking-widest transition-all duration-300 hover:scale-105"
-                style={{ background: dark ? NEON : BLACK, color: dark ? BLACK : "white" }}
-              >
-                Contact our team <FaArrowRight size={11} className="transition-transform group-hover:translate-x-1" />
-              </Link>
-              <Link
-                to="/technology"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-[12px] font-black uppercase tracking-widest border transition-all duration-300 hover:scale-[1.02]"
-                style={{
-                  borderColor: dark ? "rgba(255,255,255,0.15)" : "rgba(20,20,27,0.2)",
-                  color: dark ? "rgba(255,255,255,0.5)" : "rgba(20,20,27,0.5)",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = dark ? NEON : BLACK;
-                  e.currentTarget.style.color = dark ? NEON : BLACK;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.15)" : "rgba(20,20,27,0.2)";
-                  e.currentTarget.style.color = dark ? "rgba(255,255,255,0.5)" : "rgba(20,20,27,0.5)";
-                }}
-              >
-                Explore the technology <FaChevronRight size={9} />
-              </Link>
-            </div>
-          </Reveal>
-        </section>
 
         <Footer />
       </main>
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Akurat:wght@400;500;600;700;800;900&display=swap');
-        * {
-          font-family: 'AkkuratLL', sans-serif !important;
-        }
-        html {
-          scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
       `}</style>
     </div>
   );
