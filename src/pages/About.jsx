@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FaArrowRight, FaLinkedin, FaYoutube,
   FaEnvelope, FaMapMarkerAlt, FaDirections,
@@ -123,7 +123,6 @@ const GROUP_STYLE = {
   "Interns": { accent: "#ED6EA7", ink: "#14141B" },
 };
 const GROUP_ORDER = ["Leadership", "Board & Advisors", "Business", "Engineering", "Operations", "Interns"];
-
 const TEAM = [
   {
     name: "Fabrice Bertinchamps",
@@ -212,7 +211,7 @@ const TEAM = [
   {
     name: "Monia Azzaiz",
     role: "Computer Sciences Intern",
-    detail: "Monia is a second-year (L2) student in Computer Science and Mathematics Applied to Social Sciences at the Université de Lorraine in Nancy, France.",
+    detail: "A second-year student (L2) in Computer Science and Mathematics Applied to Social Sciences at the Université de Lorraine in Nancy, France, Monia combines analytical rigor with a passion for technology. As an active member of the RESAIA club—which focuses on law, cybersecurity, and artificial intelligence—she has developed practical experience in team management, networking, and scientific research. Passionate about data and artificial intelligence, Monia is excited to contribute to innovative and sustainable solutions at Voltcore.",
     group: "Interns",
     photo: new URL("../assets/website/team/monia.png", import.meta.url).href
   },
@@ -230,8 +229,10 @@ const HQ_FACTS = [
   { label: "Focus", value: "Scale-up" },
   { label: "Access", value: "EU" },
 ];
-const MAP_URL = "https://www.google.com/maps?q=2%20Rue%20de%20l'Industrie%2C%207735%20Bissen%2C%20Luxembourg&output=embed";
-const MAP_DIRECTIONS_URL = "https://www.google.com/maps/dir/?api=1&destination=2%20Rue%20de%20l'Industrie%2C%207735%20Bissen%2C%20Luxembourg";
+
+const HQ_ADDRESS = "2 Rue de l'Innovation, 7794 Bissen";
+const MAP_URL = "https://www.google.com/maps?q=2%20Rue%20de%20l'Innovation%2C%207794%20Bissen%2C%20Luxembourg&output=embed";
+const MAP_DIRECTIONS_URL = "https://www.google.com/maps/dir/?api=1&destination=2%20Rue%20de%20l'Innovation%2C%207794%20Bissen%2C%20Luxembourg";
 
 /* ─── HELPERS ─────────────────────────────────────────────────────────────── */
 const useIsDark = () => {
@@ -247,7 +248,6 @@ const useIsDark = () => {
   }, []);
   return dark;
 };
-
 const accent = (dark) => dark ? "#D9FE42" : "#12503C";
 
 /* ─── SCROLL REVEAL ───────────────────────────────────────────────────────── */
@@ -298,7 +298,7 @@ const ValuesSection = () => {
             <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-[#14141B] dark:text-white uppercase leading-tight">
               Our Brand Values
             </h2>
-            <p className="hidden md:block text-xs font-sans text-[#14141B]/40 dark:text-[#B8B7A4]/40 max-w-[220px] leading-relaxed">
+            <p className="hidden md:block text-xs text-[#14141B]/40 dark:text-[#B8B7A4]/40 max-w-[220px] leading-relaxed">
               Hover each value to reveal the detail.
             </p>
           </div>
@@ -328,11 +328,11 @@ const ValuesSection = () => {
                     </div>
                     <div className="text-[10px] font-bold uppercase tracking-wider text-[#14141B]/40 dark:text-white/30 mt-0.5">{v.statLabel}</div>
                   </div>
-                  <p className="hidden lg:block text-xs font-antonym leading-relaxed text-[#14141B]/60 dark:text-[#B8B7A4]/70 transition-all duration-400"
+                  <p className="hidden lg:block text-xs leading-relaxed text-[#14141B]/60 dark:text-[#B8B7A4]/70 transition-all duration-400"
                     style={{ opacity: hovered ? 1 : 0, transform: hovered ? "translateX(0)" : "translateX(16px)" }}>
                     {v.desc}
                   </p>
-                  <p className="lg:hidden col-span-2 text-xs font-antonym leading-relaxed text-[#14141B]/55 dark:text-[#B8B7A4]/60 -mt-3 pl-[calc(48px+1.5rem)]">{v.desc}</p>
+                  <p className="lg:hidden col-span-2 text-xs leading-relaxed text-[#14141B]/55 dark:text-[#B8B7A4]/60 -mt-3 pl-[calc(48px+1.5rem)]">{v.desc}</p>
                 </div>
               </Reveal>
             );
@@ -347,6 +347,7 @@ const ValuesSection = () => {
 const TimelineSection = () => {
   const containerRef = useRef(null);
   const [progress, setProgress] = useState(0);
+  const dark = useIsDark();
   useEffect(() => {
     const onScroll = () => {
       const el = containerRef.current; if (!el) return;
@@ -384,7 +385,10 @@ const TimelineSection = () => {
                       <span className="text-lg font-black tracking-tight text-[#14141B] dark:text-white transition-colors duration-300 group-hover:text-[#12503C] dark:group-hover:text-[#D9FE42]">{m.year}</span>
                       {m.tag && (
                         <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.14em]"
-                          style={{ background: "rgba(217,254,66,0.16)", color: "#12503C" }}>{m.tag}</span>
+                          style={{
+                            background: "rgba(217,254,66,0.16)",
+                            color: dark ? "#D9FE42" : "#12503C"
+                          }}>{m.tag}</span>
                       )}
                     </div>
                     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-5">
@@ -393,7 +397,7 @@ const TimelineSection = () => {
                           <h4 className="text-[10px] font-black uppercase tracking-[0.14em] mb-3 text-[#14141B]/45 dark:text-white/45">{g.label}</h4>
                           <ul className="space-y-2.5">
                             {g.items.map((item, k) => (
-                              <li key={k} className="flex gap-2.5 text-[13px] font-sans leading-relaxed text-[#14141B]/75 dark:text-[#B8B7A4]">
+                              <li key={k} className="flex gap-2.5 text-[13px] leading-relaxed text-[#14141B]/75 dark:text-[#B8B7A4]">
                                 <span className="mt-[7px] w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "#D9FE42" }} />
                                 <span>{item}</span>
                               </li>
@@ -449,7 +453,7 @@ const PressSection = () => {
                       style={{ color: hovered ? accent(dark) : undefined }}>
                       {art.title}
                     </h4>
-                    <p className="text-xs font-sans leading-relaxed text-[#14141B]/55 dark:text-[#B8B7A4]/70 transition-all duration-300"
+                    <p className="text-xs leading-relaxed text-[#14141B]/55 dark:text-[#B8B7A4]/70 transition-all duration-300"
                       style={{ opacity: hovered ? 1 : 0.7 }}>
                       {art.desc}
                     </p>
@@ -464,7 +468,7 @@ const PressSection = () => {
   );
 };
 
-/* ─── TEAM CARDS (FOND NOIR UNIFORME AVEC BORDURE) ───────────────────────── */
+/* ─── TEAM CARDS ─────────────────────────────────────────────────────────── */
 const MemberCard = ({ member, delay = 0 }) => {
   const { accent: acc } = GROUP_STYLE[member.group] ?? GROUP_STYLE["Business"];
   const initials = member.name.split(" ").map((p) => p[0]).slice(0, 2).join("");
@@ -486,7 +490,7 @@ const MemberCard = ({ member, delay = 0 }) => {
         <h4 className="text-sm font-black tracking-tight text-white leading-snug">{member.name}</h4>
         <p className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.06em] leading-snug text-white/55">{member.role}</p>
         <div className="overflow-hidden max-h-0 opacity-0 group-hover:max-h-[260px] group-hover:opacity-100 group-hover:mt-3 transition-all duration-500">
-          <p className="text-[11px] font-antonym leading-relaxed text-[#B8B7A4]">{member.detail}</p>
+          <p className="text-[11px] leading-relaxed text-[#B8B7A4]">{member.detail}</p>
         </div>
       </article>
     </Reveal>
@@ -497,67 +501,53 @@ const LeaderCard = ({ member, delay = 0 }) => {
   const { accent: acc } = GROUP_STYLE["Leadership"];
   const initials = member.name.split(" ").map((p) => p[0]).slice(0, 2).join("");
   const [hovered, setHovered] = useState(false);
-  
   return (
     <Reveal delay={delay}>
-      <article 
+      <article
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        className="group relative flex items-start gap-6 rounded-3xl p-6 md:p-7 border overflow-hidden transition-all duration-400 cursor-default
-          bg-black border-white/10 hover:shadow-2xl hover:-translate-y-1 hover:border-white/20"
+        className="group relative flex items-start gap-6 rounded-3xl p-6 md:p-7 border overflow-hidden transition-all duration-400 cursor-default bg-black border-white/10 hover:shadow-2xl hover:-translate-y-1 hover:border-white/20"
       >
-        {/* Glow radial au hover */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
           style={{ background: `radial-gradient(circle at 0% 0%, ${acc}15, transparent 60%)` }} />
-        
-        {/* Conteneur photo - même noir que la carte */}
         <div className="relative shrink-0">
-          <div className="absolute inset-0 rounded-xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500" 
+          <div className="absolute inset-0 rounded-xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500"
             style={{ background: acc }} />
           <div className="relative w-24 h-24 rounded-xl overflow-hidden bg-black">
             {member.photo ? (
-              <img 
-                src={member.photo} 
-                alt={member.name} 
+              <img
+                src={member.photo}
+                alt={member.name}
                 className="w-full h-full object-cover transition-transform duration-400 group-hover:scale-110"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center font-black text-2xl" 
+              <div className="w-full h-full flex items-center justify-center font-black text-2xl"
                 style={{ background: acc, color: "#000000" }}>
                 {initials}
               </div>
             )}
           </div>
         </div>
-        
-        {/* Info */}
         <div className="relative z-10 min-w-0 flex-1">
           <span className="inline-block mb-2 rounded-full px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em]"
             style={{ background: `${acc}22`, color: acc }}>Leadership</span>
           <h3 className="text-xl font-black tracking-tight text-white truncate">{member.name}</h3>
           <p className="mt-1 text-xs font-black uppercase tracking-[0.06em] text-white/70">{member.role}</p>
-          
-          {/* Bio cachée qui apparaît au hover - hauteur augmentée pour les bios longues */}
           <div className="overflow-hidden max-h-0 opacity-0 transition-all duration-500"
-            style={{ 
-              maxHeight: hovered ? "400px" : "0", 
+            style={{
+              maxHeight: hovered ? "400px" : "0",
               opacity: hovered ? 1 : 0,
               marginTop: hovered ? "12px" : "0"
             }}>
-            <p className="text-xs font-antonym leading-relaxed text-[#B8B7A4]">{member.detail}</p>
+            <p className="text-xs leading-relaxed text-[#B8B7A4]">{member.detail}</p>
           </div>
-          
-          {/* Indicateur visuel "Hover pour voir plus" */}
-          {!hovered && (
-            <div className="mt-2 text-[10px] font-bold uppercase tracking-widest text-white/30">
-            </div>
-          )}
         </div>
       </article>
     </Reveal>
   );
 };
-/* ─── 04 TEAM ─────────────────────────────────────────────────────────────── */
+
+/* ─── 04 TEAM ────────────────────────────────────────────────────────────── */
 const TeamSection = () => {
   const leaders = TEAM.filter((m) => m.group === "Leadership");
   const otherGroups = GROUP_ORDER.filter((g) => g !== "Leadership")
@@ -614,7 +604,7 @@ const LocationMap = () => {
             <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase leading-tight">
               Voltcore HQ <br /> <span className="text-white/25">Bissen, Luxembourg</span>
             </h2>
-            <p className="text-sm font-antonym leading-relaxed text-[#B8B7A4] max-w-md">
+            <p className="text-sm leading-relaxed text-[#B8B7A4] max-w-md">
               Our team develops and scales smart heating material systems from Luxembourg, close to European industrial partners and manufacturing networks.
             </p>
           </div>
@@ -637,7 +627,7 @@ const LocationMap = () => {
                   </div>
                   <div className="min-w-0">
                     <div className="text-[9px] uppercase tracking-[0.18em] text-[#B8B7A4]/70">Registered address</div>
-                    <div className="text-sm font-black truncate">2, rue de l'Industrie, L-7735 Bissen</div>
+                    <div className="text-sm font-black truncate">{HQ_ADDRESS}</div>
                   </div>
                 </div>
                 <div className="flex gap-2 mb-5">
@@ -695,7 +685,7 @@ const Footer = () => (
         <h4 className="text-xs font-bold uppercase tracking-widest text-white mb-4">// Sitemap</h4>
         <ul className="flex flex-col gap-2.5">
           {[["Home", "/"], ["Technology", "/technology"], ["Industries", "/industries"], ["About us", "/about"], ["News", "/news"], ["Contact", "/contact"]].map(([l, to]) => (
-            <li key={to}> <Link to={to} className="text-sm text-[#8a8880] hover:text-[#D9FE42] transition-colors">{l}</Link> </li>
+            <li key={to}><Link to={to} className="text-sm text-[#8a8880] hover:text-[#D9FE42] transition-colors">{l}</Link></li>
           ))}
         </ul>
       </div>
@@ -703,7 +693,7 @@ const Footer = () => (
         <h4 className="text-xs font-bold uppercase tracking-widest text-white mb-4">// Platforms</h4>
         <ul className="flex flex-col gap-2.5">
           {[["ActiveFil™", "/technology"], ["TargetHeat™", "/technology"], ["SensiTerm", "/technology"]].map(([l, to]) => (
-            <li key={l}> <Link to={to} className="text-sm text-[#8a8880] hover:text-[#D9FE42] transition-colors">{l}</Link> </li>
+            <li key={l}><Link to={to} className="text-sm text-[#8a8880] hover:text-[#D9FE42] transition-colors">{l}</Link></li>
           ))}
         </ul>
       </div>
@@ -712,7 +702,7 @@ const Footer = () => (
         <ul className="flex flex-col gap-4">
           <li className="flex items-start gap-2 text-[12px] text-[#8a8880]">
             <FaMapMarkerAlt className="text-[#D9FE42] mt-0.5 shrink-0" size={11} />
-            <span>2, rue de l'Industrie, <br />L-7735 Bissen, Luxembourg</span>
+            <span>{HQ_ADDRESS}</span>
           </li>
           <li className="flex items-center gap-2">
             <FaEnvelope className="text-[#D9FE42] shrink-0" size={11} />
@@ -731,7 +721,7 @@ const Footer = () => (
   </footer>
 );
 
-/* ─── 06 CAREERS ──────────────────────────────────────────────────────────── */
+/* ─── 06 CAREERS ─────────────────────────────────────────────────────────── */
 const OPEN_POSITIONS = [
   {
     title: "Chief Commercial Officer",
@@ -753,14 +743,14 @@ const CareersSection = () => (
           <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-white uppercase leading-tight">
             Join the <br /> <span style={{ color: "#D9FE42" }}>Voltcore Team</span>
           </h2>
-          <p className="text-base font-antonym text-white/55 leading-relaxed max-w-lg">
+          <p className="text-base text-white/55 leading-relaxed max-w-lg">
             At Voltcore, we are shifting the paradigms of industrial thermal management. We foster an environment of high-performance engineering, scientific rigor, and bold execution in Luxembourg's deep-tech ecosystem.
           </p>
         </div>
       </Reveal>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/5 rounded-2xl overflow-hidden mb-16">
         {[
-          { emoji: "🔬", title: "Science First", desc: "We never compromise on material quality. Every decision is grounded in rigorous polymer science and real-world testing." },
+          { emoji: "", title: "Science First", desc: "We never compromise on material quality. Every decision is grounded in rigorous polymer science and real-world testing." },
           { emoji: "🌍", title: "Sustainable Impact", desc: "Our work directly reduces global CO₂ emissions. You'll contribute to something that matters at a planetary scale." },
           { emoji: "🚀", title: "Fast Execution", desc: "Startup energy with deep-tech credibility. We move fast, iterate hard, and trust everyone to own their domain." },
         ].map(({ emoji, title, desc }, i) => {
@@ -772,7 +762,7 @@ const CareersSection = () => (
                 style={{ background: h ? "#1a1a22" : "#111118" }}>
                 <div className="text-3xl mb-4">{emoji}</div>
                 <h4 className="text-sm font-black uppercase tracking-tight text-white mb-2">{title}</h4>
-                <p className="text-xs font-antonym text-white/50 leading-relaxed">{desc}</p>
+                <p className="text-xs text-white/50 leading-relaxed">{desc}</p>
                 <div className="mt-5 h-0.5 rounded-full transition-all duration-500"
                   style={{ width: h ? 48 : 16, background: "#D9FE42" }} />
               </div>
@@ -800,7 +790,7 @@ const CareersSection = () => (
                     <span className="text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full bg-[#D9FE42]/10 text-[#D9FE42]">{pos.type}</span>
                     <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-white/10 text-white/40">{pos.location}</span>
                   </div>
-                  <p className="text-xs font-antonym text-white/45 leading-relaxed transition-all duration-300"
+                  <p className="text-xs text-white/45 leading-relaxed transition-all duration-300"
                     style={{ opacity: h ? 1 : 0.6 }}>{pos.desc}</p>
                 </div>
                 <a href="mailto:info@voltcore.tech"
@@ -818,7 +808,7 @@ const CareersSection = () => (
           style={{ background: "rgba(255,255,255,0.03)" }}>
           <div>
             <h4 className="text-sm font-black text-white uppercase tracking-tight mb-1">Don't see your role?</h4>
-            <p className="text-xs font-antonym text-white/45">Send us a spontaneous application — we're always looking for exceptional people.</p>
+            <p className="text-xs text-white/45">Send us a spontaneous application — we're always looking for exceptional people.</p>
           </div>
           <a href="mailto:info@voltcore.tech"
             className="shrink-0 inline-flex items-center gap-2 px-5 py-3 rounded-full border border-white/20 text-white text-xs font-black uppercase tracking-widest hover:border-[#D9FE42] hover:text-[#D9FE42] transition-all duration-300">
@@ -831,53 +821,89 @@ const CareersSection = () => (
 );
 
 /* ─── PAGE ────────────────────────────────────────────────────────────────── */
-const About = () => (
-  <div className="w-full bg-[#14141B] text-white min-h-screen font-sans selection:bg-[#D9FE42] selection:text-[#14141B]">
-    <section id="about-hero" className="relative w-full min-h-[88vh] flex items-center overflow-hidden bg-[#14141B]">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] rounded-full blur-[120px] opacity-10" style={{ background: "#D9FE42" }} />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full blur-3xl opacity-5" style={{ background: "#94C356" }} />
-      </div>
-      <div className="absolute inset-0 opacity-[0.03]" style={{
-        backgroundImage: "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)",
-        backgroundSize: "60px 60px",
-      }} />
-      <div className="relative z-10 container mx-auto px-6 md:px-12 max-w-6xl pt-32 pb-24">
-        <Reveal>
-          <span className="text-xs tracking-[0.18em] uppercase font-bold block mb-6 text-[#D9FE42]">02 // About Voltcore</span>
-        </Reveal>
-        <Reveal delay={80}>
-          <h1 className="text-5xl md:text-6xl font-black tracking-tighter leading-[0.95] text-white uppercase mb-6">
-            Empowering <br /> <span style={{ color: "#D9FE42" }}>Sustainable</span> <br />Material Systems.
-          </h1>
-        </Reveal>
-        <Reveal delay={180}>
-          <p className="text-base font-sans leading-relaxed max-w-2xl mb-10" style={{ color: "#B8B7A4" }}>
-            Heating accounts for 40% of global CO₂ emissions, yet industrial sectors still rely on the rigid constraints of metal wiring.
-            Voltcore is leading the global materials transition — rendering traditional copper heating elements obsolete.
-          </p>
-        </Reveal>
-        <Reveal delay={260} className="flex flex-wrap gap-4">
-          <Link to="/technology"
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-sm font-black uppercase tracking-widest transition-all duration-300 hover:opacity-90 hover:scale-105 hover:shadow-[0_0_30px_rgba(217,254,66,0.25)]"
-            style={{ background: "#D9FE42", color: "#14141B" }}>
-            Our Technology <FaArrowRight size={9} />
-          </Link>
-          <Link to="/contact"
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-xs font-black uppercase tracking-widest border border-white/20 text-white hover:border-white/50 transition-all duration-300">
-            Contact Us <FaArrowRight size={9} />
-          </Link>
-        </Reveal>
-      </div>
-    </section>
-    <ValuesSection />
-    <TimelineSection />
-    <PressSection />
-    <TeamSection />
-    <LocationMap />
-    <CareersSection />
-    <Footer />
-  </div>
-);
+const About = () => {
+  const navigate = useNavigate();
+  
+  // ✅ AJOUT: État pour suivre la position de la souris
+  const [cursor, setCursor] = useState({ x: -300, y: -300 });
+  
+  // ✅ AJOUT: Effet pour suivre les mouvements de la souris
+  useEffect(() => {
+    const move = (e) => setCursor({ x: e.clientX, y: e.clientY });
+    window.addEventListener("mousemove", move);
+    return () => window.removeEventListener("mousemove", move);
+  }, []);
+
+  const scrollToHomeContact = () => {
+    navigate("/");
+    setTimeout(() => {
+      const element = document.getElementById("contact-form");
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 100);
+  };
+
+  return (
+    <div className="w-full bg-[#14141B] text-white min-h-screen font-['AkkuratLL',_sans-serif] selection:bg-[#D9FE42] selection:text-[#14141B]">
+      {/* ✅ AJOUT: Lumière qui suit la souris (comme sur Home) */}
+      <div className="fixed pointer-events-none z-50 rounded-full mix-blend-screen"
+        style={{
+          width: 650,
+          height: 650,
+          left: cursor.x - 325,
+          top: cursor.y - 325,
+          background: "radial-gradient(circle, rgba(217,254,66,0.06) 0%, transparent 65%)"
+        }}
+      />
+      
+      <section id="about-hero" className="relative w-full min-h-[88vh] flex items-center overflow-hidden bg-[#14141B]">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] rounded-full blur-[120px] opacity-10" style={{ background: "#D9FE42" }} />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full blur-3xl opacity-5" style={{ background: "#94C356" }} />
+        </div>
+        <div className="absolute inset-0 opacity-[0.03]" style={{
+          backgroundImage: "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }} />
+        <div className="relative z-10 container mx-auto px-6 md:px-12 max-w-6xl pt-32 pb-24">
+          <Reveal>
+            <span className="text-xs tracking-[0.18em] uppercase font-bold block mb-6 text-[#D9FE42]">02 // About Voltcore</span>
+          </Reveal>
+          <Reveal delay={80}>
+            <h1 className="text-5xl md:text-6xl font-black tracking-tighter leading-[0.95] text-white uppercase mb-6">
+              Empowering <br /> <span style={{ color: "#D9FE42" }}>Sustainable</span> <br />Material Systems.
+            </h1>
+          </Reveal>
+          <Reveal delay={180}>
+            <p className="text-base leading-relaxed max-w-2xl mb-10" style={{ color: "#B8B7A4" }}>
+              Heating accounts for 40% of global CO₂ emissions, yet industrial sectors still rely on the rigid constraints of metal wiring.
+              Voltcore is leading the global materials transition — rendering traditional copper heating elements obsolete.
+            </p>
+          </Reveal>
+          <Reveal delay={260} className="flex flex-wrap gap-4">
+            <Link to="/technology"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-sm font-black uppercase tracking-widest transition-all duration-300 hover:opacity-90 hover:scale-105 hover:shadow-[0_0_30px_rgba(217,254,66,0.25)]"
+              style={{ background: "#D9FE42", color: "#14141B" }}>
+              Our Technology <FaArrowRight size={9} />
+            </Link>
+            <button
+              onClick={scrollToHomeContact}
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-xs font-black uppercase tracking-widest border border-white/20 text-white hover:border-white/50 transition-all duration-300">
+              Contact Us <FaArrowRight size={9} />
+            </button>
+          </Reveal>
+        </div>
+      </section>
+      <ValuesSection />
+      <TimelineSection />
+      <PressSection />
+      <TeamSection />
+      <LocationMap />
+      <CareersSection />
+      <Footer />
+    </div>
+  );
+};
 
 export default About;

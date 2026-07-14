@@ -52,9 +52,7 @@ const PROBLEMS = [
 
 /* 3 hotspots: 01 moved left to grey zone, 02 on base, 03 on the lid/cover panel */
 const HOTSPOTS = [
-  { id: "panels", x: 7,  y: 38, num: "01", title: "Side-wall Heating Panels",  desc: "Voltcore heating mesh laminated along all four inner walls — maintains 60–66°C uniformly across the full bag interior." },
-  { id: "base",   x: 52, y: 68, num: "02", title: "Full-Bottom Radiant Layer", desc: "Dense TargetHeat™ textile on the base provides the primary heat reservoir — keeps the food platform consistently above the 63°C regulatory threshold." },
-  { id: "lid",    x: 45, y: 18, num: "03", title: "Heated Lid Panel",           desc: "TargetHeat™ layer bonded to the inner lid surface — seals in heat from above and prevents thermal bridging through the opening." },
+  { id: "base",   x: 52, y: 65, num: "01", title: "Full-Bottom Radiant Layer", desc: "Dense TargetHeat™ textile on the base provides the primary heat reservoir — keeps the food platform consistently above the 63°C regulatory threshold." },
 ];
 
 /* ─── PARALLAX HOOK ───────────────────────────────────────────────────────── */

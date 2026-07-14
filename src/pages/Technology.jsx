@@ -1,21 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FaArrowRight, FaLinkedin, FaYoutube,
   FaEnvelope, FaMapMarkerAlt, FaLeaf, FaShieldAlt, FaBolt,
 } from "react-icons/fa";
-
-import SecondSkinImg      from "../assets/website/platforms/SecondSkinAutomotive.png";
-import ActiveFilImg       from "../assets/website/platforms/BRD-03-activefil.png";
-import TargetHeatImg      from "../assets/website/platforms/BRD-02-targetheat.png";
-import SensiTermImg       from "../assets/website/platforms/BRD-04-sensiterm.png";
-import ActiveFilPhoto     from "../assets/website/platforms/Filaments_activeFil_.png";
-import TargetHeatPhoto    from "../assets/website/platforms/heatingTextile_targetheat_.png";
-import HeatingMeshPhoto   from "../assets/website/platforms/heatingMesh.png";
-import HeatingTextilePhoto from "../assets/website/platforms/heatingTextile.png";
-import SensiTermPhoto     from "../assets/website/platforms/HeatingSystem_sensiterm_.png";
-import An1Video           from "../assets/website/anim1-2.mp4";
-import An2Video           from "../assets/website/Anim2Automotive.mp4";
+import SecondSkinImg      from  "../assets/website/platforms/SecondSkinAutomotive.png";
+import ActiveFilImg       from  "../assets/website/platforms/BRD-03-activefil.png";
+import TargetHeatImg      from  "../assets/website/platforms/BRD-02-targetheat.png";
+import SensiTermImg       from  "../assets/website/platforms/BRD-04-sensiterm.png";
+import ActiveFilPhoto     from  "../assets/website/platforms/Filaments_activeFil_.png";
+import TargetHeatPhoto    from  "../assets/website/platforms/heatingTextile_targetheat_.png";
+import HeatingMeshPhoto   from  "../assets/website/platforms/heatingMesh.png";
+import HeatingTextilePhoto from  "../assets/website/platforms/heatingTextile.png";
+import SensiTermPhoto     from  "../assets/website/platforms/HeatingSystem_sensiterm_.png";
+import An1Video           from  "../assets/website/anim1-2.mp4";
+import An2Video           from  "../assets/website/Anim2Automotive.mp4";
 
 /* ─── HELPERS ─────────────────────────────────────────────────────────────── */
 const useIsDark = () => {
@@ -85,7 +84,6 @@ const SafeImage = ({ src, alt, color = "#D9FE42", className = "" }) => {
   const [broken, setBroken] = useState(!src);
   return (
     <div className={`relative w-full h-full ${className}`}>
-      {/* Always-visible base layer — never a blank gap, even while loading or on error */}
       <div className="absolute inset-0 flex items-center justify-center"
         style={{ background: `linear-gradient(135deg, ${color}28, #14141B)` }}>
         <span className="text-6xl font-black tracking-tighter opacity-25" style={{ color }}>
@@ -103,7 +101,88 @@ const SafeImage = ({ src, alt, color = "#D9FE42", className = "" }) => {
   );
 };
 
+/* Hotspot overlay — same interaction model as the Automotive page */
+const HotspotMap = ({ src, alt, color = "#D9FE42", spots = [], className = "" }) => {
+  const [active, setActive] = useState(null);
+  const [loaded, setLoaded] = useState(false);
+  const [broken, setBroken] = useState(!src);
+  return (
+    <div className={`overflow-hidden select-none group/map ${className}`}>
+      <div className="absolute inset-0 flex items-center justify-center" style={{ background: `linear-gradient(135deg, ${color}18, #14141B)` }}>
+        {broken && (
+          <span className="text-xs font-bold uppercase tracking-widest text-white/40 px-4 text-center">Image not found</span>
+        )}
+      </div>
+      {!broken && (
+        <img src={src} alt={alt}
+          className={`absolute inset-0 w-full h-full object-contain block transition-opacity duration-500 ${loaded ? "opacity-100" : "opacity-0"}`}
+          draggable={false}
+          onLoad={() => setLoaded(true)}
+          onError={() => setBroken(true)}
+        />
+      )}
+      {spots.map((h) => {
+        const isActive = active === h.id;
+        const flipX = h.x > 60;
+        const flipY = h.y > 55;
+        return (
+          <div key={h.id} className="absolute z-20"
+            style={{ left: `${h.x}%`, top: `${h.y}%`, transform: "translate(-50%,-50%)" }}
+            onMouseEnter={() => setActive(h.id)}
+            onMouseLeave={() => setActive((cur) => (cur === h.id ? null : cur))}>
+            {!isActive && <span className="absolute inset-0 rounded-full animate-ping opacity-60 pointer-events-none" style={{ background: h.color || color }} />}
+            <button type="button"
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); setActive((cur) => (cur === h.id ? null : h.id)); }}
+              className="relative z-10 w-9 h-9 rounded-full border-2 flex items-center justify-center text-[11px] font-black transition-all duration-200"
+              style={{
+                background: isActive ? (h.color || color) : "rgba(20,20,27,0.9)",
+                borderColor: isActive ? (h.color || color) : "rgba(255,255,255,0.8)",
+                color: isActive ? "#14141B" : "white",
+                transform: isActive ? "scale(1.1)" : "scale(1)",
+                boxShadow: isActive ? `0 0 15px ${(h.color || color)}99` : "none",
+              }}>
+              {h.num}
+            </button>
+            {isActive && (
+              <div className="absolute z-30 w-60 rounded-xl bg-[#14141B]/95 backdrop-blur-md border shadow-2xl p-4 pointer-events-none"
+                style={{
+                  borderColor: `${(h.color || color)}50`,
+                  left:   flipX ? "auto" : "calc(100% + 12px)",
+                  right:  flipX ? "calc(100% + 12px)" : "auto",
+                  top:    flipY ? "auto" : "50%",
+                  bottom: flipY ? "50%" : "auto",
+                  transform: flipY ? "translateY(50%)" : "translateY(-50%)",
+                }}>
+                <span className="text-[10px] font-black uppercase tracking-widest block mb-1" style={{ color: h.color || color }}>{h.num} · {h.tag}</span>
+                <h4 className="text-sm font-bold text-white mb-1 leading-snug">{h.title}</h4>
+                <p className="text-xs text-[#B8B7A4]/80 leading-relaxed">{h.desc}</p>
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
 /* ─── DATA ────────────────────────────────────────────────────────────────── */
+const SECOND_SKIN_HOTSPOTS = [
+  { id: "copper-surface", x: 11.7, y: 25.8, num: "01", tag: "Copper Wire System", color: "#F07E26",
+    title: "A-Surface (Leather / Fabric)", desc: "The outer, visible surface — 2 mm thick regardless of the heating system underneath." },
+  { id: "copper-spacer", x: 18.2, y: 37.7, num: "02", tag: "Copper Wire System", color: "#F07E26",
+    title: "Spacer Layer (Foam Insulation)", desc: "An extra foam layer needed to protect the surface from the wire's uneven heat — added bulk with no thermal benefit." },
+  { id: "copper-wire", x: 22.4, y: 55.6, num: "03", tag: "Copper Wire System", color: "#F07E26",
+    title: "Heating Layer (Metal Wire)", desc: "Copper wire coils spanning a 5–13 mm envelope — corrosion-prone, slow to heat, and uneven across the surface." },
+  { id: "copper-inner", x: 30.2, y: 73.2, num: "04", tag: "Copper Wire System", color: "#F07E26",
+    title: "Inner Layers", desc: "Structural base layers beneath the heating stack — unchanged between both systems." },
+  { id: "volt-surface", x: 63.7, y: 23.4, num: "05", tag: "Voltcore System", color: "#D9FE42",
+    title: "A-Surface (Leather / Fabric)", desc: "Same premium surface finish — but now sitting almost directly on the heating layer, no spacer needed." },
+  { id: "volt-mesh", x: 69.5, y: 57.2, num: "06", tag: "Voltcore System", color: "#D9FE42",
+    title: "Voltcore Mesh / Textile", desc: "A single 2–3 mm textile layer replaces the entire wire + insulation stack — 77% thinner, uniform heat, zero hot spots." },
+  { id: "volt-inner", x: 79.2, y: 72.4, num: "07", tag: "Voltcore System", color: "#D9FE42",
+    title: "Inner Layers", desc: "Same structural base layers — Voltcore integrates without changing the rest of the build." },
+];
+
 const PLATFORMS = [
   {
     id: "activefil",
@@ -203,9 +282,9 @@ const PLATFORMS = [
     trl: "TRL 6",
     image: SensiTermImg,
     photo: SensiTermPhoto,
-    desc: "SensiTerm co-designs electrical heating and intrinsic piezoresistive sensing in the same textile; the resistance of the filament itself becomes the sensor.",
+    desc: "SensiTerm co-designs electrical heating and built-in pressure sensing in the same textile; the resistance of the filament itself becomes the sensor.",
     specs: [
-      { label: "Sensing type",    val: "Piezoresistive" },
+      { label: "Sensing type",    val: "Built-in pressure & touch sensing" },
       { label: "Zones",           val: "Adaptive multi-zone" },
       { label: "Mapping",         val: "Occupancy detection" },
       { label: "Fault detection", val: "Loop integrity alerts" },
@@ -291,14 +370,13 @@ const POC_SECTORS = [
 const SchemaSection = () => {
   const dark = useIsDark();
   const [activeNode, setActiveNode] = useState(0);
-  const [revealed, setRevealed] = useState(0); // max number of nodes revealed so far (never decreases)
+  const [revealed, setRevealed] = useState(0);
   const sectionRef = useRef(null);
 
-  /* Clean left-to-right DAG — every arrow leads somewhere, nothing loops back */
   const NODES = [
     { id: 0, x: 90,   y: 230, label: "ActiveFil™",      sub: "CNT polymer filament",         shape: "ellipse", color: "#94C356", size: [156, 62] },
     { id: 1, x: 350,  y: 110, label: "TargetHeat™",     sub: "Open mesh",                    shape: "ellipse", color: "#D9FE42", size: [150, 58] },
-    { id: 2, x: 350,  y: 350, label: "Fabrics",         sub: "Woven textile",                shape: "ellipse", color: "#D9FE42", size: [134, 54] },
+    { id: 2, x: 350,  y: 350, label: "SensiTerm",        sub: "Heating + sensing",            shape: "ellipse", color: "#D9FE42", size: [134, 54] },
     { id: 3, x: 610,  y: 230, label: "Heating",         sub: "Textiles · pads · panels",     shape: "rect",    color: "#F07E26", size: [196, 68] },
     { id: 4, x: 860,  y: 230, label: "3 Functionalities", sub: "Heating · sensing · zoning", shape: "rect",    color: "#83D0F5", size: [200, 62] },
     { id: 5, x: 1110, y: 120, label: "Uni-directional Heat", sub: "85–95% to A-surface",     shape: "rect",    color: "#12503C", size: [214, 58] },
@@ -317,7 +395,7 @@ const SchemaSection = () => {
   const DETAILS = {
     0: "The conductive polymer base: tunable resistance, no metal wire, compatible with PP, PA and PET extrusion lines.",
     1: "An open textile heater engineered for breathability, roll-to-roll production, and fast heat delivery close to the surface.",
-    2: "A denser textile format for apparel, medical, workwear and flexible panels where drape and comfort matter.",
+    2: "A textile that heats and senses at the same time — it feels pressure and touch through its own resistance, with no separate sensor added.",
     3: "The same material stack becomes pads, panels, textile rolls or laminated surfaces across mobility and building use cases.",
     4: "The architecture supports heating, intrinsic sensing, and custom multi-zone control from the same textile foundation.",
     5: "Heat is directed toward the A-surface, reducing wasted energy and improving warm-up time versus legacy wire systems.",
@@ -325,19 +403,12 @@ const SchemaSection = () => {
     7: "Thinner integration, lower energy demand, recyclable material choices, and compatibility with industrial lamination workflows.",
   };
 
-  /* Scroll-linked progressive reveal on a NORMAL section (no position:sticky,
-     no synthetic tall wrapper) — this is what broke before. Progress is derived
-     straight from the section's natural position as it scrolls through the
-     viewport, so nodes appear one by one exactly while you scroll past it,
-     and there is zero extra blank space since the section keeps its natural height. */
   useEffect(() => {
     const onScroll = () => {
       const el = sectionRef.current;
       if (!el) return;
       const rect = el.getBoundingClientRect();
       const vh = window.innerHeight;
-      // start revealing only when section top is 20% above bottom of viewport
-      // finish when section top is 60% up the viewport — longer travel = slower reveal
       const start = vh * 0.80;
       const end   = vh * -0.2;
       const pct = (start - rect.top) / (start - end);
@@ -358,7 +429,6 @@ const SchemaSection = () => {
         maskImage: "radial-gradient(circle at 50% 40%, black, transparent 78%)",
       }} />
       <div className="absolute top-10 left-1/4 w-[420px] h-[420px] rounded-full blur-[130px] opacity-[0.06] pointer-events-none" style={{ background: "#D9FE42" }} />
-
       <div className="relative z-10 container mx-auto px-6 md:px-12 max-w-6xl">
         <Reveal className="mb-10 md:mb-14">
           <span className="text-xs font-black uppercase tracking-[0.22em] block mb-3 text-[#D9FE42]">
@@ -371,8 +441,6 @@ const SchemaSection = () => {
             Scroll to reveal how Voltcore's conductive filament becomes heating textiles, sensing surfaces, and application-ready systems. Hover any block for detail.
           </p>
         </Reveal>
-
-        {/* The diagram sits directly on the page — no card, no border box */}
         <div className="w-full overflow-x-auto md:overflow-visible -mx-6 px-6 md:mx-0 md:px-0">
           <svg viewBox="0 0 1470 460" className="w-full h-auto min-w-[880px] md:min-w-0 overflow-visible" style={{ maxHeight: "56vh" }}>
             <defs>
@@ -381,7 +449,6 @@ const SchemaSection = () => {
                 <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
               </filter>
             </defs>
-
             {EDGES.map(({ from, to }, ei) => {
               const a = NODES[from], b = NODES[to];
               const x1 = a.x + a.size[0] / 2, y1 = a.y;
@@ -399,7 +466,6 @@ const SchemaSection = () => {
                 />
               );
             })}
-
             {NODES.map((n, ni) => {
               const isVisible = revealed > ni;
               const isActive = activeNode === n.id;
@@ -448,7 +514,6 @@ const SchemaSection = () => {
             })}
           </svg>
         </div>
-
         <Reveal delay={140} className="mt-8 max-w-2xl" y={12}>
           <div className="border-l-4 pl-6 py-1 transition-colors duration-300" style={{ borderColor: NODES[activeNode]?.color }}>
             <span className="text-[10px] font-black uppercase tracking-[0.18em]" style={{ color: NODES[activeNode]?.color }}>
@@ -469,6 +534,24 @@ const SecondSkinSection = () => {
   const [mode, setMode] = useState("copper");
   const [animStep, setAnimStep] = useState(0);
   const dark = useIsDark();
+  const navigate = useNavigate();
+  const copperVideoRef = useRef(null);
+  const voltcoreVideoRef = useRef(null);
+
+  const restartVideo = (id) => {
+    const ref = id === "copper" ? copperVideoRef : voltcoreVideoRef;
+    if (ref.current) {
+      ref.current.currentTime = 0;
+      ref.current.play().catch(() => {});
+    }
+  };
+
+  const handleModeHover = (id) => { setMode(id); restartVideo(id); };
+
+  // ✅ Click on video area → navigate to automotive case studies
+  const handleVideoClick = () => {
+    navigate("/industries/automotive/case-studies");
+  };
 
   useEffect(() => {
     const interval = setInterval(() => setAnimStep((s) => (s + 1) % 4), 1800);
@@ -486,7 +569,6 @@ const SecondSkinSection = () => {
     { label: "Voltcore Mesh/Textile — 2–3 mm total", thick: 2, color: "#D9FE42", highlight: true },
     { label: "Inner Layers", thick: 3, color: "#6a6a6a" },
   ];
-
   const layers = mode === "copper" ? LAYERS_COPPER : LAYERS_VOLTCORE;
   const totalThick = layers.reduce((s, l) => s + l.thick, 0);
 
@@ -497,7 +579,7 @@ const SecondSkinSection = () => {
           <span className="text-xs font-black uppercase tracking-[0.22em] block mb-3 text-[#12503C] dark:text-[#D9FE42]">01 // Second Skin Architecture</span>
           <div className="flex flex-col lg:flex-row justify-between items-start gap-6">
             <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-[#14141B] dark:text-white uppercase leading-[0.95] max-w-2xl">
-              Second skin<br />
+              Second skin <br />
               <span className="text-[#12503C] dark:text-[#D9FE42]">integration</span> makes a difference
             </h2>
             <p className="text-base text-[#14141B]/70 dark:text-[#B8B7A4] leading-relaxed max-w-md pt-2 leading-relaxed">
@@ -506,13 +588,11 @@ const SecondSkinSection = () => {
             </p>
           </div>
         </Reveal>
-
         <Reveal delay={60} className="mb-8">
-          <div className="relative rounded-3xl overflow-hidden border border-[#14141B]/8 dark:border-white/10 aspect-[21/9]">
-            <SafeImage src={SecondSkinImg} alt="Second Skin Architecture comparison" color="#D9FE42" />
+          <div className="relative rounded-3xl overflow-hidden border border-[#14141B]/8 dark:border-white/10 bg-[#0c0c11]" style={{ aspectRatio: "1941 / 738" }}>
+            <HotspotMap src={SecondSkinImg} alt="Second Skin Architecture comparison" color="#D9FE42" spots={SECOND_SKIN_HOTSPOTS} className="absolute inset-0" />
           </div>
         </Reveal>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
           {/* Layer stack diagram */}
           <Reveal delay={80} className="relative flex">
@@ -561,7 +641,6 @@ const SecondSkinSection = () => {
               </div>
             )}
           </Reveal>
-
           {/* Mode switch + video */}
           <div className="flex flex-col gap-4">
             <Reveal delay={100}>
@@ -570,7 +649,7 @@ const SecondSkinSection = () => {
                   { id: "copper", label: "Copper Wire System", color: "#F07E26" },
                   { id: "voltcore", label: "Voltcore System", color: "#D9FE42" },
                 ].map(({ id, label, color }) => (
-                  <button key={id} onMouseEnter={() => setMode(id)} onFocus={() => setMode(id)}
+                  <button key={id} onMouseEnter={() => handleModeHover(id)} onFocus={() => handleModeHover(id)}
                     className="px-5 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest transition-all duration-300"
                     style={{
                       background: mode === id ? color : "transparent",
@@ -582,21 +661,28 @@ const SecondSkinSection = () => {
                 ))}
               </div>
             </Reveal>
-
             <Reveal delay={140} className="flex-1">
-              <div className="rounded-3xl overflow-hidden border relative group bg-black/5 dark:bg-black/20 aspect-video w-full"
-                style={{ borderColor: "rgba(148,195,86,0.25)" }}>
-                <video src={An1Video} autoPlay loop muted playsInline
+              {/* ✅ Video container is now clickable → navigates to automotive case studies */}
+              <div
+                className="rounded-3xl overflow-hidden border relative group bg-black/5 dark:bg-black/20 aspect-video w-full cursor-pointer"
+                style={{ borderColor: "rgba(148,195,86,0.25)" }}
+                onMouseEnter={() => restartVideo(mode)}
+                onClick={handleVideoClick}
+              >
+                <video ref={copperVideoRef} src={An1Video} autoPlay loop muted playsInline
                   className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-[1.03] ${mode === "copper" ? "opacity-100" : "opacity-0"}`} />
-                <video src={An2Video} autoPlay loop muted playsInline
+                <video ref={voltcoreVideoRef} src={An2Video} autoPlay loop muted playsInline
                   className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-[1.03] ${mode === "voltcore" ? "opacity-100" : "opacity-0"}`} />
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                   style={{ background: "linear-gradient(to top, rgba(20,20,27,0.35), transparent 40%)" }} />
+                {/* ✅ Visual indicator that it's clickable — like in Automotive */}
+                <div className="absolute bottom-4 right-4 z-20 text-[10px] font-black uppercase tracking-widest text-white/70 bg-black/60 px-3 py-1.5 rounded-full backdrop-blur-sm pointer-events-none">
+                  View Case Study →
+                </div>
               </div>
             </Reveal>
           </div>
         </div>
-
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
           {[
             { val: 3, unit: "mm", label: "Voltcore total stack thickness", prefix: "2–" },
@@ -625,7 +711,6 @@ const PlatformSection = ({ p, idx }) => {
   const [subActive, setSubActive] = useState(0);
   const dark = useIsDark();
   const isEven = idx % 2 === 0;
-
   const currentSub = p.subProducts ? p.subProducts[subActive] : null;
   const displayPhoto = currentSub ? currentSub.photo : p.photo;
   const displayTrl = currentSub ? currentSub.trl : p.trl;
@@ -649,7 +734,6 @@ const PlatformSection = ({ p, idx }) => {
                 </div>
               </div>
             </Reveal>
-
             {p.subProducts && (
               <Reveal delay={80}>
                 <div className="grid grid-cols-2 gap-3">
@@ -683,7 +767,6 @@ const PlatformSection = ({ p, idx }) => {
               </Reveal>
             )}
           </div>
-
           <div>
             <Reveal>
               <span className="text-[10px] font-black uppercase tracking-[0.22em] block mb-3" style={{ color: p.color }}>{p.tag}</span>
@@ -744,20 +827,24 @@ const PlatformSection = ({ p, idx }) => {
 
 /* ─── PERFORMANCE PILLARS ─────────────────────────────────────────────────── */
 const PILLAR_ACCENT = "#D9FE42";
-
-const PillarCard = ({ pi, delay }) => (
-  <Reveal delay={delay}>
-    <div className="group relative p-6 rounded-3xl border overflow-hidden transition-all duration-400 hover:-translate-y-2 hover:shadow-2xl cursor-default bg-[#111118] border-white/6">
+const PillarCard = ({ pi, delay, featured = false }) => (
+  <Reveal delay={delay} className={featured ? "md:-mt-4 md:mb-4" : ""}>
+    <div className={`group relative rounded-3xl border overflow-hidden transition-all duration-400 hover:-translate-y-2 hover:shadow-2xl cursor-default bg-[#111118] ${featured ? "p-8 md:p-9 border-[#D9FE42]/35 shadow-[0_30px_70px_rgba(217,254,66,0.08)]" : "p-6 border-white/6"}`}>
+      {featured && (
+        <span className="absolute top-5 right-5 text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full" style={{ background: `${PILLAR_ACCENT}20`, color: PILLAR_ACCENT }}>
+          Core Pillar
+        </span>
+      )}
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-3xl"
         style={{ boxShadow: `inset 0 0 0 1.5px ${PILLAR_ACCENT}60, 0 24px 60px ${PILLAR_ACCENT}14` }} />
-      <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110"
+      <div className={`rounded-2xl flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110 ${featured ? "w-14 h-14" : "w-12 h-12"}`}
         style={{ background: `${PILLAR_ACCENT}18`, color: PILLAR_ACCENT }}>{pi.icon}</div>
-      <h3 className="text-xl font-black mb-4 tracking-tight text-white transition-colors duration-300 group-hover:text-[#D9FE42]">
+      <h3 className={`font-black mb-4 tracking-tight text-white transition-colors duration-300 group-hover:text-[#D9FE42] ${featured ? "text-2xl" : "text-xl"}`}>
         {pi.title}
       </h3>
       <ul className="space-y-3">
         {pi.points.map((pt, j) => (
-          <li key={j} className="flex items-start gap-2.5 text-xs leading-relaxed text-[#B8B7A4]/70">
+          <li key={j} className={`flex items-start gap-2.5 leading-relaxed text-[#B8B7A4]/70 ${featured ? "text-sm" : "text-xs"}`}>
             <span className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style={{ background: PILLAR_ACCENT }} />
             {pt}
           </li>
@@ -775,11 +862,11 @@ const PillarsSection = () => (
       <Reveal className="mb-14">
         <span className="text-xs font-black uppercase tracking-[0.22em] block mb-3 text-[#D9FE42]">04 // Why Voltcore</span>
         <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-white uppercase leading-tight">
-          Outperforming legacy<br /><span className="text-[#D9FE42]">on every dimension</span>
+          Outperforming legacy <br /> <span className="text-[#D9FE42]">on every dimension</span>
         </h2>
       </Reveal>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        {PILLARS.map((pi, i) => <PillarCard key={pi.title} pi={pi} delay={i * 100} />)}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-center">
+        {PILLARS.map((pi, i) => <PillarCard key={pi.title} pi={pi} delay={i * 100} featured={i === 1} />)}
       </div>
     </div>
   </section>
@@ -798,7 +885,7 @@ const PocSection = () => {
           <span className="text-xs font-black uppercase tracking-[0.22em] block mb-3" style={{ color: dark ? "#D9FE42" : "#12503C" }}>05 // Industry Pipeline</span>
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
             <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-[#14141B] dark:text-white uppercase leading-tight">
-              Active Pipeline<br /><span style={{ color: dark ? "#D9FE42" : "#12503C" }}>Across 5 Industries</span>
+              Active Pipeline <br /> <span style={{ color: dark ? "#D9FE42" : "#12503C" }}>Across 5 Industries</span>
             </h2>
             <div className="flex gap-6 text-xs flex-wrap">
               {[
@@ -814,7 +901,6 @@ const PocSection = () => {
             </div>
           </div>
         </Reveal>
-
         <Reveal delay={80}>
           <div className="flex flex-wrap gap-2 mb-8">
             {POC_SECTORS.map((s) => (
@@ -831,7 +917,6 @@ const PocSection = () => {
             ))}
           </div>
         </Reveal>
-
         <div key={active} className="grid grid-cols-1 lg:grid-cols-5 gap-5">
           <Reveal className="lg:col-span-2 rounded-3xl p-6 border space-y-5" style={{ background: dark ? "#111118" : "white", borderColor: dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.07)" }}>
             <div className="text-[9px] font-black uppercase tracking-[0.18em] mb-2" style={{ color: cur.color }}>// Pipeline Stage</div>
@@ -903,7 +988,7 @@ const Footer = () => (
       <div>
         <h4 className="text-xs font-bold uppercase tracking-widest text-[#14141B] dark:text-white mb-4">// Sitemap</h4>
         <ul className="flex flex-col gap-2.5">
-          {[["Home","/"],["Technology","/technology"],["Industries","/industries"],["About us","/about"],["News","/news"],["Contact","/contact"]].map(([l,to]) => (
+          {[["Home", "/"], ["Technology", "/technology"], ["Industries", "/industries"], ["About us", "/about"], ["News", "/news"], ["Contact", "/contact"]].map(([l, to]) => (
             <li key={to}><Link to={to} className="text-sm text-[#8a8880] hover:text-[#D9FE42] transition-colors">{l}</Link></li>
           ))}
         </ul>
@@ -911,7 +996,7 @@ const Footer = () => (
       <div>
         <h4 className="text-xs font-bold uppercase tracking-widest text-[#14141B] dark:text-white mb-4">// Platforms</h4>
         <ul className="flex flex-col gap-2.5">
-          {[["ActiveFil™","/technology"],["TargetHeat™","/technology"],["SensiTerm","/technology"]].map(([l,to]) => (
+          {[["ActiveFil™", "/technology"], ["TargetHeat™", "/technology"], ["SensiTerm", "/technology"]].map(([l, to]) => (
             <li key={l}><Link to={to} className="text-sm text-[#8a8880] hover:text-[#D9FE42] transition-colors">{l}</Link></li>
           ))}
         </ul>
@@ -943,11 +1028,36 @@ const Footer = () => (
 /* ─── PAGE ────────────────────────────────────────────────────────────────── */
 const Technology = () => {
   const dark = useIsDark();
+  const navigate = useNavigate();
+  const [cursor, setCursor] = useState({ x: -300, y: -300 });
+
+  useEffect(() => {
+    const move = (e) => setCursor({ x: e.clientX, y: e.clientY });
+    window.addEventListener("mousemove", move);
+    return () => window.removeEventListener("mousemove", move);
+  }, []);
+
+  // ✅ Function to navigate to Home and scroll to contact form
+  const scrollToHomeContact = () => {
+    navigate("/");
+    setTimeout(() => {
+      const element = document.getElementById("contact-form");
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 100);
+  };
 
   return (
     <div className="w-full bg-white dark:bg-[#14141B] text-[#14141B] dark:text-white min-h-screen font-sans selection:bg-[#D9FE42] selection:text-[#14141B]"
       style={{ fontFamily: "'AkkuratLL', 'AkkuratLLWeb-Regular', 'Akkurat', -apple-system, sans-serif" }}>
-
+      <div className="fixed pointer-events-none z-50 rounded-full mix-blend-screen"
+        style={{
+          width: 650, height: 650,
+          left: cursor.x - 325, top: cursor.y - 325,
+          background: "radial-gradient(circle, rgba(217,254,66,0.06) 0%, transparent 65%)",
+        }}
+      />
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section id="tech-hero" className="relative w-full min-h-[88vh] flex items-center overflow-hidden bg-[#14141B]">
         <div className="absolute inset-0 pointer-events-none">
@@ -959,7 +1069,6 @@ const Technology = () => {
           backgroundImage: "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)",
           backgroundSize: "60px 60px",
         }} />
-
         <div className="relative z-10 container mx-auto px-6 md:px-12 max-w-6xl pt-32 pb-24">
           <Reveal>
             <span className="text-xs tracking-[0.18em] uppercase font-bold block mb-6 text-[#D9FE42]">
@@ -979,11 +1088,13 @@ const Technology = () => {
             </p>
           </Reveal>
           <Reveal delay={260} className="flex flex-wrap gap-4 mb-16">
-            <Link to="/contact"
+            {/* ✅ Changed from <a> to <button> with scrollToHomeContact */}
+            <button
+              onClick={scrollToHomeContact}
               className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-sm font-black uppercase tracking-widest transition-all duration-300 hover:opacity-90 hover:scale-105 hover:shadow-[0_0_30px_rgba(217,254,66,0.25)]"
               style={{ background: "#D9FE42", color: "#14141B" }}>
               Request Samples <FaArrowRight size={9} />
-            </Link>
+            </button>
             <Link to="/about"
               className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-xs font-black uppercase tracking-widest border border-white/20 text-white hover:border-white/50 transition-all duration-300">
               About Voltcore <FaArrowRight size={9} />
@@ -991,13 +1102,10 @@ const Technology = () => {
           </Reveal>
         </div>
       </section>
-
       {/* ── 01 SECOND SKIN ───────────────────────────────────────────────── */}
       <SecondSkinSection />
-
       {/* ── 02 ARCHITECTURE (full-bleed, scroll-revealed) ────────────────── */}
       <SchemaSection />
-
       {/* ── 03 PLATFORMS ──────────────────────────────────────────────────── */}
       <div id="platforms">
         <div className="pt-16 pb-8 bg-white dark:bg-[#14141B]">
@@ -1013,33 +1121,11 @@ const Technology = () => {
         </div>
         {PLATFORMS.map((p, i) => <PlatformSection key={p.id} p={p} idx={i} />)}
       </div>
-
       {/* ── 04 PILLARS ────────────────────────────────────────────────────── */}
       <PillarsSection />
-
       {/* ── 05 POC PIPELINE ───────────────────────────────────────────────── */}
       <PocSection />
-
-      {/* ── CTA ───────────────────────────────────────────────────────────── */}
-      <section className="relative py-24 text-center flex flex-col items-center gap-6 overflow-hidden bg-[#14141B]">
-        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 100%, rgba(217,254,66,0.06) 0%, transparent 70%)" }} />
-        <Reveal>
-          <div className="text-xs tracking-[0.18em] uppercase text-[#D9FE42] font-bold mb-2">// Partner with us</div>
-          <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-white uppercase leading-tight max-w-2xl mx-auto mb-4">
-            Ready to integrate Voltcore™?
-          </h2>
-          <p className="text-base text-[#B8B7A4]/50 max-w-lg mx-auto mb-8 leading-relaxed leading-relaxed">
-            Request detailed technology specifications, discuss custom geometry integrations, or order your material samples today.
-          </p>
-          <Link to="/contact"
-            className="group inline-flex items-center gap-3 px-8 py-4 bg-[#D9FE42] text-[#14141B] rounded-full text-[12px] font-black uppercase tracking-widest transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_rgba(217,254,66,0.2)] hover:bg-white">
-            Contact Our Team <FaArrowRight size={11} className="transition-transform group-hover:translate-x-1" />
-          </Link>
-        </Reveal>
-      </section>
-
       <Footer />
-
       <style>{`
         @keyframes shimmer {
           0%   { transform: translateX(-100%); }

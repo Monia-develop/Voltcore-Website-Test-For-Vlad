@@ -4,7 +4,6 @@ import {
   FaArrowLeft, FaArrowRight, FaChair, FaClone, FaCubes, FaHandPointer,
   FaLayerGroup, FaBolt, FaWeightHanging,
 } from "react-icons/fa";
-
 import Armrest               from "../../assets/website/industries/Armrest.png";
 import TouchDemo             from "../../assets/website/industries/TouchDemo.png";
 import DoorPanelsPhoto       from "../../assets/website/industries/DoorPannel.png";
@@ -31,7 +30,7 @@ const NEON   = "#D9FE42";
 const ORANGE = "#F07E26";
 const FONT   = "'AkkuratLL', ui-sans-serif, system-ui, sans-serif";
 
-/* ─── HOOKS ───────────────────────────────────────────────────────────────── */
+/* ── HOOKS ───────────────────────────────────────────────────────────────── */
 const useInView = (threshold = 0.15) => {
   const ref = useRef(null);
   const [shown, setShown] = useState(false);
@@ -97,12 +96,10 @@ const CASE_STUDIES = [
       { icon: FaBolt,          title: "More energy efficient & faster heating",       desc: "−30% power at same time-to-comfort, or −40% faster at −15% less power than copper wire at 33 W." },
       { icon: FaWeightHanging, title: "Full air permeability & lower weight",         desc: "Open-cell mesh breathes with seat foam. 30–60 g/m² — drastically lighter than copper snake systems." },
     ],
-    // 01 gets video animation comparison
     animCompare: {
       left:  { src: SeatsVideo, label: "Copper Wire System", temp: "Surface ΔT >10°C", note: "Uneven heat — hotspots & cold zones" },
       right: { src: HeroVideo,  label: "Voltcore",           temp: "Surface ΔT ~4°C",  note: "Perfectly uniform warmth" },
     },
-    // 01 also gets thermal image slider
     thermal: {
       leftImg: CopperThermalSeats,   leftLabel: "Copper Wire — Cen 39.0°C",  leftTemp: "Surface ΔT >10°C",
       rightImg: VoltcoreThermalSeats, rightLabel: "Voltcore — Max 50.5°C",   rightTemp: "Surface ΔT ~4°C",
@@ -154,17 +151,16 @@ const CASE_STUDIES = [
     kpis: [
       { val: 30, suffix: "%", label: "Faster time-to-comfort", prefix: "−" },
       { val: 6,  suffix: "%", label: "Less power consumption", prefix: "−" },
-      { val: 3,  suffix: " steps", label: "Fewer integration steps", prefix: "2–" },
+      { val: 3,  suffix: "steps", label: "Fewer integration steps", prefix: "2–" },
     ],
     bullets: [
       { icon: FaLayerGroup, title: "More homogeneous heat distribution",      desc: "Tighter, more even thermal spread vs serial (copper-based) solutions. Surface ΔT ~4°C vs ~8°C serial." },
       { icon: FaBolt,       title: "More energy efficient & faster heating",   desc: "Reaches comfort temperature 30% faster on 6% less power than serial solution." },
       { icon: FaClone,      title: "Faster & cheaper integration to interior", desc: "2–3 fewer integration steps than legacy laminated assemblies, cutting production cost." },
     ],
-    // 02 gets thermal image comparison (no video)
-    thermalCompare: {
-      left:  { img: SerialThermalLam,    label: "Serial Solution",  temp: "Surface ΔT ~8°C",  note: "Max 57.8°C — Cen 54.0°C — uneven spread" },
-      right: { img: VoltcoreThermalLam,  label: "Voltcore",         temp: "Surface ΔT ~4°C",  note: "Max 64.2°C — Cen 61.8°C — uniform" },
+    thermal: {
+      leftImg: SerialThermalLam,    leftLabel: "Serial Solution",  leftTemp: "Surface ΔT ~8°C",
+      rightImg: VoltcoreThermalLam, rightLabel: "Voltcore",         rightTemp: "Surface ΔT ~4°C",
     },
     chart: {
       xKey: "sec", xLabel: "Seconds", yLabel: "Temperature (°C)",
@@ -214,7 +210,6 @@ const CASE_STUDIES = [
       { icon: FaLayerGroup, title: "Radiative panels or contact surface",   desc: "Works as ambient radiative panel and direct-touch heated surface. Max 48.2°C · Center 40.5°C." },
       { icon: FaBolt,       title: "Lower cost, higher recyclability",       desc: "Mono-material design lowers integration cost and improves end-of-life recyclability to 100%." },
     ],
-    // 03 gets thermal image comparison
     thermalCompare: {
       left:  { img: InjectionMeshPhoto, label: "Mesh after injection", temp: "Post co-molding", note: "Heating mesh integrated into PP component" },
       right: { img: InjectionThermal,   label: "Thermal imaging",      temp: "Max 48.2°C · Cen 40.5°C", note: "Even heat distribution across molded surface" },
@@ -225,7 +220,6 @@ const CASE_STUDIES = [
       value: "Max 48.2°C · Center 40.5°C",
     },
     gallery: [
-      { img: InjectionMeshPhoto, caption: "Heating mesh after injection molding" },
       { img: InjectionWeaveZoom, caption: "Weave detail, close-up" },
     ],
     applications: [
@@ -242,24 +236,21 @@ const CASE_STUDIES = [
     tagline: "Heating and sensing merged into a single layer — less wiring, less weight, less complexity.",
     headline: "One fabric layer replaces a separate heater + sensor stack.",
     kpis: [
-      { val: 1,   suffix: " layer",  label: "Instead of 2 stacked layers", prefix: "" },
-      { val: 50,  suffix: "%",       label: "Less wiring & weight", prefix: "−" },
-      { val: 3,   suffix: " zones",  label: "Adaptive sensing zones", prefix: "" },
+      { val: 1,   suffix: "layer",  label: "Instead of 2 stacked layers", prefix: "" },
+      { val: 50,  suffix: "%",      label: "Less wiring & weight", prefix: "−" },
+      { val: 3,   suffix: "zones",  label: "Adaptive sensing zones", prefix: "" },
     ],
     bullets: [
       { icon: FaHandPointer, title: "2-in-1: sensing + heating",   desc: "A single fabric layer detects presence, posture, or touch — and heats. No extra sensor layer needed." },
       { icon: FaLayerGroup,  title: "One layer, reduced complexity", desc: "Fewer wires, less weight, fewer failure points than stacked sensor + heater mats." },
       { icon: FaBolt,        title: "Zonal, on-demand comfort",     desc: "Activates heat only where and when detected — cutting HVAC dependency significantly." },
     ],
-    // 04 gets photo comparison
     thermalCompare: {
       left:  { img: SensingLaptopPhoto, label: "Heating + Sensing fabric", temp: "2-in-1 layer",      note: "Heating fabric with integrated sensing feature" },
       right: { img: SensingFabricPhoto, label: "Leather A-layer applied",  temp: "Under trim",       note: "Fabric covered with leather — invisible technology" },
     },
     gallery: [
-      { img: TouchDemo,          caption: "Touch-controlled heated surface" },
-      { img: SensingLaptopPhoto, caption: "Heating fabric with sensing feature" },
-      { img: SensingFabricPhoto, caption: "Fabric covered with leather A-layer" },
+      { img: TouchDemo, caption: "Touch-controlled heated surface" },
     ],
     applications: [
       { icon: FaChair,       label: "Seats",                   desc: "Heating + presence detection for cushion and backrest — zonal comfort, occupancy-based activation, posture/contact sensing, lower HVAC dependency." },
@@ -270,7 +261,7 @@ const CASE_STUDIES = [
   },
 ];
 
-/* ─── BEFORE / AFTER THERMAL IMAGE SLIDER ────────────────────────────────── */
+/* ─── BEFORE / AFTER THERMAL IMAGE SLIDER ─────────────────────────────────── */
 const BeforeAfterSlider = ({ leftImg, leftLabel, leftTemp, rightImg, rightLabel, rightTemp }) => {
   const [pos, setPos] = useState(50);
   const ref = useRef(null);
@@ -313,12 +304,11 @@ const BeforeAfterSlider = ({ leftImg, leftLabel, leftTemp, rightImg, rightLabel,
       <span className="absolute top-4 right-4 text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full backdrop-blur-sm border pointer-events-none" style={{ background: `${GREEN}cc`, color: "#14141B", borderColor: GREEN }}>{rightLabel}</span>
       <span className="absolute bottom-4 left-4 text-xs font-bold px-3 py-1 rounded-full bg-black/70 backdrop-blur-sm text-white/70 pointer-events-none">{leftTemp}</span>
       <span className="absolute bottom-4 right-4 text-xs font-black px-3 py-1 rounded-full pointer-events-none" style={{ background: `${GREEN}cc`, color: "#14141B" }}>{rightTemp}</span>
-      <span className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[9px] font-bold uppercase tracking-widest text-white/40 pointer-events-none">Drag to compare</span>
     </div>
   );
 };
 
-/* ─── STATIC THERMAL COMPARE (2 photos side by side, hover) ─────────────── */
+/* ─── STATIC THERMAL COMPARE (2 photos side by side, hover) ──────────────── */
 const ThermalCompare = ({ left, right, dark }) => {
   const [hov, setHov] = useState(null);
   return (
@@ -328,7 +318,8 @@ const ThermalCompare = ({ left, right, dark }) => {
           <div key={side}
             onMouseEnter={() => setHov(side)} onMouseLeave={() => setHov(null)}
             className="relative rounded-2xl overflow-hidden border-2 cursor-default transition-all duration-350"
-            style={{ height: 260, borderColor: hov === side ? col : `${col}25` }}>
+            style={{ height: 260, borderColor: hov === side ? col : `${col}25` }}
+          >
             <img src={data.img} alt={data.label}
               className="absolute inset-0 w-full h-full transition-transform duration-500"
               style={{ objectFit: "contain", background: "#111118", transform: hov === side ? "scale(1.03)" : "scale(1)" }} />
@@ -361,6 +352,24 @@ const ThermalCompare = ({ left, right, dark }) => {
 /* ─── VIDEO ANIMATION COMPARE (only case 01) ─────────────────────────────── */
 const VideoCompare = ({ left, right }) => {
   const [hov, setHov] = useState(null);
+  const leftVideoRef = useRef(null);
+
+  // Loop only the first 5 seconds of copper wire video
+  useEffect(() => {
+    const video = leftVideoRef.current;
+    if (!video) return;
+
+    const handleTimeUpdate = () => {
+      if (video.currentTime >= 5) {
+        video.currentTime = 0;
+        video.play().catch(() => {});
+      }
+    };
+
+    video.addEventListener('timeupdate', handleTimeUpdate);
+    return () => video.removeEventListener('timeupdate', handleTimeUpdate);
+  }, []);
+
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between mb-1">
@@ -371,8 +380,9 @@ const VideoCompare = ({ left, right }) => {
         {/* LEFT copper — SeatsVideo */}
         <div onMouseEnter={() => setHov("left")} onMouseLeave={() => setHov(null)}
           className="relative rounded-2xl overflow-hidden border-2 cursor-default transition-all duration-350"
-          style={{ height: 200, borderColor: hov === "left" ? "#8a8a8a" : "rgba(138,138,138,0.2)" }}>
-          <video src={left.src} className="absolute inset-0 w-full h-full object-cover" autoPlay muted loop playsInline />
+          style={{ height: 200, borderColor: hov === "left" ? "#8a8a8a" : "rgba(138,138,138,0.2)" }}
+        >
+          <video ref={leftVideoRef} src={left.src} className="absolute inset-0 w-full h-full object-cover" autoPlay muted loop playsInline />
           <div className="absolute inset-0 pointer-events-none transition-opacity duration-400"
             style={{ background: "rgba(0,0,0,0.5)", opacity: hov === "right" ? 0.75 : 0.15 }} />
           <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-black/65 border border-white/15 pointer-events-none">
@@ -387,7 +397,8 @@ const VideoCompare = ({ left, right }) => {
         {/* RIGHT voltcore — HeroVideo */}
         <div onMouseEnter={() => setHov("right")} onMouseLeave={() => setHov(null)}
           className="relative rounded-2xl overflow-hidden border-2 cursor-default transition-all duration-350"
-          style={{ height: 200, borderColor: hov === "right" ? GREEN : `${GREEN}30` }}>
+          style={{ height: 200, borderColor: hov === "right" ? GREEN : `${GREEN}30` }}
+        >
           <video src={right.src} className="absolute inset-0 w-full h-full object-cover" autoPlay muted loop playsInline />
           <div className="absolute inset-0 pointer-events-none transition-opacity duration-400"
             style={{ background: "rgba(0,0,0,0.4)", opacity: hov === "left" ? 0.7 : 0.08 }} />
@@ -413,7 +424,8 @@ const VideoCompare = ({ left, right }) => {
           return (
             <div key={kpi.label} onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
               className="rounded-xl p-3 text-center border cursor-default transition-all duration-250"
-              style={{ borderColor: h ? `${GREEN}70` : `${GREEN}20`, background: h ? `${GREEN}15` : `${GREEN}06`, transform: h ? "translateY(-2px)" : "none" }}>
+              style={{ borderColor: h ? `${GREEN}70` : `${GREEN}20`, background: h ? `${GREEN}15` : `${GREEN}06`, transform: h ? "translateY(-2px)" : "none" }}
+            >
               <div className="text-base font-black" style={{ color: GREEN }}>{kpi.val}</div>
               <div className="text-[9px] uppercase tracking-wider text-white/40">{kpi.label}</div>
             </div>
@@ -443,7 +455,8 @@ const CompareBars = ({ title, note, rows, dark }) => {
                   width: shown ? `${b.pct}%` : "0%",
                   background: b.highlight ? `linear-gradient(to right, ${GREEN}, ${NEON})` : (dark ? "#52525b" : "#a1a1aa"),
                   transitionDelay: `${i * 200}ms`,
-                }}>
+                }}
+              >
                 {b.highlight && shown && (
                   <div className="absolute inset-0 animate-shimmer" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)", animation: "shimmer 1.8s ease infinite" }} />
                 )}
@@ -463,9 +476,7 @@ const LineChart = ({ data, xKey, xLabel, yLabel, series, dark }) => {
   const [drawn, setDrawn] = useState(false);
   const [ref, shown] = useInView(0.3);
   const svgRef = useRef(null);
-
   useEffect(() => { if (shown) setTimeout(() => setDrawn(true), 100); }, [shown]);
-
   const W = 540, H = 220;
   const PAD = { top: 16, right: 16, bottom: 28, left: 34 };
   const plotW = W - PAD.left - PAD.right;
@@ -478,10 +489,8 @@ const LineChart = ({ data, xKey, xLabel, yLabel, series, dark }) => {
   const yScale = (v) => PAD.top + plotH - (v / yMax) * plotH;
   const linePath = (key) => data.map((d, i) => `${i === 0 ? "M" : "L"} ${xScale(d[xKey]).toFixed(1)} ${yScale(d[key]).toFixed(1)}`).join(" ");
   const pathLength = 999;
-
   const gridColor = dark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.07)";
   const textColor = dark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.38)";
-
   const handleMove = (e) => {
     if (!svgRef.current) return;
     const rect = svgRef.current.getBoundingClientRect();
@@ -493,7 +502,6 @@ const LineChart = ({ data, xKey, xLabel, yLabel, series, dark }) => {
     });
     setHoverIdx(closest);
   };
-
   return (
     <div ref={ref} className={`rounded-2xl p-5 border ${dark ? "bg-[#1C1C24] border-zinc-800" : "bg-white border-zinc-200"}`}>
       <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
@@ -523,7 +531,6 @@ const LineChart = ({ data, xKey, xLabel, yLabel, series, dark }) => {
           <text key={d[xKey]} x={xScale(d[xKey])} y={H - PAD.bottom + 16} textAnchor="middle" fontSize="9" fill={textColor}>{d[xKey]}</text>
         ))}
         <text x={W - PAD.right} y={H - 2} textAnchor="end" fontSize="9" fill={textColor}>{xLabel}</text>
-
         {series.map((s) => (
           <g key={s.key}>
             {/* glow duplicate for highlight */}
@@ -537,7 +544,6 @@ const LineChart = ({ data, xKey, xLabel, yLabel, series, dark }) => {
               style={{ transition: drawn ? "stroke-dashoffset 1.4s cubic-bezier(.22,.61,.36,1)" : "none" }} />
           </g>
         ))}
-
         {hoverIdx !== null && (
           <>
             <line x1={xScale(data[hoverIdx][xKey])} x2={xScale(data[hoverIdx][xKey])}
@@ -549,7 +555,6 @@ const LineChart = ({ data, xKey, xLabel, yLabel, series, dark }) => {
           </>
         )}
       </svg>
-
       {/* tooltip row */}
       <div className={`mt-2 flex flex-wrap gap-x-5 gap-y-1 text-[11px] rounded-lg px-3 py-2 min-h-[32px] transition-opacity duration-150 ${hoverIdx === null ? "opacity-0" : "opacity-100"} ${dark ? "bg-black/25" : "bg-black/[0.04]"}`}>
         <span className={`font-black ${dark ? "text-white" : "text-[#14141B]"}`}>{xLabel}: {hoverIdx !== null ? data[hoverIdx][xKey] : "—"}</span>
@@ -572,11 +577,12 @@ const BulletCard = ({ b, dark, delay = 0 }) => {
       <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
         className="h-full rounded-2xl p-6 border cursor-default transition-all duration-300"
         style={{
-          background:  hov ? (dark ? "#14141B" : "#eceae5") : (dark ? "#1C1C24" : "#fff"),
+          background: hov ? (dark ? "#14141B" : "#eceae5") : (dark ? "#1C1C24" : "#fff"),
           borderColor: hov ? GREEN : (dark ? "#3f3f46" : "#e4e4e7"),
-          transform:   hov ? "translateY(-5px)" : "none",
-          boxShadow:   hov ? `0 16px 40px rgba(148,195,86,0.14)` : "none",
-        }}>
+          transform: hov ? "translateY(-5px)" : "none",
+          boxShadow: hov ? `0 16px 40px rgba(148,195,86,0.14)` : "none",
+        }}
+      >
         <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-4 transition-all duration-300"
           style={{ background: hov ? `${GREEN}22` : (dark ? "#14141B" : "#F0EFEA"), color: GREEN }}>
           <Icon size={17} />
@@ -602,9 +608,10 @@ const KpiRow = ({ kpis, dark }) => (
             className="rounded-2xl p-5 border text-center cursor-default transition-all duration-300"
             style={{
               borderColor: hov ? `${GREEN}70` : `${GREEN}25`,
-              background:  hov ? `${GREEN}12` : `${GREEN}06`,
-              transform:   hov ? "translateY(-3px) scale(1.02)" : "none",
-            }}>
+              background: hov ? `${GREEN}12` : `${GREEN}06`,
+              transform: hov ? "translateY(-3px) scale(1.02)" : "none",
+            }}
+          >
             <div className="text-3xl md:text-4xl font-black leading-none mb-1.5" style={{ color: GREEN }}>
               <CountUp to={kpi.val} prefix={kpi.prefix} suffix={kpi.suffix} />
             </div>
@@ -616,39 +623,72 @@ const KpiRow = ({ kpis, dark }) => (
   </Reveal>
 );
 
-/* ─── GALLERY ─────────────────────────────────────────────────────────────── */
-const Gallery = ({ items, dark, cols = 2 }) => (
-  <Reveal delay={120}>
-    <div className={`grid gap-4 ${cols === 4 ? "grid-cols-2 md:grid-cols-4" : cols === 3 ? "grid-cols-1 md:grid-cols-3" : "grid-cols-2"}`}>
-      {items.map((g) => {
-        const [hov, setHov] = useState(false);
-        return (
-          <div key={g.caption || g.label}
-            onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-            className="relative rounded-2xl overflow-hidden border cursor-default transition-all duration-350"
+/* ─── GALLERY — handles single item with centered design ─────────────────── */
+const Gallery = ({ items, dark, cols = 2 }) => {
+  const isSingle = items.length === 1;
+  return (
+    <Reveal delay={120}>
+      {isSingle ? (
+        /* Single item — centered, elegant card */
+        <div className="flex justify-center">
+          <div className="relative rounded-2xl overflow-hidden border cursor-default transition-all duration-350 group"
             style={{
-              height: 200,
-              borderColor: hov ? `${GREEN}55` : "rgba(255,255,255,0.10)",
-              transform: hov ? "translateY(-4px) scale(1.01)" : "none",
-              boxShadow: hov ? `0 16px 40px rgba(0,0,0,0.4)` : "none",
-            }}>
-            <img src={g.img} alt={g.caption || g.label}
-              className="absolute inset-0 w-full h-full transition-transform duration-500"
-              style={{ objectFit: "contain", background: "#111118", transform: hov ? "scale(1.05)" : "scale(1)" }} />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none transition-opacity duration-300"
-              style={{ opacity: hov ? 1 : 0.4 }} />
-            <div className="absolute top-0 left-0 right-0 h-[2px] pointer-events-none transition-opacity duration-300"
-              style={{ background: `linear-gradient(to right, ${GREEN}, transparent)`, opacity: hov ? 1 : 0 }} />
-            <span className="absolute bottom-3 left-3 right-3 text-[11px] font-bold text-white leading-snug pointer-events-none transition-all duration-300"
-              style={{ opacity: hov ? 1 : 0, color: hov ? GREEN : "white", transform: hov ? "none" : "translateY(5px)" }}>
-              {g.caption || g.label}
-            </span>
+              width: "100%",
+              maxWidth: 640,
+              height: 380,
+              borderColor: "rgba(255,255,255,0.10)",
+            }}
+          >
+            <img src={items[0].img} alt={items[0].caption}
+              className="absolute inset-0 w-full h-full transition-transform duration-700 group-hover:scale-105"
+              style={{ objectFit: "cover", background: "#111118" }} />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent pointer-events-none transition-opacity duration-300 group-hover:opacity-100 opacity-60" />
+            <div className="absolute top-0 left-0 right-0 h-[2px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              style={{ background: `linear-gradient(to right, ${GREEN}, ${NEON}, transparent)` }} />
+            <div className="absolute bottom-0 left-0 right-0 p-6 pointer-events-none">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-sm border mb-3"
+                style={{ background: `${GREEN}18`, borderColor: `${GREEN}40` }}>
+                <span style={{ color: GREEN, fontSize: 10 }}>✦</span>
+                <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: GREEN }}>Detail View</span>
+              </div>
+              <p className="text-sm font-bold text-white leading-snug">{items[0].caption}</p>
+            </div>
           </div>
-        );
-      })}
-    </div>
-  </Reveal>
-);
+        </div>
+      ) : (
+        <div className={`grid gap-4 ${cols === 4 ? "grid-cols-2 md:grid-cols-4" : cols === 3 ? "grid-cols-1 md:grid-cols-3" : "grid-cols-2"}`}>
+          {items.map((g) => {
+            const [hov, setHov] = useState(false);
+            return (
+              <div key={g.caption || g.label}
+                onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+                className="relative rounded-2xl overflow-hidden border cursor-default transition-all duration-350"
+                style={{
+                  height: 200,
+                  borderColor: hov ? `${GREEN}55` : "rgba(255,255,255,0.10)",
+                  transform: hov ? "translateY(-4px) scale(1.01)" : "none",
+                  boxShadow: hov ? `0 16px 40px rgba(0,0,0,0.4)` : "none",
+                }}
+              >
+                <img src={g.img} alt={g.caption || g.label}
+                  className="absolute inset-0 w-full h-full transition-transform duration-500"
+                  style={{ objectFit: "contain", background: "#111118", transform: hov ? "scale(1.05)" : "scale(1)" }} />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none transition-opacity duration-300"
+                  style={{ opacity: hov ? 1 : 0.4 }} />
+                <div className="absolute top-0 left-0 right-0 h-[2px] pointer-events-none transition-opacity duration-300"
+                  style={{ background: `linear-gradient(to right, ${GREEN}, transparent)`, opacity: hov ? 1 : 0 }} />
+                <span className="absolute bottom-3 left-3 right-3 text-[11px] font-bold text-white leading-snug pointer-events-none transition-all duration-300"
+                  style={{ opacity: hov ? 1 : 0, color: hov ? GREEN : "white", transform: hov ? "none" : "translateY(5px)" }}>
+                  {g.caption || g.label}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </Reveal>
+  );
+};
 
 /* ─── APP CARDS (icon-based) ─────────────────────────────────────────────── */
 const AppCards = ({ items, dark }) => (
@@ -661,11 +701,12 @@ const AppCards = ({ items, dark }) => (
           <div key={a.label} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
             className="rounded-2xl p-6 border cursor-default transition-all duration-300"
             style={{
-              background:  hov ? (dark ? "#14141B" : "#eceae5") : (dark ? "#1C1C24" : "#fff"),
+              background: hov ? (dark ? "#14141B" : "#eceae5") : (dark ? "#1C1C24" : "#fff"),
               borderColor: hov ? GREEN : (dark ? "#3f3f46" : "#e4e4e7"),
-              transform:   hov ? "translateY(-4px)" : "none",
-              boxShadow:   hov ? `0 12px 32px rgba(148,195,86,0.12)` : "none",
-            }}>
+              transform: hov ? "translateY(-4px)" : "none",
+              boxShadow: hov ? `0 12px 32px rgba(148,195,86,0.12)` : "none",
+            }}
+          >
             <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4 transition-all duration-300"
               style={{ background: hov ? `${GREEN}22` : (dark ? "#14141B" : "#F0EFEA"), color: GREEN }}>
               <Icon size={15} />
@@ -685,7 +726,6 @@ const AppCards = ({ items, dark }) => (
 /* ─── CASE STUDY PANEL — unified order across all 4 sections ─────────────── */
 const CaseStudyPanel = ({ cs, dark }) => (
   <div className="grid grid-cols-1 gap-10">
-
     {/* 1. Header */}
     <Reveal>
       <span className="text-xs font-bold uppercase tracking-[0.3em] block mb-3" style={{ color: GREEN }}>{cs.num} — {cs.tag}</span>
@@ -717,7 +757,7 @@ const CaseStudyPanel = ({ cs, dark }) => (
       </Reveal>
     )}
 
-    {/* 5a. Thermal drag slider (01) */}
+    {/* 5a. Thermal drag slider (01 & 02) */}
     {cs.thermal && (
       <Reveal delay={80}>
         <div className={`rounded-2xl p-5 border ${dark ? "bg-[#1C1C24] border-zinc-800" : "bg-white border-zinc-200"}`}>
@@ -726,7 +766,7 @@ const CaseStudyPanel = ({ cs, dark }) => (
       </Reveal>
     )}
 
-    {/* 5b. Thermal photo compare (02 03 04) */}
+    {/* 5b. Thermal photo compare (03 04) */}
     {cs.thermalCompare && (
       <Reveal delay={80}>
         <div className={`rounded-2xl p-6 border ${dark ? "bg-[#1C1C24] border-zinc-800" : "bg-white border-zinc-200"}`}>
@@ -749,39 +789,8 @@ const CaseStudyPanel = ({ cs, dark }) => (
       </Reveal>
     )}
 
-    {/* 7. Gallery — 300px, same height in all sections */}
-    {cs.gallery && (
-      <Reveal delay={120}>
-        <div className={`grid gap-4 ${cs.gallery.length >= 4 ? "grid-cols-2 md:grid-cols-4" : cs.gallery.length === 3 ? "grid-cols-1 md:grid-cols-3" : "grid-cols-2"}`}>
-          {cs.gallery.map((g) => {
-            const [hov, setHov] = useState(false);
-            return (
-              <div key={g.caption}
-                onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-                className="relative rounded-2xl overflow-hidden border cursor-default transition-all duration-350"
-                style={{
-                  height: 300,
-                  borderColor: hov ? `${GREEN}55` : "rgba(255,255,255,0.10)",
-                  transform: hov ? "translateY(-4px) scale(1.01)" : "none",
-                  boxShadow: hov ? `0 16px 40px rgba(0,0,0,0.4)` : "none",
-                }}>
-                <img src={g.img} alt={g.caption}
-                  className="absolute inset-0 w-full h-full transition-transform duration-500"
-                  style={{ objectFit: "cover", background: "#111118", transform: hov ? "scale(1.05)" : "scale(1)" }} />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none transition-opacity duration-300"
-                  style={{ opacity: hov ? 1 : 0.4 }} />
-                <div className="absolute top-0 left-0 right-0 h-[2px] pointer-events-none transition-opacity duration-300"
-                  style={{ background: `linear-gradient(to right, ${GREEN}, transparent)`, opacity: hov ? 1 : 0 }} />
-                <span className="absolute bottom-4 left-4 right-4 text-sm font-bold leading-snug pointer-events-none transition-all duration-300"
-                  style={{ opacity: hov ? 1 : 0, color: GREEN, transform: hov ? "none" : "translateY(5px)" }}>
-                  {g.caption}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-      </Reveal>
-    )}
+    {/* 7. Gallery — centered single item or grid */}
+    {cs.gallery && <Gallery items={cs.gallery} dark={dark} />}
 
     {/* 8. Applications photo grid */}
     {cs.applications && cs.applications[0]?.img && (
@@ -797,7 +806,8 @@ const CaseStudyPanel = ({ cs, dark }) => (
                   borderColor: hov ? `${GREEN}60` : "rgba(255,255,255,0.1)",
                   transform: hov ? "translateY(-5px) scale(1.02)" : "none",
                   boxShadow: hov ? `0 20px 50px rgba(0,0,0,0.45), 0 0 30px ${GREEN}18` : "none",
-                }}>
+                }}
+              >
                 <img src={a.img} alt={a.label}
                   className="absolute inset-0 w-full h-full transition-transform duration-500"
                   style={{ objectFit: "cover", background: "#111118", transform: hov ? "scale(1.07)" : "scale(1)" }} />
@@ -850,8 +860,7 @@ const AutomotiveCaseStudiesPage = () => {
   return (
     <div className={`min-h-screen transition-colors duration-300 ${dark ? "bg-[#14141B] text-[#B8B7A4]" : "bg-[#F0EFEA] text-[#14141B]"}`}
       style={{ fontFamily: FONT }}>
-
-      {/* ── HERO ─────────────────────────────────────────────────────────── */}
+      {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative min-h-[72vh] flex items-end overflow-hidden bg-[#14141B]">
         <div className="absolute inset-0"
           style={{ background: "radial-gradient(ellipse 80% 55% at 65% 35%, rgba(148,195,86,0.09) 0%, transparent 65%), radial-gradient(ellipse 40% 30% at 15% 75%, rgba(217,254,66,0.05) 0%, transparent 60%)" }} />
@@ -860,17 +869,15 @@ const AutomotiveCaseStudiesPage = () => {
           backgroundSize: "56px 56px",
         }} />
         <div className="absolute inset-0 bg-gradient-to-t from-[#14141B] via-[#14141B]/20 to-transparent" />
-
         <Link to="/industries/automotive"
           className="absolute top-32 left-8 z-10 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/50 hover:text-[#94C356] transition-colors">
           <FaArrowLeft size={10} /> Automotive
         </Link>
-
         <div className="relative z-10 container mx-auto px-6 max-w-6xl pb-16 pt-40">
           <Reveal>
             <span className="text-xs font-bold uppercase tracking-[0.3em] block mb-4" style={{ color: GREEN }}>4.3 — Automotive / Case Studies</span>
             <h1 className="text-4xl md:text-7xl font-black tracking-tighter uppercase leading-none text-white mb-6 max-w-4xl">
-              Head-to-Head.<br /><span style={{ color: GREEN }}>By Product.</span>
+              Head-to-Head. <br /> <span style={{ color: GREEN }}>By Product.</span>
             </h1>
           </Reveal>
           <Reveal delay={80}>
@@ -882,7 +889,7 @@ const AutomotiveCaseStudiesPage = () => {
         </div>
       </section>
 
-      {/* ── STICKY TABS — hover to switch ────────────────────────────────── */}
+      {/* ── STICKY TABS — hover to switch ─────────────────────────────────── */}
       <div className={`sticky top-0 z-40 border-b backdrop-blur-md ${dark ? "bg-[#14141B]/92 border-zinc-800" : "bg-[#F0EFEA]/92 border-zinc-300"}`}>
         <div className="container mx-auto max-w-6xl px-6">
           <div className="flex gap-0 overflow-x-auto">
@@ -893,7 +900,8 @@ const AutomotiveCaseStudiesPage = () => {
                 <button key={cs.id}
                   onMouseEnter={() => handleTabHover(cs.id)}
                   className="relative flex items-center gap-2 px-5 py-5 text-xs font-black uppercase tracking-widest whitespace-nowrap transition-all duration-250"
-                  style={{ color: isActive ? (dark ? "#fff" : "#14141B") : (dark ? "#52525b" : "#a1a1aa") }}>
+                  style={{ color: isActive ? (dark ? "#fff" : "#14141B") : (dark ? "#52525b" : "#a1a1aa") }}
+                >
                   <Icon size={12} style={{ color: isActive ? GREEN : "currentColor", transition: "color 0.25s" }} />
                   {cs.num} — {cs.tag}
                   <span className="absolute left-0 right-0 -bottom-[1px] h-[2px] rounded-full transition-all duration-300 origin-left"
@@ -905,7 +913,7 @@ const AutomotiveCaseStudiesPage = () => {
         </div>
       </div>
 
-      {/* ── ACTIVE PANEL ─────────────────────────────────────────────────── */}
+      {/* ── ACTIVE PANEL ──────────────────────────────────────────────────── */}
       <section ref={panelRef} id="case-study-panel"
         className={`py-20 px-6 ${dark ? "bg-[#14141B]" : "bg-[#F0EFEA]"}`}>
         <div className="container mx-auto max-w-6xl">
@@ -913,40 +921,7 @@ const AutomotiveCaseStudiesPage = () => {
         </div>
       </section>
 
-      {/* ── CTA ──────────────────────────────────────────────────────────── */}
-      <section className={`py-24 px-6 border-t ${dark ? "bg-[#14141B] border-zinc-800" : "bg-[#F0EFEA] border-zinc-300"}`}>
-        <div className="container mx-auto max-w-6xl">
-          <div className="relative overflow-hidden bg-[#14141B] rounded-3xl p-12 md:p-20 text-center shadow-xl border border-zinc-800">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-72 h-1 rounded-full blur-md opacity-70" style={{ background: GREEN }} />
-            <div className="absolute inset-0 pointer-events-none"
-              style={{ background: `radial-gradient(ellipse 60% 50% at 50% 100%, ${GREEN}08 0%, transparent 70%)` }} />
-            <span className="text-xs font-bold uppercase tracking-[0.3em] block mb-4" style={{ color: GREEN }}>// Request Automotive Evaluation Kit</span>
-            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-white mb-6 max-w-2xl mx-auto">
-              Ready to bring Voltcore into your platform?
-            </h2>
-            <p className="text-white/55 max-w-lg mx-auto mb-10 text-sm leading-relaxed">
-              Sample fabrics, Technical Data Sheets, and dedicated hardware integration engineering support for qualified OEM and Tier-1 advanced development teams.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/contact"
-                className="inline-flex items-center gap-2 font-black text-xs uppercase tracking-widest px-8 py-4 rounded-full transition-all duration-300 hover:scale-105"
-                style={{ background: GREEN, color: "#14141B" }}
-                onMouseEnter={e => { e.currentTarget.style.background = NEON; }}
-                onMouseLeave={e => { e.currentTarget.style.background = GREEN; }}>
-                Request Sample Fabrics &amp; TDS <FaArrowRight size={10} />
-              </Link>
-              <Link to="/industries/automotive"
-                className="inline-flex items-center gap-2 border border-white/20 text-white font-black text-xs uppercase tracking-widest px-8 py-4 rounded-full transition-all duration-300 hover:border-[#94C356] hover:text-[#94C356]">
-                Back to Automotive Overview
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <style>{`
-        @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }
-      `}</style>
+      <style>{`@keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }`}</style>
     </div>
   );
 };

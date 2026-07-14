@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { 
-  FaArrowRight, FaArrowUp, FaLinkedin, FaYoutube, 
-  FaEnvelope, FaMapMarkerAlt 
+import {
+  FaArrowRight, FaArrowUp, FaLinkedin, FaYoutube,
+  FaEnvelope, FaMapMarkerAlt
 } from "react-icons/fa";
-
 import CarSeatImg       from "../assets/website/industries/CarSeatHeating.png";
 import FoodDeliveryImg  from "../assets/website/industries/FoodDelivery.png";
 import HeatedApparelImg from "../assets/website/industries/Heated-Apparel.png";
@@ -22,7 +21,7 @@ const useInView = (threshold = 0.15) => {
   return [ref, shown];
 };
 
-const Reveal = ({ children, delay = 0, y = 28, className = "", tag: Tag = "div" }) => {
+const Reveal = ({ children, delay = 0, y = 28, className = " ", tag: Tag = "div" }) => {
   const [ref, shown] = useInView(0.1);
   return (
     <Tag ref={ref} className={className} style={{
@@ -36,12 +35,11 @@ const Reveal = ({ children, delay = 0, y = 28, className = "", tag: Tag = "div" 
 };
 
 const INDUSTRIES = [
-  { slug: "automotive", num: "01", title: "Automotive", tagline: "Cabin Cocoon heating for EV & premium interiors", detail: "Seat, panel, and console heating elements that warm the cabin in seconds, not minutes — engineered to recover the range legacy resistive heating costs an EV.", stat: "+13% EV winter range", image: CarSeatImg, accent: "#12503B" },
-  { slug: "thermal-logistics", num: "02", title: "Food & Delivery", tagline: "Active heating inserts maintaining ≥65°C for over 3 hours", detail: "Thin, flexible heating inserts built into delivery bags and food carriers — holding serving temperature across a full shift without bulk or hot spots.", stat: "3h+ heat retention", image: FoodDeliveryImg, accent: "#12503B" },
-  { slug: "heated-apparel", num: "03", title: "Heated Apparel", tagline: "Wire-free, weightless warmth for outdoor gear & workwear", detail: "CNT polymer filaments replace copper wiring inside jackets, vests, and gloves — uniform warmth with none of the stiffness, bulk, or failure points of wire.", stat: "2× battery runtime", image: HeatedApparelImg, accent: "#12503B" },
-  // CORRIGÉ ICI : Le slug passe de "underfloor-heating" à "floorheating" pour matcher ta route React Router
-  { slug: "floorheating", num: "04", title: "Underfloor Heating", tagline: "Zero-lag mats reaching 28°C in 3 minutes", detail: "Low-mass heating mats that respond almost instantly under tile, wood, or laminate — none of the thermal lag or standby losses of cable systems.", stat: "4× less energy", image: UnderfloorImg, accent: "#12503B" },
-  { slug: "defense", num: "05", title: "Defense", tagline: "Specialized thermal & EM solutions — under NDA only", detail: "Custom thermal signature and electromagnetic engineering for defense and government programs. Specifications shared under NDA.", stat: "NDA Required", image: DefenseImg, accent: "#12503B" },
+  { slug: "automotive", num: "01", title: "Automotive", tagline: "Cabin Cocoon heating for EV & premium interiors", detail: "Seat, panel, and console heating elements that warm the cabin in seconds, not minutes — engineered to recover the range legacy resistive heating costs an EV.", stat: "+13% EV winter range", image: CarSeatImg, accent: "#D9FE42" },
+  { slug: "thermal-logistics", num: "02", title: "Food & Delivery", tagline: "Active heating inserts maintaining ≥65°C for over 3 hours", detail: "Thin, flexible heating inserts built into delivery bags and food carriers — holding serving temperature across a full shift without bulk or hot spots.", stat: "3h+ heat retention", image: FoodDeliveryImg, accent: "#D9FE42" },
+  { slug: "heated-apparel", num: "03", title: "Heated Apparel", tagline: "Wire-free, weightless warmth for outdoor gear & workwear", detail: "CNT polymer filaments replace copper wiring inside jackets, vests, and gloves — uniform warmth with none of the stiffness, bulk, or failure points of wire.", stat: "2× battery runtime", image: HeatedApparelImg, accent: "#D9FE42" },
+  { slug: "floorheating", num: "04", title: "Underfloor Heating", tagline: "Zero-lag mats reaching 28°C in 3 minutes", detail: "Low-mass heating mats that respond almost instantly under tile, wood, or laminate — none of the thermal lag or standby losses of cable systems.", stat: "4× less energy", image: UnderfloorImg, accent: "#D9FE42" },
+  { slug: "defense", num: "05", title: "Defense", tagline: "Specialized thermal & EM solutions — under NDA only", detail: "Custom thermal signature and electromagnetic engineering for defense and government programs. Specifications shared under NDA.", stat: "NDA Required", image: DefenseImg, accent: "#D9FE42" },
 ];
 
 const Footer = () => (
@@ -67,15 +65,15 @@ const Footer = () => (
       <div>
         <h4 className="text-xs font-bold uppercase tracking-widest text-[#14141B] dark:text-white mb-4">// Sitemap</h4>
         <ul className="flex flex-col gap-2.5">
-          {[["Home","/"],["Technology","/technology"],["Industries","/industries"],["About us","/about"],["News","/news"],["Contact","/contact"]].map(([l,to]) => (
+          {[["Home", "/"],["Technology", "/technology"],["Industries", "/industries"],["About us", "/about"],["News", "/news"],["Contact", "/contact"]].map(([l,to])=>(
             <li key={to}><Link to={to} className="text-sm text-[#8a8880] hover:text-[#D9FE42] transition-colors">{l}</Link></li>
           ))}
         </ul>
       </div>
       <div>
-        <h4 className="text-xs font-bold uppercase tracking-widest text-[#14141B] dark:text-white mb-4">// Sitemap</h4>
+        <h4 className="text-xs font-bold uppercase tracking-widest text-[#14141B] dark:text-white mb-4">// Platforms</h4>
         <ul className="flex flex-col gap-2.5">
-          {[["ActiveFil™","/technology"],["TargetHeat™","/technology"],["SensiTerm","/technology"]].map(([l,to]) => (
+          {[["ActiveFil™", "/technology"],["TargetHeat™", "/technology"],["SensiTerm", "/technology"]].map(([l,to])=>(
             <li key={l}><Link to={to} className="text-sm text-[#8a8880] hover:text-[#D9FE42] transition-colors">{l}</Link></li>
           ))}
         </ul>
@@ -107,7 +105,7 @@ const Footer = () => (
 const Industries = () => {
   const [active, setActive] = useState(0);
   const current = INDUSTRIES[active];
-
+  
   return (
     <div className="min-h-screen bg-[#F2F0EA] dark:bg-[#0E0E13] text-[#14141B] dark:text-white">
       <section id="industries-hero" className="relative w-full min-h-[88vh] flex items-center overflow-hidden bg-[#14141B]">
@@ -120,7 +118,7 @@ const Industries = () => {
         <div className="relative z-10 container mx-auto px-6 md:px-12 max-w-6xl pt-32 pb-24">
           <span className="text-xs tracking-[0.18em] uppercase font-bold block mb-6 text-[#D9FE42]">04 // Industries</span>
           <Reveal>
-            <h1 className="text-5xl md:text-6xl font-black tracking-tighter leading-[0.9] text-white uppercase mb-6">Heating Solutions<br /><span style={{ color: "#D9FE42" }}>Across Industries</span></h1>
+            <h1 className="text-5xl md:text-6xl font-black tracking-tighter leading-[0.9] text-white uppercase mb-6">Heating Solutions <br /> <span style={{ color: "#D9FE42" }}>Across Industries</span></h1>
           </Reveal>
           <Reveal delay={120}>
             <p className="text-base leading-relaxed max-w-2xl mb-10" style={{ color: "#B8B7A4" }}>One conductive polymer platform powering applications across automotive, apparel, logistics, residential heating and defence. Explore how the same technology adapts to completely different industries.</p>
@@ -197,7 +195,6 @@ const Industries = () => {
               </div>
             </div>
           </div>
-          
           <div className="md:hidden flex flex-col gap-4">
             {INDUSTRIES.map((ind) => (
               <Link key={ind.slug} to={`/industries/${ind.slug}`} className="relative block w-full h-[300px] rounded-2xl overflow-hidden bg-[#14141B]">
@@ -214,17 +211,6 @@ const Industries = () => {
             ))}
           </div>
         </div>
-      </section>
-
-      <section className="py-24 px-6 bg-[#0E0E13] border-t border-white/10">
-        <Reveal>
-          <div className="container mx-auto max-w-3xl text-center">
-            <div className="text-[11px] tracking-[0.3em] uppercase text-[#12503B] font-mono mb-5">// Custom Applications</div>
-            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-white mb-5 leading-tight">Don't see your industry?</h2>
-            <p className="text-[#B8B7A4] mb-10 max-w-md mx-auto text-sm leading-relaxed">Voltcore's polymer heating platform adapts to any surface, geometry, or thermal requirement. Let's discuss your application.</p>
-            <Link to="/#contact-form" className="inline-flex items-center gap-2 bg-[#D9FE42] text-[#14141B] font-black text-xs uppercase tracking-widest px-8 py-4 rounded-full hover:bg-[#12503B] hover:text-white transition-all duration-300 hover:scale-105">Contact Our Engineering Team <FaArrowRight size={10} /></Link>
-          </div>
-        </Reveal>
       </section>
 
       <Footer />
