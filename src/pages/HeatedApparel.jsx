@@ -47,25 +47,19 @@ const PROBLEMS = [
 const HOTSPOTS = [
   {
     id: "chest",
-    x: 28, y: 42,
+    x: 32, y: 40,
     num: "01",
     title: "Chest Heating Matrices",
     desc: "CNT polymer filaments woven directly into the insulation layer. ΔT = 6°C across the full zone — no hot spots, no cold corners.",
   },
   {
     id: "back",
-    x: 72, y: 38,
+    x: 72, y: 40,
     num: "02",
     title: "Back Heating Zone",
     desc: "Full-coverage back pad. Homogeneous warmth from collar to waist — 120–250 g/m² fabric weight, invisible under any outer shell.",
   },
-  {
-    id: "power",
-    x: 30, y: 72,
-    num: "03",
-    title: "5V–12V Power Interface",
-    desc: "Compatible with standard consumer power banks. At max power on 7.4V / 3500mAh: 2h 50min continuous — 50 minutes longer than carbon competitors.",
-  },
+
 ];
 
 const POCS = [
@@ -269,7 +263,7 @@ const HeatedApparel = () => {
       <section className={`py-24 px-6 ${dark ? "bg-[#14141B]" : "bg-[#F0EFEA]"}`}>
         <div className="container mx-auto max-w-6xl">
           <div className="mb-14">
-            <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#F07E26] block mb-3">
+            <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#94C356] block mb-3">
               5.1 // The Client Problem
             </span>
             <h2 className={`text-4xl md:text-5xl font-black uppercase tracking-tight ${dark ? "text-white" : "text-[#14141B]"}`}>
@@ -288,7 +282,7 @@ const HeatedApparel = () => {
                       : "bg-[#E8E7E0] border-zinc-300 hover:border-[#F07E26]/40 hover:shadow-md"
                   }`}
                 >
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-[#F07E26] mb-6 ${dark ? "bg-[#14141B]" : "bg-[#D8D7CF]"}`}>
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-[#94C356] mb-6 ${dark ? "bg-[#14141B]" : "bg-[#D8D7CF]"}`}>
                     <Icon size={18} />
                   </div>
                   <span className={`text-[10px] font-black uppercase tracking-widest block mb-2 ${dark ? "text-zinc-500" : "text-zinc-400"}`}>
@@ -471,33 +465,7 @@ const HeatedApparel = () => {
       </section>
 
       {/* ── 6. CTA ──────────────────────────────────────────────────────── */}
-      <section className={`py-24 px-6 border-t ${dark ? "bg-[#14141B] border-zinc-800" : "bg-[#F0EFEA] border-zinc-300"}`}>
-        <div className="container mx-auto max-w-6xl">
-          <div className="relative overflow-hidden bg-[#14141B] rounded-3xl p-12 md:p-20 text-center shadow-xl border border-zinc-800">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-72 h-1 bg-[#94C356] blur-sm opacity-60 rounded-full" />
-            <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#94C356] block mb-4">
-              // Request Heated Apparel Evaluation Kit
-            </span>
-            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-white mb-6 max-w-2xl mx-auto">
-              Ready to bring Voltcore into your product line?
-            </h2>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 bg-[#94C356] text-[#14141B] font-black text-xs uppercase tracking-widest px-8 py-4 rounded-full hover:bg-[#D9FE42] transition-all duration-300"
-              >
-                Request Samples & TDS <FaArrowRight size={10} />
-              </Link>
-              <Link
-                to="/industries/heated-apparel/case-studies"
-                className="inline-flex items-center gap-2 border border-white/20 text-white font-black text-xs uppercase tracking-widest px-8 py-4 rounded-full hover:border-[#94C356] hover:text-[#94C356] transition-all duration-300"
-              >
-                View Case Studies <FaArrowRight size={10} />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+ 
 
       <style>{`
         @keyframes ping { 75%,100%{transform:scale(2);opacity:0} }

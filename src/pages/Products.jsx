@@ -15,12 +15,12 @@ import {
 } from "react-icons/fa";
 
 // Industry photos — same imports already used in each industry page.
-import AutomotiveHero  from "../assets/website/industries/automotive-hero.jpg";
-import LivreurImg      from "../assets/website/industries/Livreur.png";
-import ScootImg        from "../assets/website/industries/Scoot.png";
-import BImg            from "../assets/website/industries/B.png";
-import ApparelHero     from "../assets/website/industries/image40.png";
-import FloorHeroImage  from "../assets/website/industries/underfloor-Heating2.png";
+import AutomotiveHero from "../assets/website/industries/automotive-hero.jpg";
+import LivreurImg from "../assets/website/industries/Livreur.png";
+import ScootImg from "../assets/website/industries/Scoot.png";
+import BImg from "../assets/website/industries/B.png";
+import ApparelHero from "../assets/website/industries/image40.png";
+import FloorHeroImage from "../assets/website/industries/underfloor-Heating2.png";
 
 /* ─── COLORS ─────────────────────────────────────────────────────────────── */
 const GREEN = "#94C356";
@@ -222,8 +222,8 @@ const Footer = () => (
 /* ─── VALUE CHAIN SECTION ───────────────────────────────────────────────── */
 const StepIcon = ({ num, dark }) => {
   const color = dark ? "#d9fe42" : "#12503c";
-  
-  switch(num) {
+
+  switch (num) {
     case "01":
       return (
         <svg viewBox="0 0 100 60" className="w-full h-16 my-2 opacity-80" fill="none" stroke={color} strokeWidth="1.5">
@@ -311,8 +311,8 @@ const ValueChainSection = () => {
                   onMouseEnter={() => setHovered(i)}
                   onMouseLeave={() => setHovered(i)}
                   style={{
-                    background: active 
-                      ? (dark ? "#22291a" : "rgba(217,254,66,0.08)") 
+                    background: active
+                      ? (dark ? "#22291a" : "rgba(217,254,66,0.08)")
                       : (dark ? "#1c1c24" : "white"),
                     borderColor: active ? `${NEON}60` : dark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.07)",
                     transform: active ? "translateY(-6px)" : "translateY(0)",
@@ -330,9 +330,9 @@ const ValueChainSection = () => {
                       >
                         {step.num}
                       </div>
-                      
+
                       {i !== VALUECHAIN.length - 1 && (
-                        <div 
+                        <div
                           className="hidden lg:block text-lg font-light translate-x-7"
                           style={{ color: active ? NEON : dark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.15)" }}
                         >
@@ -418,9 +418,9 @@ const INDUSTRY_PRODUCTS = [
     hero: AutomotiveHero,
     items: [
       { num: "01", title: "Seat Heating & Presence Detection", desc: "2-in-1 heating and occupancy sensing woven into the seat matrix.", x: 30, y: 64 },
-      { num: "02", title: "Heated Sensing / Touch Elements",   desc: "Touch controls incorporated directly into the heated surface.", x: 57, y: 34 },
-      { num: "03", title: "Heated Surfaces",                    desc: "Armrests, door panels, gloveboxes and cupholders.", x: 89, y: 47 },
-      { num: "04", title: "Heated Door Panel",                  desc: "Ultra-thin heating fabric beneath the door card A-surface.", x: 7, y: 87 },
+      { num: "02", title: "Heated Sensing / Touch Elements", desc: "Touch controls incorporated directly into the heated surface.", x: 57, y: 34 },
+      { num: "03", title: "Heated Surfaces", desc: "Armrests, door panels, gloveboxes and cupholders.", x: 89, y: 47 },
+      { num: "04", title: "Heated Door Panel", desc: "Ultra-thin heating fabric beneath the door card A-surface.", x: 7, y: 87 },
     ],
   },
   {
@@ -447,12 +447,12 @@ const INDUSTRY_PRODUCTS = [
     visual: "grid",
     hero: ApparelHero,
     items: [
-      { icon: FaMountain,         title: "Outdoor",               desc: "Hiking, fishing, hunting, etc." },
-      { icon: FaMotorcycle,       title: "Motorcycle",             desc: "Jackets, vests, gloves, liners, trousers." },
-      { icon: FaRunning,          title: "Sports & Performance",    desc: "Skiwear, cycling, running, sailing." },
-      { icon: FaHardHat,          title: "Workwear & Industrial",   desc: "Construction, logistics, cold storage, etc." },
-      { icon: FaBriefcaseMedical, title: "Medical & Wellness",      desc: "Back warmers, therapeutic heat pads, recovery garments." },
-      { icon: FaGem,              title: "Accessories",             desc: "Gloves, socks, insoles, scarves, collars, heated cushions." },
+      { icon: FaMountain, title: "Outdoor", desc: "Hiking, fishing, hunting, etc." },
+      { icon: FaMotorcycle, title: "Motorcycle", desc: "Jackets, vests, gloves, liners, trousers." },
+      { icon: FaRunning, title: "Sports & Performance", desc: "Skiwear, cycling, running, sailing." },
+      { icon: FaHardHat, title: "Workwear & Industrial", desc: "Construction, logistics, cold storage, etc." },
+      { icon: FaBriefcaseMedical, title: "Medical & Wellness", desc: "Back warmers, therapeutic heat pads, recovery garments." },
+      { icon: FaGem, title: "Accessories", desc: "Gloves, socks, insoles, scarves, collars, heated cushions." },
     ],
   },
   {
@@ -714,7 +714,7 @@ const ComparisonSection = () => {
                   <td className="p-5 text-xs font-black uppercase tracking-tight w-1/4" style={{ color: dark ? "white" : BLACK }}>
                     {item.name}
                   </td>
-                  
+
                   <td className="p-5 text-xs font-medium leading-relaxed w-2/5">
                     <div className="flex items-start gap-2.5" style={{ color: dark ? NEON : DKGREEN }}>
                       <span className="font-black text-sm">✓</span>
@@ -816,11 +816,17 @@ export default function Products() {
           </div>
         </section>
 
-        <ValueChainSection />
+        <div id="value-chain">
+          <ValueChainSection />
+        </div>
 
-        <IndustryProductsSection />
+        <div id="industry-products">
+          <IndustryProductsSection />
+        </div>
 
-        <ComparisonSection />
+        <div id="comparison">
+          <ComparisonSection />
+        </div>
 
         <Footer />
       </main>

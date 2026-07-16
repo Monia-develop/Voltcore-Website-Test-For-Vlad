@@ -2,9 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import {
   FaArrowLeft, FaArrowRight, FaBolt, FaWeightHanging,
-  FaThermometerHalf, FaClock, FaCheckCircle, FaLayerGroup,
+  FaThermometerHalf, FaClock, FaCheckCircle, FaLayerGroup, FaExpand, FaTimes,
 } from "react-icons/fa";
-
 import Img34        from "../assets/website/industries/image34.png";
 import Img35        from "../assets/website/industries/image35.png";
 import Img36        from "../assets/website/industries/image36.png";
@@ -17,7 +16,7 @@ const NEON   = "#D9FE42";
 const ORANGE = "#F07E26";
 const FONT   = "ui-sans-serif, system-ui, sans-serif";
 
-/* ─── HOOKS ───────────────────────────────────────────────────────────────── */
+/* ── HOOKS ───────────────────────────────────────────────────────────────── */
 const useInView = (threshold = 0.15) => {
   const ref = useRef(null);
   const [shown, setShown] = useState(false);
@@ -41,6 +40,51 @@ const Reveal = ({ children, delay = 0, y = 20, className = "" }) => {
     </div>
   );
 };
+
+/* ─── LIGHTBOX ─────────────────────────────────────────────────────────── */
+const LightboxCtx = React.createContext(() => {});
+const LightboxProvider = ({ children }) => {
+  const [item, setItem] = useState(null);
+  useEffect(() => {
+    if (!item) return;
+    const onKey = (e) => { if (e.key === "Escape") setItem(null); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [item]);
+  return (
+    <LightboxCtx.Provider value={setItem}>
+      {children}
+      <div
+        className="fixed inset-0 z-[999] flex items-center justify-center p-6 md:p-16 transition-all duration-300"
+        style={{
+          background: "rgba(10,10,13,0.92)",
+          backdropFilter: "blur(6px)",
+          opacity: item ? 1 : 0,
+          pointerEvents: item ? "auto" : "none",
+        }}
+        onClick={() => setItem(null)}
+      >
+        {item && (
+          <div className="relative max-w-5xl w-full" onClick={e => e.stopPropagation()}
+            style={{ animation: "voltcore-lb-in 0.35s cubic-bezier(.22,.61,.36,1)" }}>
+            <img src={item.img} alt={item.caption} className="w-full max-h-[80vh] object-contain rounded-xl" />
+            {item.caption && (
+              <p className="text-center text-white/70 text-xs font-bold uppercase tracking-widest mt-4">{item.caption}</p>
+            )}
+            <button
+              onClick={() => setItem(null)}
+              className="absolute -top-4 -right-4 w-10 h-10 rounded-full flex items-center justify-center text-[#14141B] shadow-xl transition-transform duration-200 hover:scale-110"
+              style={{ background: NEON }}>
+              <FaTimes size={14} />
+            </button>
+          </div>
+        )}
+      </div>
+      <style>{`@keyframes voltcore-lb-in { from { opacity:0; transform: scale(.96) translateY(8px);} to { opacity:1; transform:none; } }`}</style>
+    </LightboxCtx.Provider>
+  );
+};
+const useLightbox = () => React.useContext(LightboxCtx);
 
 /* ─── ANIMATED COUNTER ────────────────────────────────────────────────────── */
 const CountUp = ({ to, suffix = "", prefix = "", duration = 1000 }) => {
@@ -66,20 +110,50 @@ const CountUp = ({ to, suffix = "", prefix = "", duration = 1000 }) => {
   return <span ref={ref}>{prefix}{val}{suffix}</span>;
 };
 
-/* ─── DATA: 2 CASE STUDIES FROM PDF ────────────────────────────────────────── */
+/* ─── GALLERY TILE ─────────────────────────────────────────────────────── */
+const GalleryTile = ({ img, caption, dark, feature = false }) => {
+  const openLightbox = useLightbox();
+  return (
+    <div className={`rounded-2xl overflow-hidden border transition-all duration-300 group ${dark ? "border-zinc-800 hover:border-zinc-700" : "border-zinc-200 hover:border-zinc-300"}`}>
+      <div
+        className={`relative overflow-hidden cursor-zoom-in flex items-center justify-center ${dark ? "bg-[#0c0c11]" : "bg-[#eeede7]"}`}
+        style={{ height: feature ? 480 : 280 }}
+        onClick={() => openLightbox({ img, caption })}
+      >
+        {feature && (
+          <div className="absolute inset-0 opacity-[0.05]" style={{
+            backgroundImage: "linear-gradient(rgba(255,255,255,.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.4) 1px, transparent 1px)",
+            backgroundSize: "34px 34px",
+          }} />
+        )}
+        <img src={img} alt={caption}
+          className={`relative ${feature ? "max-w-[86%] max-h-[86%] w-auto h-auto" : "w-full h-full"} object-contain transition-transform duration-500 group-hover:scale-[1.04]`} />
+        <span className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center bg-black/45 backdrop-blur-sm text-white/70 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <FaExpand size={11} />
+        </span>
+      </div>
+      <div className={`px-4 py-3 border-t flex items-center justify-between gap-3 ${dark ? "border-zinc-800 bg-[#111118]" : "border-zinc-100 bg-[#fafaf8]"}`}>
+        <span className={`text-[11px] font-bold ${dark ? "text-zinc-400" : "text-zinc-500"}`}>{caption}</span>
+        <span className={`text-[9px] font-black uppercase tracking-widest shrink-0 ${dark ? "text-zinc-600" : "text-zinc-400"}`}>Click to enlarge</span>
+      </div>
+    </div>
+  );
+};
+
+/* ── DATA: 2 CASE STUDIES FROM PDF ───────────────────────────────────────── */
 const CASE_STUDIES = [
   {
     id: "copper",
     num: "01",
     icon: FaBolt,
     tag: "vs Copper Heater",
-    title: "Voltcore vs Copper Wire Heater",
+    title: "Copper Wire Heater vs Voltcore",
     tagline: "Same energy input (10.4W @ 7V). Voltcore reaches higher temperature, faster, with uniform heat distribution.",
     headline: "+10°C higher temperature · ~60s faster to comfort · 3/3 testers report uniform heat.",
     kpis: [
-      { val: 10, suffix: "°C", label: "Higher temperature", prefix: "+" },
-      { val: 60, suffix: " s", label: "Faster to comfort",   prefix: "~" },
-      { val: 3,  suffix: "/3", label: "Testers: uniform heat", prefix: "" },
+      { val: 10, suffix: "°C", label: "Higher temperature", prefix: "+ " },
+      { val: 60, suffix: "s",  label: "Faster to comfort",   prefix: "~ " },
+      { val: 3,  suffix: "/3", label: "Testers: uniform heat", prefix: " " },
     ],
     bullets: [
       { icon: FaThermometerHalf, title: "Higher peak temperature", desc: "Voltcore reaches 46°C vs 36.3°C for copper — at the same 10.4W energy input." },
@@ -124,9 +198,9 @@ const CASE_STUDIES = [
       { label: "Comfort",      volt: "1:36", copper: "2:37" },
     ],
     footNote: "ΔT = 6°C (Voltcore) vs 16°C (copper) — uniform heat, no hot spots.",
-    images: [
-      { src: Img37, label: "Outdoor & Hiking", sub: "Jacket with Voltcore chest heating zones — uniform warmth in extreme cold" },
-      { src: Img35, label: "Fishing & Sport", sub: "Flexible textile heating adapts to any outer garment geometry" },
+    gallery: [
+      { img: Img37, caption: "Outdoor & Hiking — Jacket with Voltcore chest heating zones" },
+      { img: Img35, caption: "Fishing & Sport — Flexible textile heating adapts to any garment" },
     ],
   },
   {
@@ -134,13 +208,13 @@ const CASE_STUDIES = [
     num: "02",
     icon: FaWeightHanging,
     tag: "vs Carbon Ink Heater",
-    title: "Voltcore vs Carbon Ink Heater",
+    title: "Carbon Ink Heater vs Voltcore",
     tagline: "Same temperature performance, dramatically less energy. 50 extra minutes of runtime on the same battery.",
     headline: "~20% less energy · +50 min runtime · same thermal performance.",
     kpis: [
-      { val: 20, suffix: "%", label: "Less energy consumption", prefix: "−" },
-      { val: 50, suffix: " min", label: "Extra runtime",          prefix: "+" },
-      { val: 2,  suffix: "h 50", label: "Total runtime (Voltcore)", prefix: "" },
+      { val: 20, suffix: "%",   label: "Less energy consumption", prefix: "− " },
+      { val: 50, suffix: "min", label: "Extra runtime",           prefix: "+ " },
+      { val: 2,  suffix: "h 50", label: "Total runtime (Voltcore)", prefix: " " },
     ],
     bullets: [
       { icon: FaBolt,          title: "20% less energy at same temp",  desc: "Voltcore draws 8.88W vs 12.79W for carbon ink — same temperature curve, 30% less power density." },
@@ -199,9 +273,9 @@ const CASE_STUDIES = [
       ],
     },
     footNote: "Same temperature, 20% less energy → 50 minutes of additional runtime.",
-    images: [
-      { src: Img36, label: "Workwear & Industrial", sub: "Construction & cold storage — Voltcore integrated in high-vis safety vest" },
-      { src: Img34, label: "Medical & Wellness", sub: "Therapeutic back warmer — uniform heat across full lumbar surface, no hotspots" },
+    gallery: [
+      { img: Img36, caption: "Workwear & Industrial — Construction & cold storage safety vest" },
+      { img: Img34, caption: "Medical & Wellness — Therapeutic back warmer with uniform heat" },
     ],
   },
 ];
@@ -257,9 +331,7 @@ const LineChart = ({ data, xKey, xLabel, yLabel, series, dark }) => {
   const [drawn, setDrawn] = useState(false);
   const [ref, shown] = useInView(0.3);
   const svgRef = useRef(null);
-
   useEffect(() => { if (shown) setTimeout(() => setDrawn(true), 100); }, [shown]);
-
   const W = 540, H = 220;
   const PAD = { top: 16, right: 16, bottom: 28, left: 34 };
   const plotW = W - PAD.left - PAD.right;
@@ -272,10 +344,8 @@ const LineChart = ({ data, xKey, xLabel, yLabel, series, dark }) => {
   const yScale = (v) => PAD.top + plotH - (v / yMax) * plotH;
   const linePath = (key) => data.map((d, i) => `${i === 0 ? "M" : "L"} ${xScale(d[xKey]).toFixed(1)} ${yScale(d[key]).toFixed(1)}`).join(" ");
   const pathLength = 999;
-
   const gridColor = dark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.07)";
   const textColor = dark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.38)";
-
   const handleMove = (e) => {
     if (!svgRef.current) return;
     const rect = svgRef.current.getBoundingClientRect();
@@ -287,7 +357,6 @@ const LineChart = ({ data, xKey, xLabel, yLabel, series, dark }) => {
     });
     setHoverIdx(closest);
   };
-
   return (
     <div ref={ref} className={`rounded-2xl p-5 border ${dark ? "bg-[#1C1C24] border-zinc-800" : "bg-white border-zinc-200"}`}>
       <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
@@ -317,7 +386,6 @@ const LineChart = ({ data, xKey, xLabel, yLabel, series, dark }) => {
           <text key={d[xKey]} x={xScale(d[xKey])} y={H - PAD.bottom + 16} textAnchor="middle" fontSize="9" fill={textColor}>{d[xKey]}</text>
         ))}
         <text x={W - PAD.right} y={H - 2} textAnchor="end" fontSize="9" fill={textColor}>{xLabel}</text>
-
         {series.map((s) => (
           <g key={s.key}>
             {s.highlight && drawn && (
@@ -330,7 +398,6 @@ const LineChart = ({ data, xKey, xLabel, yLabel, series, dark }) => {
               style={{ transition: drawn ? "stroke-dashoffset 1.4s cubic-bezier(.22,.61,.36,1)" : "none" }} />
           </g>
         ))}
-
         {hoverIdx !== null && (
           <>
             <line x1={xScale(data[hoverIdx][xKey])} x2={xScale(data[hoverIdx][xKey])}
@@ -342,7 +409,6 @@ const LineChart = ({ data, xKey, xLabel, yLabel, series, dark }) => {
           </>
         )}
       </svg>
-
       <div className={`mt-2 flex flex-wrap gap-x-5 gap-y-1 text-[11px] rounded-lg px-3 py-2 min-h-[32px] transition-opacity duration-150 ${hoverIdx === null ? "opacity-0" : "opacity-100"} ${dark ? "bg-black/25" : "bg-black/[0.04]"}`}>
         <span className={`font-black ${dark ? "text-white" : "text-[#14141B]"}`}>{xLabel}: {hoverIdx !== null ? data[hoverIdx][xKey] : "—"}</span>
         {series.map((s) => (
@@ -437,7 +503,7 @@ const PowerTable = ({ data, color, label, dark }) => (
   </div>
 );
 
-/* ─── BULLET CARD ────────────────────────────────────────────────────────────── */
+/* ── BULLET CARD ────────────────────────────────────────────────────────────── */
 const BulletCard = ({ b, dark, delay = 0 }) => {
   const [hov, setHov] = useState(false);
   const Icon = b.icon;
@@ -446,10 +512,10 @@ const BulletCard = ({ b, dark, delay = 0 }) => {
       <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
         className="h-full rounded-2xl p-6 border cursor-default transition-all duration-300"
         style={{
-          background:  hov ? (dark ? "#14141B" : "#eceae5") : (dark ? "#1C1C24" : "#fff"),
+          background: hov ? (dark ? "#14141B" : "#eceae5") : (dark ? "#1C1C24" : "#fff"),
           borderColor: hov ? GREEN : (dark ? "#3f3f46" : "#e4e4e7"),
-          transform:   hov ? "translateY(-5px)" : "none",
-          boxShadow:   hov ? `0 16px 40px rgba(148,195,86,0.14)` : "none",
+          transform: hov ? "translateY(-5px)" : "none",
+          boxShadow: hov ? `0 16px 40px rgba(148,195,86,0.14)` : "none",
         }}>
         <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-4 transition-all duration-300"
           style={{ background: hov ? `${GREEN}22` : (dark ? "#14141B" : "#F0EFEA"), color: GREEN }}>
@@ -476,8 +542,8 @@ const KpiRow = ({ kpis, dark }) => (
             className="rounded-2xl p-5 border text-center cursor-default transition-all duration-300"
             style={{
               borderColor: hov ? `${GREEN}70` : `${GREEN}25`,
-              background:  hov ? `${GREEN}12` : `${GREEN}06`,
-              transform:   hov ? "translateY(-3px) scale(1.02)" : "none",
+              background: hov ? `${GREEN}12` : `${GREEN}06`,
+              transform: hov ? "translateY(-3px) scale(1.02)" : "none",
             }}>
             <div className="text-3xl md:text-4xl font-black leading-none mb-1.5" style={{ color: GREEN }}>
               <CountUp to={kpi.val} prefix={kpi.prefix} suffix={kpi.suffix} />
@@ -515,31 +581,13 @@ const CaseStudyPanel = ({ cs, dark }) => (
       {cs.bullets.map((b, i) => <BulletCard key={b.title} b={b} dark={dark} delay={i * 80} />)}
     </div>
 
-    {/* 3b. Application images — 2 per case study */}
-    <Reveal delay={60}>
-      <div className="grid grid-cols-2 gap-4">
-        {cs.images.map(({ src, label, sub }) => (
-          <div key={label}
-            className={`group rounded-2xl overflow-hidden border cursor-default transition-all duration-300 ${dark ? "border-zinc-800" : "border-zinc-200"}`}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = `${GREEN}60`; e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = `0 20px 50px rgba(148,195,86,0.10)`; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = ""; e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}>
-            <div className="relative overflow-hidden" style={{ height: 240 }}>
-              <img src={src} alt={label}
-                className="w-full h-full object-cover object-top transition-transform duration-500"
-                onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; }} />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-              <div className="absolute bottom-3 left-4 right-4">
-                <div className="text-white font-black text-sm leading-snug">{label}</div>
-                {sub && <div className="text-white/55 text-[10px] mt-0.5">{sub}</div>}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </Reveal>
+    {/* 4. Video — YouTube + local animation (MOVED BEFORE CHART) */}
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <YouTubeEmbed dark={dark} />
+      <JacketVideo dark={dark} />
+    </div>
 
-    {/* 4. Chart + bars */}
+    {/* 5. Chart + bars */}
     {cs.chart && (
       <Reveal delay={100}>
         <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-5">
@@ -553,10 +601,10 @@ const CaseStudyPanel = ({ cs, dark }) => (
       </Reveal>
     )}
 
-    {/* 5. Timeline (case 01 only) */}
+    {/* 6. Timeline (case 01 only) */}
     {cs.timeline && <TimelineCompare items={cs.timeline} dark={dark} />}
 
-    {/* 6. Power tables (case 02 only) */}
+    {/* 7. Power tables (case 02 only) */}
     {cs.powerTable && (
       <Reveal delay={100}>
         <div className={`rounded-2xl p-6 border ${dark ? "bg-[#1C1C24] border-zinc-800" : "bg-white border-zinc-200"}`}>
@@ -571,15 +619,21 @@ const CaseStudyPanel = ({ cs, dark }) => (
       </Reveal>
     )}
 
-    {/* 7. Video — YouTube + local animation */}
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-      <YouTubeEmbed dark={dark} />
-      <JacketVideo dark={dark} />
-    </div>
+    {/* 8. Gallery — photos at the end (like FoodDelivery) */}
+    {cs.gallery?.length > 0 && (
+      <Reveal delay={180}>
+        <span className="text-[10px] font-black uppercase tracking-widest block mb-3" style={{ color: GREEN }}>// Gallery</span>
+        <div className={`grid grid-cols-1 ${cs.gallery.length > 1 ? "md:grid-cols-2" : ""} gap-4`}>
+          {cs.gallery.map(({ img, caption }) => (
+            <GalleryTile key={caption} img={img} caption={caption} dark={dark} feature={cs.gallery.length === 1} />
+          ))}
+        </div>
+      </Reveal>
+    )}
 
-    {/* 8. Footnote */}
+    {/* 9. Footnote */}
     {cs.footNote && (
-      <Reveal delay={160}>
+      <Reveal delay={200}>
         <div className="rounded-2xl border px-6 py-4" style={{ borderColor: `${GREEN}35`, background: `${GREEN}06` }}>
           <p className={`text-xs md:text-sm font-bold ${dark ? "text-[#94C356]" : "text-[#5c7a3b]"}`}>✦ {cs.footNote}</p>
         </div>
@@ -594,126 +648,89 @@ const HeatedApparelCaseStudies = () => {
   const [activeId, setActiveId] = useState(CASE_STUDIES[0].id);
   const active = CASE_STUDIES.find((c) => c.id === activeId) || CASE_STUDIES[0];
   const panelRef = useRef(null);
-
   useEffect(() => {
     const obs = new MutationObserver(() => setDark(document.documentElement.classList.contains("dark")));
     obs.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
     return () => obs.disconnect();
   }, []);
-
   const handleTabHover = (id) => {
     if (id !== activeId) {
       setActiveId(id);
       panelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
-
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${dark ? "bg-[#14141B] text-[#B8B7A4]" : "bg-[#F0EFEA] text-[#14141B]"}`}
-      style={{ fontFamily: FONT }}>
-
-      {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="relative min-h-[72vh] flex items-end overflow-hidden bg-[#14141B]">
-        <div className="absolute inset-0"
-          style={{ background: "radial-gradient(ellipse 80% 55% at 65% 35%, rgba(148,195,86,0.09) 0%, transparent 65%), radial-gradient(ellipse 40% 30% at 15% 75%, rgba(217,254,66,0.05) 0%, transparent 60%)" }} />
-        <div className="absolute inset-0 opacity-[0.035]" style={{
-          backgroundImage: "linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px)",
-          backgroundSize: "56px 56px",
-        }} />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#14141B] via-[#14141B]/20 to-transparent" />
-
-        <Link to="/industries/heated-apparel"
-          className="absolute top-8 left-8 z-10 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/50 hover:text-[#94C356] transition-colors">
-          <FaArrowLeft size={10} /> Heated Apparel
-        </Link>
-
-        <div className="relative z-10 container mx-auto px-6 max-w-6xl pb-16 pt-40">
-          <Reveal>
-            <span className="text-xs font-bold uppercase tracking-[0.3em] block mb-4" style={{ color: GREEN }}>
-              5.3 — Heated Apparel / Case Studies
-            </span>
-            <h1 className="text-4xl md:text-7xl font-black tracking-tighter uppercase leading-none text-white mb-6 max-w-4xl">
-              Head-to-Head.<br /><span style={{ color: GREEN }}>By Heater.</span>
-            </h1>
-          </Reveal>
-          <Reveal delay={80}>
-            <p className="text-white/65 text-base md:text-lg max-w-2xl leading-relaxed">
-              Two real heated-apparel benchmarks — Voltcore CNT textile vs copper wire and carbon ink —
-              temperature curves, power draw, and runtime, side by side.
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ── STICKY TABS ──────────────────────────────────────────────────── */}
-      <div className={`sticky top-0 z-40 border-b backdrop-blur-md ${dark ? "bg-[#14141B]/92 border-zinc-800" : "bg-[#F0EFEA]/92 border-zinc-300"}`}>
-        <div className="container mx-auto max-w-6xl px-6">
-          <div className="flex gap-0 overflow-x-auto">
-            {CASE_STUDIES.map((cs) => {
-              const Icon = cs.icon;
-              const isActive = activeId === cs.id;
-              return (
-                <button key={cs.id}
-                  onMouseEnter={() => handleTabHover(cs.id)}
-                  onClick={() => handleTabHover(cs.id)}
-                  className="relative flex items-center gap-2 px-5 py-5 text-xs font-black uppercase tracking-widest whitespace-nowrap transition-all duration-250"
-                  style={{ color: isActive ? (dark ? "#fff" : "#14141B") : (dark ? "#52525b" : "#a1a1aa") }}>
-                  <Icon size={12} style={{ color: isActive ? GREEN : "currentColor", transition: "color 0.25s" }} />
-                  {cs.num} — {cs.tag}
-                  <span className="absolute left-0 right-0 -bottom-[1px] h-[2px] rounded-full transition-all duration-300 origin-left"
-                    style={{ background: GREEN, transform: isActive ? "scaleX(1)" : "scaleX(0)" }} />
-                </button>
-              );
-            })}
+    <LightboxProvider>
+      <div className={`min-h-screen transition-colors duration-300 ${dark ? "bg-[#14141B] text-[#B8B7A4]" : "bg-[#F0EFEA] text-[#14141B]"}`}
+        style={{ fontFamily: FONT }}>
+        {/* ── HERO ─────────────────────────────────────────────────────────── */}
+        <section className="relative min-h-[72vh] flex items-end overflow-hidden bg-[#14141B]">
+          <div className="absolute inset-0"
+            style={{ background: "radial-gradient(ellipse 80% 55% at 65% 35%, rgba(148,195,86,0.09) 0%, transparent 65%), radial-gradient(ellipse 40% 30% at 15% 75%, rgba(217,254,66,0.05) 0%, transparent 60%)" }} />
+          <div className="absolute inset-0 opacity-[0.035]" style={{
+            backgroundImage: "linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px)",
+            backgroundSize: "56px 56px",
+          }} />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#14141B] via-[#14141B]/20 to-transparent" />
+          <Link to="/industries/heated-apparel"
+            className="absolute top-8 left-8 z-10 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/50 hover:text-[#94C356] transition-colors">
+            <FaArrowLeft size={10} /> Heated Apparel
+          </Link>
+          <div className="relative z-10 container mx-auto px-6 max-w-6xl pb-16 pt-40">
+            <Reveal>
+              <span className="text-xs font-bold uppercase tracking-[0.3em] block mb-4" style={{ color: GREEN }}>
+                5.3 — Heated Apparel / Case Studies
+              </span>
+              <h1 className="text-4xl md:text-7xl font-black tracking-tighter uppercase leading-none text-white mb-6 max-w-4xl">
+                Head-to-Head.<br /><span style={{ color: GREEN }}>By Heater.</span>
+              </h1>
+            </Reveal>
+            <Reveal delay={80}>
+              <p className="text-white/65 text-base md:text-lg max-w-2xl leading-relaxed">
+                Two real heated-apparel benchmarks — Voltcore CNT textile vs copper wire and carbon ink —
+                temperature curves, power draw, and runtime, side by side.
+              </p>
+            </Reveal>
           </div>
-        </div>
-      </div>
+        </section>
 
-      {/* ── ACTIVE PANEL ─────────────────────────────────────────────────── */}
-      <section ref={panelRef} id="case-study-panel"
-        className={`py-20 px-6 ${dark ? "bg-[#14141B]" : "bg-[#F0EFEA]"}`}>
-        <div className="container mx-auto max-w-6xl">
-          <CaseStudyPanel key={active.id} cs={active} dark={dark} />
-        </div>
-      </section>
-
-      {/* ── CTA ──────────────────────────────────────────────────────────── */}
-      <section className={`py-24 px-6 border-t ${dark ? "bg-[#14141B] border-zinc-800" : "bg-[#F0EFEA] border-zinc-300"}`}>
-        <div className="container mx-auto max-w-6xl">
-          <div className="relative overflow-hidden bg-[#14141B] rounded-3xl p-12 md:p-20 text-center shadow-xl border border-zinc-800">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-72 h-1 rounded-full blur-md opacity-70" style={{ background: GREEN }} />
-            <div className="absolute inset-0 pointer-events-none"
-              style={{ background: `radial-gradient(ellipse 60% 50% at 50% 100%, ${GREEN}08 0%, transparent 70%)` }} />
-            <span className="text-xs font-bold uppercase tracking-[0.3em] block mb-4" style={{ color: GREEN }}>
-              // Request Heated Apparel Evaluation Kit
-            </span>
-            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-white mb-6 max-w-2xl mx-auto">
-              Ready to bring Voltcore into your product line?
-            </h2>
-            <p className="text-white/55 max-w-lg mx-auto mb-10 text-sm leading-relaxed">
-              Material samples, Technical Data Sheets, and direct engineering support for qualified apparel brands and OEM development teams.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/contact"
-                className="inline-flex items-center gap-2 font-black text-xs uppercase tracking-widest px-8 py-4 rounded-full transition-all duration-300 hover:scale-105"
-                style={{ background: GREEN, color: "#14141B" }}
-                onMouseEnter={e => { e.currentTarget.style.background = NEON; }}
-                onMouseLeave={e => { e.currentTarget.style.background = GREEN; }}>
-                Request Samples & TDS <FaArrowRight size={10} />
-              </Link>
-              <Link to="/industries/heated-apparel"
-                className="inline-flex items-center gap-2 border border-white/20 text-white font-black text-xs uppercase tracking-widest px-8 py-4 rounded-full transition-all duration-300 hover:border-[#94C356] hover:text-[#94C356]">
-                Back to Heated Apparel Overview
-              </Link>
+        {/* ── STICKY TABS ──────────────────────────────────────────────────── */}
+        <div className={`sticky top-0 z-40 border-b backdrop-blur-md ${dark ? "bg-[#14141B]/92 border-zinc-800" : "bg-[#F0EFEA]/92 border-zinc-300"}`}>
+          <div className="container mx-auto max-w-6xl px-6">
+            <div className="flex gap-0 overflow-x-auto">
+              {CASE_STUDIES.map((cs) => {
+                const Icon = cs.icon;
+                const isActive = activeId === cs.id;
+                return (
+                  <button key={cs.id}
+                    onMouseEnter={() => handleTabHover(cs.id)}
+                    onClick={() => handleTabHover(cs.id)}
+                    className="relative flex items-center gap-2 px-5 py-5 text-xs font-black uppercase tracking-widest whitespace-nowrap transition-all duration-250"
+                    style={{ color: isActive ? (dark ? "#fff" : "#14141B") : (dark ? "#52525b" : "#a1a1aa") }}>
+                    <Icon size={12} style={{ color: isActive ? GREEN : "currentColor", transition: "color 0.25s" }} />
+                    {cs.num} — {cs.tag}
+                    <span className="absolute left-0 right-0 -bottom-[1px] h-[2px] rounded-full transition-all duration-300 origin-left"
+                      style={{ background: GREEN, transform: isActive ? "scaleX(1)" : "scaleX(0)" }} />
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
-      </section>
 
-      <style>{`
-        @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }
-      `}</style>
-    </div>
+        {/* ── ACTIVE PANEL ────────────────────────────────────────────────── */}
+        <section ref={panelRef} id="case-study-panel"
+          className={`py-20 px-6 ${dark ? "bg-[#14141B]" : "bg-[#F0EFEA]"}`}>
+          <div className="container mx-auto max-w-6xl">
+            <CaseStudyPanel key={active.id} cs={active} dark={dark} />
+          </div>
+        </section>
+
+        <style>{`
+          @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }
+        `}</style>
+      </div>
+    </LightboxProvider>
   );
 };
 

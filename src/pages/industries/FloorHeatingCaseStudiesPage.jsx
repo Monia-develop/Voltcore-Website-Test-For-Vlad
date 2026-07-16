@@ -935,34 +935,7 @@ const FloorHeatingCaseStudiesPage = () => {
       </section>
 
       {/* ── CTA ─────────────────────────────────────────────────────── */}
-      <section className={`py-24 px-6 ${dark ? "bg-[#14141B]" : "bg-[#F0EFEA]"}`}>
-        <div className="container mx-auto max-w-6xl">
-          <div className="relative overflow-hidden bg-[#14141B] rounded-3xl p-12 md:p-20 text-center shadow-xl border border-zinc-800">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-72 h-1 bg-[#94C356] blur-sm opacity-60 rounded-full" />
-            <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(ellipse 60% 50% at 50% 100%, ${GREEN}08 0%, transparent 70%)` }} />
-            <span className="text-xs font-bold uppercase tracking-[0.3em] block mb-4" style={{ color: GREEN }}>// Request TargetHeat Samples</span>
-            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-white mb-6 max-w-2xl mx-auto">
-              Ready to Upgrade Your Flooring Product Line?
-            </h2>
-            <p className="text-white/55 max-w-lg mx-auto mb-10 text-sm leading-relaxed">
-              Sample meshes, Technical Data Sheets, and dedicated hardware integration engineering support for qualified flooring manufacturers and renovation specialists.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/contact"
-                className="inline-flex items-center gap-2 font-black text-xs uppercase tracking-widest px-8 py-4 rounded-full transition-all duration-300 hover:scale-105"
-                style={{ background: GREEN, color: "#14141B" }}
-                onMouseEnter={e => { e.currentTarget.style.background = NEON; }}
-                onMouseLeave={e => { e.currentTarget.style.background = GREEN; }}>
-                Request TargetHeat Samples & TDS <FaArrowRight size={10} />
-              </Link>
-              <Link to="/industries/floorheating"
-                className="inline-flex items-center gap-2 border border-white/20 text-white font-black text-xs uppercase tracking-widest px-8 py-4 rounded-full transition-all duration-300 hover:border-[#94C356] hover:text-[#94C356]">
-                Back to Floor Heating Overview
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+
       
       <style>{`
         @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }

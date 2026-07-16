@@ -42,23 +42,25 @@ const PAGE_SECTIONS = {
   ],
   "/industries": [
     { id: "industries-hero",     label: "Top" },
-    { id: "automotive",          label: "Automotive" },
-    { id: "food-delivery",       label: "Food & Delivery" },
-    { id: "heated-apparel",      label: "Heated Apparel" },
-    { id: "underfloor-heating",  label: "Underfloor Heating" },
-    { id: "defense",             label: "Defense" },
   ],
   "/products": [
-    { id: "activefil",   label: "ActiveFil" },
-    { id: "targetheat",  label: "TargetHeat" },
-    { id: "sensiterm",   label: "SensiTerm" },
+    { id: "products-hero",      label: "Top" },
+    { id: "value-chain",        label: "Value Chain" },
+    { id: "industry-products",  label: "By Industry" },
+    { id: "comparison",         label: "Comparison" },
   ]
 };
 
-// keep backward-compat alias
-const HOME_SECTIONS = PAGE_SECTIONS["/"];
+/* ── INDUSTRY SUB-PAGES — for the Industries dropdown ────────────────────── */
+const INDUSTRY_SUBPAGES = [
+  { id: "automotive",         label: "Automotive",         route: "/industries/automotive" },
+  { id: "food-delivery",      label: "Food & Delivery",    route: "/industries/thermal-logistics" },
+  { id: "heated-apparel",     label: "Heated Apparel",     route: "/industries/heated-apparel" },
+  { id: "underfloor-heating", label: "Underfloor Heating", route: "/industries/floorheating" },
+  { id: "defense",            label: "Defense",            route: "/industries/defense" },
+];
 
-/* ─── SCROLL TO SECTION ───────────────────────────────────────────────────── */
+/* ─── SCROLL TO SECTION ──────────────────────────────────────────────────── */
 const scrollTo = (sectionId) => {
   const el = document.getElementById(sectionId);
   if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -69,6 +71,7 @@ const Navbar = () => {
   const [scrolled,      setScrolled]      = useState(false);
   const [mobileOpen,    setMobileOpen]    = useState(false);
   const [activeSection, setActiveSection] = useState("");
+  const [hoveredNav,    setHoveredNav]    = useState(null);
   const location = useLocation();
   const currentSections = PAGE_SECTIONS[location.pathname] ?? [];
   const hasSections = currentSections.length > 0;
@@ -80,7 +83,7 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* scroll-spy: track active section for any page */
+  /* scroll-spy */
   useEffect(() => {
     if (!hasSections) return;
     setActiveSection(currentSections[0]?.id ?? "");
@@ -130,13 +133,12 @@ const Navbar = () => {
       >
         <div className="container mx-auto px-6 md:px-10">
           <div className="flex items-center justify-between h-[68px]">
-
             {/* LOGO */}
             <Link to="/" onClick={() => location.pathname === "/" && scrollTo("hero")} className="flex items-center gap-3 shrink-0">
               <img
                 src={Logo}
                 alt="Voltcore"
-                className={`h-7 transition-all duration-500 ${scrolled ? "dark:invert" : "invert"}`}
+                className={`h-5 transition-all duration-500 ${scrolled ? "dark:invert" : "invert"}`}
               />
             </Link>
 
@@ -147,17 +149,28 @@ const Navbar = () => {
                 const linkSections = PAGE_SECTIONS[link] ?? [];
                 const hasDropdown = linkSections.length > 0;
                 const isCurrentPage = location.pathname === link;
+                const isHovered = hoveredNav === id;
+
                 const textClass = scrolled
-                  ? active ? "text-[#14141B] dark:text-white" : "text-[#14141B]/60 dark:text-[#B8B7A4]/70 hover:text-[#14141B] dark:hover:text-white"
-                  : active ? "text-white" : "text-white/60 hover:text-white";
+                  ? active
+                    ? "text-[#14141B] dark:text-white"
+                    : "text-[#14141B]/60 dark:text-[#B8B7A4]/70 hover:text-[#14141B] dark:hover:text-white"
+                  : active
+                    ? "text-white"
+                    : "text-white/60 hover:text-white";
 
                 return (
-                  <div key={id} className="relative flex items-center group/nav">
+                  <div
+                    key={id}
+                    className="relative flex items-center"
+                    onMouseEnter={() => setHoveredNav(id)}
+                    onMouseLeave={() => setHoveredNav(null)}
+                  >
                     {/* Link */}
                     <Link
                       to={link}
                       onClick={() => isCurrentPage && scrollTo(linkSections[0]?.id)}
-                      className={`relative px-4 py-2 text-[11px] font-black uppercase tracking-[0.16em] transition-colors duration-200 rounded-full ${textClass}`}
+                      className={`relative px-4 py-2 text-[11px] font-black uppercase tracking-[0.16em] transition-colors duration-200 ${textClass}`}
                     >
                       {name}
                       {active && (
@@ -165,7 +178,7 @@ const Navbar = () => {
                       )}
                     </Link>
 
-                    {/* Chevron + dropdown — for any page that has section anchors */}
+                    {/* Chevron + dropdown */}
                     {hasDropdown && (
                       <div className="relative">
                         <button
@@ -180,10 +193,10 @@ const Navbar = () => {
                         </button>
 
                         {/* Dropdown panel */}
-                        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 pointer-events-none opacity-0 translate-y-2
-                          group-hover/nav:opacity-100 group-hover/nav:translate-y-0 group-hover/nav:pointer-events-auto
-                          transition-all duration-200 ease-out z-50">
-
+                        <div
+                          className={`absolute top-full left-1/2 -translate-x-1/2 mt-3 pointer-events-none transition-all duration-200 ease-out z-50
+                            ${isHovered ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-2 pointer-events-none"}`}
+                        >
                           {/* Arrow tip */}
                           <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45
                             bg-white dark:bg-[#1c1c24] border-l border-t border-black/8 dark:border-white/10" />
@@ -191,44 +204,83 @@ const Navbar = () => {
                           {/* Panel */}
                           <div className="relative bg-white dark:bg-[#1c1c24] border border-black/8 dark:border-white/10
                             rounded-2xl shadow-2xl shadow-black/20 dark:shadow-black/60 overflow-hidden min-w-[200px]">
-                            {linkSections.filter(s => s.label !== "Top").map(({ id: sid, label }, i) => {
-                              const isCurrent = isCurrentPage && activeSection === sid;
-                              return (
+
+                            {/* Industries dropdown — navigates to sub-pages */}
+                            {link === "/industries" ? (
+                              <>
+                                {/* Top link */}
                                 <Link
-                                  key={sid}
-                                  to={link}
-                                  onClick={(e) => {
-                                    if (isCurrentPage) {
-                                      e.preventDefault();
-                                      scrollTo(sid);
-                                    } else {
-                                      // Navigate then scroll after mount
-                                      sessionStorage.setItem("scrollTo", sid);
-                                    }
-                                  }}
+                                  to="/industries"
                                   className={`w-full flex items-center gap-3 px-5 py-3 text-left transition-colors duration-150 group/item
-                                    ${isCurrent ? "bg-[#D9FE42]/10 dark:bg-[#D9FE42]/8" : "hover:bg-black/4 dark:hover:bg-white/5"}
-                                    ${i !== 0 ? "border-t border-black/5 dark:border-white/5" : ""}`}
-                                animate-fadeIn>
+                                    ${isCurrentPage ? "bg-[#D9FE42]/10 dark:bg-[#D9FE42]/8" : "hover:bg-black/4 dark:hover:bg-white/5"}`}
+                                >
                                   <span className={`w-1.5 h-1.5 rounded-full shrink-0 transition-all duration-200
-                                    ${isCurrent
+                                    ${isCurrentPage
                                       ? "bg-[#D9FE42] shadow-[0_0_6px_rgba(217,254,66,0.8)]"
                                       : "bg-black/15 dark:bg-white/20 group-hover/item:bg-[#D9FE42]/60"}`}
                                   />
                                   <span className={`text-[10px] font-black uppercase tracking-[0.14em] transition-colors duration-150
-                                    ${isCurrent
+                                    ${isCurrentPage
                                       ? "text-[#14141B] dark:text-white"
                                       : "text-[#14141B]/60 dark:text-[#B8B7A4]/70 group-hover/item:text-[#14141B] dark:group-hover/item:text-white"}`}>
-                                    {label}
+                                    Overview
                                   </span>
-                                  {isCurrent && (
-                                    <span className="ml-auto text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-[#D9FE42] text-[#14141B]">
-                                      Here
-                                    </span>
-                                  )}
                                 </Link>
-                              );
-                            })}
+                                {/* Sub-pages */}
+                                {INDUSTRY_SUBPAGES.map((sub, i) => (
+                                  <Link
+                                    key={sub.id}
+                                    to={sub.route}
+                                    className={`w-full flex items-center gap-3 px-5 py-3 text-left transition-colors duration-150 group/item
+                                      ${i !== 0 ? "border-t border-black/5 dark:border-white/5" : ""}
+                                      hover:bg-black/4 dark:hover:bg-white/5`}
+                                  >
+                                    <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-black/15 dark:bg-white/20 group-hover/item:bg-[#D9FE42]/60 transition-all duration-200" />
+                                    <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#14141B]/60 dark:text-[#B8B7A4]/70 group-hover/item:text-[#14141B] dark:group-hover/item:text-white transition-colors duration-150">
+                                      {sub.label}
+                                    </span>
+                                  </Link>
+                                ))}
+                              </>
+                            ) : (
+                              /* Other pages — scroll to sections */
+                              linkSections.filter(s => s.label !== "Top").map(({ id: sid, label }, i) => {
+                                const isCurrent = isCurrentPage && activeSection === sid;
+                                return (
+                                  <Link
+                                    key={sid}
+                                    to={link}
+                                    onClick={(e) => {
+                                      if (isCurrentPage) {
+                                        e.preventDefault();
+                                        scrollTo(sid);
+                                      } else {
+                                        sessionStorage.setItem("scrollTo", sid);
+                                      }
+                                    }}
+                                    className={`w-full flex items-center gap-3 px-5 py-3 text-left transition-colors duration-150 group/item
+                                      ${isCurrent ? "bg-[#D9FE42]/10 dark:bg-[#D9FE42]/8" : "hover:bg-black/4 dark:hover:bg-white/5"}`}
+                                  >
+                                    <span className={`w-1.5 h-1.5 rounded-full shrink-0 transition-all duration-200
+                                      ${isCurrent
+                                        ? "bg-[#D9FE42] shadow-[0_0_6px_rgba(217,254,66,0.8)]"
+                                        : "bg-black/15 dark:bg-white/20 group-hover/item:bg-[#D9FE42]/60"}`}
+                                    />
+                                    <span className={`text-[10px] font-black uppercase tracking-[0.14em] transition-colors duration-150
+                                      ${isCurrent
+                                        ? "text-[#14141B] dark:text-white"
+                                        : "text-[#14141B]/60 dark:text-[#B8B7A4]/70 group-hover/item:text-[#14141B] dark:group-hover/item:text-white"}`}>
+                                      {label}
+                                    </span>
+                                    {isCurrent && (
+                                      <span className="ml-auto text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-[#D9FE42] text-[#14141B]">
+                                        Here
+                                      </span>
+                                    )}
+                                  </Link>
+                                );
+                              })
+                            )}
                           </div>
                         </div>
                       </div>
@@ -236,7 +288,6 @@ const Navbar = () => {
                   </div>
                 );
               })}
-
               <div className="ml-2"><DarkMode /></div>
             </nav>
 
@@ -275,15 +326,12 @@ const Navbar = () => {
           ${mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
         style={{ background: "#14141B" }}
       >
-        {/* Background neon accent */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute bottom-0 left-0 w-64 h-64 rounded-full blur-3xl opacity-10" style={{ background: "#D9FE42" }} />
           <div className="absolute top-1/3 right-0 w-48 h-48 rounded-full blur-3xl opacity-6" style={{ background: "#94C356" }} />
         </div>
 
         <div className="relative h-full flex flex-col px-8 pt-28 pb-10 overflow-y-auto">
-
-          {/* MAIN LINKS */}
           <ul className="flex flex-col gap-2 mb-8">
             {NAV_LINKS.map(({ id, name, link }, i) => (
               <li key={id}>
@@ -310,7 +358,6 @@ const Navbar = () => {
             ))}
           </ul>
 
-          {/* SECTION SHORTCUTS (mobile) — shown for any page that has sections */}
           {hasSections && (
             <div
               className="mb-8"
@@ -338,7 +385,6 @@ const Navbar = () => {
             </div>
           )}
 
-          {/* CONTACT CTA */}
           <div
             className="mt-auto"
             style={{

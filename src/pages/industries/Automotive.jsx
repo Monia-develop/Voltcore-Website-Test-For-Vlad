@@ -187,13 +187,7 @@ const Automotive = () => {
         >
           <FaArrowLeft size={10} /> Industries
         </Link>
-        <button
-          onClick={toggleDark}
-          className="absolute top-32 right-8 z-10 w-9 h-9 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition-all text-sm"
-          title="Toggle dark mode"
-        >
-          {dark ? "☀" : ""}
-        </button>
+
         <div className="relative z-10 container mx-auto px-6 max-w-6xl pb-20">
           <Reveal>
             <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#94C356] block mb-4">
@@ -228,7 +222,7 @@ const Automotive = () => {
         <div className="container mx-auto max-w-6xl">
           <Reveal>
             <div className="mb-14">
-              <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#F07E26] block mb-3">4.1 // The Client Problem</span>
+              <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#94C356] block mb-3">4.1 // The Client Problem</span>
               <h2 className={`text-4xl md:text-5xl font-black uppercase tracking-tight ${dark ? "text-white" : "text-[#14141B]"}`}>
                 Three bottlenecks legacy tech can't resolve
               </h2>
@@ -246,7 +240,7 @@ const Automotive = () => {
                         : "bg-[#E8E7E0] border-zinc-300 hover:border-[#F07E26]/40 shadow-sm hover:shadow-md"
                     }`}
                   >
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-[#F07E26] mb-6 ${dark ? "bg-[#14141B]" : "bg-[#D8D7CF]"}`}>
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-[#94C356] mb-6 ${dark ? "bg-[#14141B]" : "bg-[#D8D7CF]"}`}>
                       <Icon size={18} />
                     </div>
                     <span className={`text-[10px] font-black uppercase tracking-widest block mb-2 ${dark ? "text-zinc-500" : "text-zinc-400"}`}>{p.sub}</span>

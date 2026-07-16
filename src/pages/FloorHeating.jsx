@@ -329,11 +329,7 @@ const FloorHeating = () => {
           className="absolute top-32 left-8 z-10 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/60 hover:text-[#94C356] transition-colors">
           <FaArrowLeft size={10} /> Industries
         </Link>
-        <button onClick={toggleDark}
-          className="absolute top-32 right-8 z-10 w-9 h-9 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition-all text-sm"
-          title="Toggle dark mode">
-          {dark ? "☀" : "🌙"}
-        </button>
+  
         <div className="relative z-10 container mx-auto px-6 max-w-6xl pb-20">
           <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#94C356] block mb-4">
             Residential — Underfloor Heating
@@ -359,7 +355,7 @@ const FloorHeating = () => {
       <section className={`py-24 px-6 ${dark ? "bg-[#14141B]" : "bg-[#F0EFEA]"}`}>
         <div className="container mx-auto max-w-6xl">
           <div className="mb-14">
-            <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#F07E26] block mb-3">4.1 // The Client Problem</span>
+            <span className="text-xs font-bold uppercase tracking-[0.3em] text-#94C356] block mb-3">4.1 // The Client Problem</span>
             <h2 className={`text-4xl md:text-5xl font-black uppercase tracking-tight ${dark ? "text-white" : "text-[#14141B]"}`}>
               Why Legacy Systems Fail
             </h2>
@@ -374,7 +370,7 @@ const FloorHeating = () => {
                       ? "bg-[#1C1C24] border-zinc-700 hover:border-[#F07E26]/40 shadow-none hover:shadow-[0_0_30px_rgba(240,126,38,0.08)]"
                       : "bg-[#E8E7E0] border-zinc-300 hover:border-[#F07E26]/40 shadow-sm hover:shadow-md"
                   }`}>
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-[#F07E26] mb-4 ${dark ? "bg-[#14141B]" : "bg-[#D8D7CF]"}`}>
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-[#94C356] mb-4 ${dark ? "bg-[#14141B]" : "bg-[#D8D7CF]"}`}>
                     <Icon size={16} />
                   </div>
                   <span className={`text-[9px] font-black uppercase tracking-widest block mb-2 ${dark ? "text-zinc-500" : "text-zinc-400"}`}>{p.sub}</span>
@@ -517,30 +513,7 @@ const FloorHeating = () => {
       </section>
 
       {/* ─ 6. CTA ──────────────────────────────────────────── */}
-      <section className={`py-24 px-6 border-t ${dark ? "bg-[#14141B] border-zinc-800" : "bg-[#F0EFEA] border-zinc-300"}`}>
-        <div className="container mx-auto max-w-6xl">
-          <div className="relative overflow-hidden bg-[#14141B] rounded-3xl p-12 md:p-20 text-center shadow-xl border border-zinc-800">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-72 h-1 bg-[#94C356] blur-sm opacity-60 rounded-full" />
-            <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#94C356] block mb-4">// Request TargetHeat Samples</span>
-            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-white mb-6 max-w-2xl mx-auto">
-              Ready to Upgrade Your Flooring Product Line?
-            </h2>
-            <p className="text-white/60 max-w-lg mx-auto mb-10 text-sm leading-relaxed">
-              Sample meshes, Technical Data Sheets, and dedicated integration engineering support for qualified flooring manufacturers and renovation specialists.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/contact"
-                className="inline-flex items-center gap-2 bg-[#94C356] text-[#14141B] font-black text-xs uppercase tracking-widest px-8 py-4 rounded-full hover:bg-[#D9FE42] transition-all duration-300">
-                Request TargetHeat Samples & TDS <FaArrowRight size={10} />
-              </Link>
-              <Link to="/industries/floorheating/case-studies"
-                className="inline-flex items-center gap-2 border border-white/20 text-white font-black text-xs uppercase tracking-widest px-8 py-4 rounded-full transition-all duration-300 hover:border-[#94C356] hover:text-[#94C356]">
-                View Full Case Studies
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       <style>{`
         @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }
