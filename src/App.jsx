@@ -20,7 +20,7 @@ import HeatedApparelCaseStudies from "./pages/HeatedApparelCaseStudies";
 import Technology from "./pages/Technology";
 import News from "./pages/News";
 import ThermalLogistics from "./pages/ThermalLogistics";
-import FoodDeliveryCaseStudies from "./pages/industries/FoodDeliveryCaseStudies"; 
+import FoodDeliveryCaseStudies from "./pages/industries/FoodDeliveryCaseStudies";
 import FloorHeating from "./pages/FloorHeating";
 import FloorHeatingCaseStudiesPage from "./pages/industries/FloorHeatingCaseStudiesPage";
 import Defense from "./pages/industries/Defense";

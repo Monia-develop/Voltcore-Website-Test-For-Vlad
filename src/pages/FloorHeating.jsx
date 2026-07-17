@@ -8,14 +8,14 @@ import FloorHeroImage from "../assets/website/industries/underfloor-Heating2.png
 import FloorHeatingVideo from "../assets/website/FloorHeating.mp4";
 
 /* ─── THEME ─────────────────────────────────────────────────────────────── */
-const GREEN  = "#94C356";
+const GREEN  = "#94C356"; 
 const NEON   = "#D9FE42";
 const ORANGE = "#F07E26";
 const BLACK  = "#14141B";
 const CRAFT  = "#B8B7A4";
 const CREAM  = "#F0EFEA";
-const CREAM2 = "#E8E7E0";
-
+const CREAM2 = "#E8E7E0"; 
+ 
 /* ─── DATA ──────────────────────────────────────────────────────────────── */
 const STATS = [
   { value: "3 min",   label: "20°C → 28°C Warm-Up" },
@@ -82,7 +82,7 @@ const RESIDENTIAL_POC = {
   commercial: 0,
   application: "Floor heating",
   partners: ["Tarkett", "Gerflor", "Forbo", "Karndean"],
-};
+}; 
 
 /* ─── HOOKS ─────────────────────────────────────────────────────────────── */
 const useInView = (threshold = 0.15) => {
@@ -95,7 +95,7 @@ const useInView = (threshold = 0.15) => {
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
   }, [threshold]);
-  return [ref, shown];
+  return [ref, shown]; 
 };
 
 /* ─── ANIMATED BAR ─────────────────────────────────────────────────────── */
@@ -119,7 +119,7 @@ const AnimatedBar = ({ pct, color, delay = 0, dark, label, value }) => {
             animation: shown ? "shimmer 1.8s ease infinite" : "none",
           }} />
         </div>
-      </div>
+      </div> 
     </div>
   );
 };
@@ -146,7 +146,7 @@ const POCProgressBar = ({ dark }) => {
           Residential — Floor Heating Traction
         </h4>
         <span className="text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full" style={{ background: `${GREEN}20`, color: GREEN }}>
-          [04] Residential
+          [04] Residential 
         </span>
       </div>
 
@@ -468,9 +468,9 @@ const FloorHeating = () => {
               Hover the numbered markers to explore each layer of the TargetHeat system — or open the full case studies for technical deep-dives.
             </p>
           </div>
-          <HotspotMap dark={dark} />
-        </div>
-      </section>
+          <HotspotMap dark={dark} /> 
+        </div> 
+      </section> 
 
       {/* ─ 5. POC TRACKER (Residential) ───────────────────── */}
       <section className={`py-24 px-6 border-t ${dark ? "bg-[#1C1C24] border-zinc-800" : "bg-[#E8E7E0] border-zinc-300"}`}>

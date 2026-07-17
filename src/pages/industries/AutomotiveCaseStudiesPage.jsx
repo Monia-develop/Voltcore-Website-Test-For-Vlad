@@ -23,6 +23,8 @@ import SensingLaptopPhoto    from "../../assets/website/industries/Sensing01.png
 import SensingFabricPhoto    from "../../assets/website/industries/Sensing02.png";
 import HeroVideo             from "../../assets/website/Anim2Automotive.mp4";
 import SeatsVideo            from "../../assets/website/anim1-2.mp4";
+// NOUVEL IMPORT POUR LA VIDEO
+import ThermalVideoGlobox    from "../../assets/website/ThermalVideoGlobox.mp4";
 
 /* ─── THEME ───────────────────────────────────────────────────────────────── */
 const GREEN  = "#94C356";
@@ -56,7 +58,7 @@ const Reveal = ({ children, delay = 0, y = 20, className = "" }) => {
 };
 
 /* ─── ANIMATED COUNTER ────────────────────────────────────────────────────── */
-const CountUp = ({ to, suffix = "", prefix = "", duration = 1000 }) => {
+const CountUp = ({ to, suffix = " ", prefix = " ", duration = 1000 }) => {
   const [val, setVal] = useState(0);
   const [started, setStarted] = useState(false);
   const ref = useRef(null);
@@ -96,14 +98,14 @@ const CASE_STUDIES = [
       { icon: FaBolt,          title: "More energy efficient & faster heating",       desc: "−30% power at same time-to-comfort, or −40% faster at −15% less power than copper wire at 33 W." },
       { icon: FaWeightHanging, title: "Full air permeability & lower weight",         desc: "Open-cell mesh breathes with seat foam. 30–60 g/m² — drastically lighter than copper snake systems." },
     ],
-    animCompare: {
-      left:  { src: SeatsVideo, label: "Copper Wire System", temp: "Surface ΔT >10°C", note: "Uneven heat — hotspots & cold zones" },
-      right: { src: HeroVideo,  label: "Voltcore",           temp: "Surface ΔT ~4°C",  note: "Perfectly uniform warmth" },
-    },
-    thermal: {
-      leftImg: CopperThermalSeats,   leftLabel: "Copper Wire — Cen 39.0°C",  leftTemp: "Surface ΔT >10°C",
-      rightImg: VoltcoreThermalSeats, rightLabel: "Voltcore — Max 50.5°C",   rightTemp: "Surface ΔT ~4°C",
-    },
+animCompare: {
+  left:  { src: SeatsVideo, label: "Copper Wire System", temp: "Surface ΔT >10°C", note: "Uneven heat — hotspots & cold zones" },
+  right: { src: HeroVideo,  label: "Voltcore",           temp: "Surface ΔT ~4°C",  note: "Perfectly uniform warmth" },
+},
+thermal: {
+  leftImg: CopperThermalSeats,   leftLabel: "Copper Wire — Cen 39.0°C",  leftTemp: "Surface ΔT >10°C",
+  rightImg: VoltcoreThermalSeats, rightLabel: "Voltcore — Max 50.5°C",   rightTemp: "Surface ΔT ~4°C",
+},
     chart: {
       xKey: "min", xLabel: "Minutes", yLabel: "Temp gain (°C)",
       data: [
@@ -158,10 +160,8 @@ const CASE_STUDIES = [
       { icon: FaBolt,       title: "More energy efficient & faster heating",   desc: "Reaches comfort temperature 30% faster on 6% less power than serial solution." },
       { icon: FaClone,      title: "Faster & cheaper integration to interior", desc: "2–3 fewer integration steps than legacy laminated assemblies, cutting production cost." },
     ],
-    thermal: {
-      leftImg: SerialThermalLam,    leftLabel: "Serial Solution",  leftTemp: "Surface ΔT ~8°C",
-      rightImg: VoltcoreThermalLam, rightLabel: "Voltcore",         rightTemp: "Surface ΔT ~4°C",
-    },
+    // MODIFICATION: Suppression de thermal et ajout de video
+    video: { src: ThermalVideoGlobox },
     chart: {
       xKey: "sec", xLabel: "Seconds", yLabel: "Temperature (°C)",
       data: [
@@ -174,6 +174,7 @@ const CASE_STUDIES = [
         { sec: 120, serial: 43,   volt: 46.5 },
         { sec: 140, serial: 45,   volt: 47.5 },
         { sec: 160, serial: 46.5, volt: 48 },
+        // MODIFICATION: Correction de "s ec" en "sec" et ajout de la fin à 180s
         { sec: 180, serial: 47.5, volt: 48.5 },
       ],
       series: [
@@ -201,9 +202,9 @@ const CASE_STUDIES = [
     tagline: "Radiative heating meshes co-molded straight into PP interior components.",
     headline: "Fewer assembly steps, mono-material recyclability at end-of-life.",
     kpis: [
-      { val: 48, suffix: "°C", label: "Max surface temperature", prefix: "" },
-      { val: 40, suffix: "°C", label: "Center surface temperature", prefix: "" },
-      { val: 100, suffix: "%", label: "Mono-material recyclable", prefix: "" },
+      { val: 48, suffix: "°C", label: "Max surface temperature", prefix: " " },
+      { val: 40, suffix: "°C", label: "Center surface temperature", prefix: " " },
+      { val: 100, suffix: "%", label: "Mono-material recyclable", prefix: " " },
     ],
     bullets: [
       { icon: FaCubes,      title: "Seamless & cost-effective integration", desc: "Co-molded directly into PP components — no bonding layer, no extra assembly step vs traditional solutions." },
@@ -236,9 +237,9 @@ const CASE_STUDIES = [
     tagline: "Heating and sensing merged into a single layer — less wiring, less weight, less complexity.",
     headline: "One fabric layer replaces a separate heater + sensor stack.",
     kpis: [
-      { val: 1,   suffix: "layer",  label: "Instead of 2 stacked layers", prefix: "" },
+      { val: 1,   suffix: "layer",  label: "Instead of 2 stacked layers", prefix: " " },
       { val: 50,  suffix: "%",      label: "Less wiring & weight", prefix: "−" },
-      { val: 3,   suffix: "zones",  label: "Adaptive sensing zones", prefix: "" },
+      { val: 3,   suffix: "zones",  label: "Adaptive sensing zones", prefix: " " },
     ],
     bullets: [
       { icon: FaHandPointer, title: "2-in-1: sensing + heating",   desc: "A single fabric layer detects presence, posture, or touch — and heats. No extra sensor layer needed." },
@@ -349,27 +350,23 @@ const ThermalCompare = ({ left, right, dark }) => {
   );
 };
 
-/* ─── VIDEO ANIMATION COMPARE (only case 01) ─────────────────────────────── */
+/* ── VIDEO ANIMATION COMPARE (only case 01) ─────────────────────────────── */
 const VideoCompare = ({ left, right }) => {
   const [hov, setHov] = useState(null);
   const leftVideoRef = useRef(null);
-
   // Loop only the first 5 seconds of copper wire video
   useEffect(() => {
     const video = leftVideoRef.current;
     if (!video) return;
-
     const handleTimeUpdate = () => {
       if (video.currentTime >= 5) {
         video.currentTime = 0;
         video.play().catch(() => {});
       }
     };
-
     video.addEventListener('timeupdate', handleTimeUpdate);
     return () => video.removeEventListener('timeupdate', handleTimeUpdate);
   }, []);
-
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between mb-1">
@@ -487,7 +484,7 @@ const LineChart = ({ data, xKey, xLabel, yLabel, series, dark }) => {
   const yMax = Math.max(...allY) * 1.12;
   const xScale = (v) => PAD.left + ((v - xMin) / (xMax - xMin)) * plotW;
   const yScale = (v) => PAD.top + plotH - (v / yMax) * plotH;
-  const linePath = (key) => data.map((d, i) => `${i === 0 ? "M" : "L"} ${xScale(d[xKey]).toFixed(1)} ${yScale(d[key]).toFixed(1)}`).join(" ");
+  const linePath = (key) => data.map((d, i) => `${i === 0 ? "M" : "L"} ${xScale(d[xKey]).toFixed(1)} ${yScale(d[key]).toFixed(1)}`).join("  ");
   const pathLength = 999;
   const gridColor = dark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.07)";
   const textColor = dark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.38)";
@@ -527,9 +524,16 @@ const LineChart = ({ data, xKey, xLabel, yLabel, series, dark }) => {
             </g>
           );
         })}
-        {data.filter((_, i) => i % Math.max(1, Math.ceil(data.length / 6)) === 0).map((d) => (
-          <text key={d[xKey]} x={xScale(d[xKey])} y={H - PAD.bottom + 16} textAnchor="middle" fontSize="9" fill={textColor}>{d[xKey]}</text>
-        ))}
+        {/* MODIFICATION: Afficher tous les points ou presque pour inclure 180 */}
+        {data.map((d, i) => {
+          // Afficher les points 0, et tous les 20 secondes, et le dernier (180)
+          if (i === 0 || i === data.length - 1 || d[xKey] % 40 === 0) {
+            return (
+              <text key={d[xKey]} x={xScale(d[xKey])} y={H - PAD.bottom + 16} textAnchor="middle" fontSize="9" fill={textColor}>{d[xKey]}</text>
+            );
+          }
+          return null;
+        })}
         <text x={W - PAD.right} y={H - 2} textAnchor="end" fontSize="9" fill={textColor}>{xLabel}</text>
         {series.map((s) => (
           <g key={s.key}>
@@ -568,7 +572,7 @@ const LineChart = ({ data, xKey, xLabel, yLabel, series, dark }) => {
   );
 };
 
-/* ─── BULLET CARD ─────────────────────────────────────────────────────────── */
+/* ── BULLET CARD ────────────────────────────────────────────────────────── */
 const BulletCard = ({ b, dark, delay = 0 }) => {
   const [hov, setHov] = useState(false);
   const Icon = b.icon;
@@ -597,7 +601,7 @@ const BulletCard = ({ b, dark, delay = 0 }) => {
   );
 };
 
-/* ─── KPI ROW ─────────────────────────────────────────────────────────────── */
+/* ─── KPI ROW ────────────────────────────────────────────────────────────── */
 const KpiRow = ({ kpis, dark }) => (
   <Reveal delay={40}>
     <div className="grid grid-cols-3 gap-4">
@@ -739,15 +743,12 @@ const CaseStudyPanel = ({ cs, dark }) => (
         </div>
       )}
     </Reveal>
-
     {/* 2. KPIs */}
     <KpiRow kpis={cs.kpis} dark={dark} />
-
     {/* 3. Bullets */}
     <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
       {cs.bullets.map((b, i) => <BulletCard key={b.title} b={b} dark={dark} delay={i * 80} />)}
     </div>
-
     {/* 4. Video animation compare (01 only) */}
     {cs.animCompare && (
       <Reveal delay={60}>
@@ -756,8 +757,7 @@ const CaseStudyPanel = ({ cs, dark }) => (
         </div>
       </Reveal>
     )}
-
-    {/* 5a. Thermal drag slider (01 & 02) */}
+    {/* 5a. Thermal drag slider (01) OR Video (02) */}
     {cs.thermal && (
       <Reveal delay={80}>
         <div className={`rounded-2xl p-5 border ${dark ? "bg-[#1C1C24] border-zinc-800" : "bg-white border-zinc-200"}`}>
@@ -765,7 +765,22 @@ const CaseStudyPanel = ({ cs, dark }) => (
         </div>
       </Reveal>
     )}
-
+    {/* MODIFICATION: Ajout du rendu pour la vidéo (Case 02) avec controls */}
+    {cs.video && (
+      <Reveal delay={80}>
+        <div className={`rounded-2xl p-0 border overflow-hidden ${dark ? "bg-[#1C1C24] border-zinc-800" : "bg-white border-zinc-200"}`}>
+          <video
+            src={cs.video.src}
+            className="w-full h-[320px] object-contain bg-black"
+            controls
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+        </div>
+      </Reveal>
+    )}
     {/* 5b. Thermal photo compare (03 04) */}
     {cs.thermalCompare && (
       <Reveal delay={80}>
@@ -774,7 +789,6 @@ const CaseStudyPanel = ({ cs, dark }) => (
         </div>
       </Reveal>
     )}
-
     {/* 6. Chart + bars */}
     {cs.chart && (
       <Reveal delay={100}>
@@ -788,10 +802,8 @@ const CaseStudyPanel = ({ cs, dark }) => (
         </div>
       </Reveal>
     )}
-
     {/* 7. Gallery — centered single item or grid */}
     {cs.gallery && <Gallery items={cs.gallery} dark={dark} />}
-
     {/* 8. Applications photo grid */}
     {cs.applications && cs.applications[0]?.img && (
       <Reveal delay={140}>
@@ -822,10 +834,8 @@ const CaseStudyPanel = ({ cs, dark }) => (
         </div>
       </Reveal>
     )}
-
     {/* 8. Applications icon cards (04) */}
     {cs.applications && cs.applications[0]?.icon && <AppCards items={cs.applications} dark={dark} />}
-
     {/* 9. Footnote */}
     {cs.footNote && (
       <Reveal delay={160}>
@@ -843,20 +853,17 @@ const AutomotiveCaseStudiesPage = () => {
   const [activeId, setActiveId] = useState(CASE_STUDIES[0].id);
   const active = CASE_STUDIES.find((c) => c.id === activeId) || CASE_STUDIES[0];
   const panelRef = useRef(null);
-
   useEffect(() => {
     const obs = new MutationObserver(() => setDark(document.documentElement.classList.contains("dark")));
     obs.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
     return () => obs.disconnect();
   }, []);
-
   const handleTabHover = (id) => {
     if (id !== activeId) {
       setActiveId(id);
       panelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
-
   return (
     <div className={`min-h-screen transition-colors duration-300 ${dark ? "bg-[#14141B] text-[#B8B7A4]" : "bg-[#F0EFEA] text-[#14141B]"}`}
       style={{ fontFamily: FONT }}>
@@ -877,7 +884,7 @@ const AutomotiveCaseStudiesPage = () => {
           <Reveal>
             <span className="text-xs font-bold uppercase tracking-[0.3em] block mb-4" style={{ color: GREEN }}>4.3 — Automotive / Case Studies</span>
             <h1 className="text-4xl md:text-7xl font-black tracking-tighter uppercase leading-none text-white mb-6 max-w-4xl">
-              Head-to-Head. <br /> <span style={{ color: GREEN }}>By Product.</span>
+              Head-to-Head.  <br />  <span style={{ color: GREEN }}>By Product.</span>
             </h1>
           </Reveal>
           <Reveal delay={80}>
@@ -888,8 +895,7 @@ const AutomotiveCaseStudiesPage = () => {
           </Reveal>
         </div>
       </section>
-
-      {/* ── STICKY TABS — hover to switch ─────────────────────────────────── */}
+      {/* ── STICKY TABS — hover to switch ────────────────────────────────── */}
       <div className={`sticky top-0 z-40 border-b backdrop-blur-md ${dark ? "bg-[#14141B]/92 border-zinc-800" : "bg-[#F0EFEA]/92 border-zinc-300"}`}>
         <div className="container mx-auto max-w-6xl px-6">
           <div className="flex gap-0 overflow-x-auto">
@@ -912,7 +918,6 @@ const AutomotiveCaseStudiesPage = () => {
           </div>
         </div>
       </div>
-
       {/* ── ACTIVE PANEL ──────────────────────────────────────────────────── */}
       <section ref={panelRef} id="case-study-panel"
         className={`py-20 px-6 ${dark ? "bg-[#14141B]" : "bg-[#F0EFEA]"}`}>
@@ -920,7 +925,6 @@ const AutomotiveCaseStudiesPage = () => {
           <CaseStudyPanel key={active.id} cs={active} dark={dark} />
         </div>
       </section>
-
       <style>{`@keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }`}</style>
     </div>
   );
