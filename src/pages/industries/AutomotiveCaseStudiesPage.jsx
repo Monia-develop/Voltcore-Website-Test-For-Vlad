@@ -25,6 +25,7 @@ import HeroVideo             from "../../assets/website/Anim2Automotive.mp4";
 import SeatsVideo            from "../../assets/website/anim1-2.mp4";
 // NOUVEL IMPORT POUR LA VIDEO
 import ThermalVideoGlobox    from "../../assets/website/ThermalVideoGlobox.mp4";
+import GloveboxIntegrationAnim from "../../assets/website/GloveboxAnim.mp4";
 
 /* ─── THEME ───────────────────────────────────────────────────────────────── */
 const GREEN  = "#94C356";
@@ -161,9 +162,13 @@ thermal: {
       { icon: FaClone,      title: "Faster & cheaper integration to interior", desc: "2–3 fewer integration steps than legacy laminated assemblies, cutting production cost." },
     ],
     // MODIFICATION: Suppression de thermal et ajout de video
-    video: { src: ThermalVideoGlobox },
+    challenge: "The Challenge — legacy copper-wire laminated surfaces heat unevenly and never reach target ΔT within a normal cabin warm-up window. Voltcore's laminated mesh gets there in under 40 seconds.",
+    video: { src: ThermalVideoGlobox, targetSec: 39, totalSec: 180 },
+    integrationVideo: { src: GloveboxIntegrationAnim, caption: "Laminated straight into the glovebox — 2–3 fewer integration steps than a legacy assembly." },
     chart: {
-      xKey: "sec", xLabel: "Seconds", yLabel: "Temperature (°C)",
+      xKey: "sec", xLabel: "Seconds", yLabel: "Δ Temperature (°C)",
+      yDomain: [20, 50], yTicks: [20, 25, 30, 35, 40, 45, 50],
+      xTicks: [0, 20, 40, 60, 80, 100, 120, 140, 160, 180],
       data: [
         { sec: 0,   serial: 22,   volt: 22 },
         { sec: 20,  serial: 27,   volt: 31 },
@@ -178,7 +183,7 @@ thermal: {
         { sec: 180, serial: 47.5, volt: 48.5 },
       ],
       series: [
-        { key: "serial", name: "Serial Solution",               color: "#8a8a8a" },
+        { key: "serial", name: "Copper Wire System",             color: "#8a8a8a" },
         { key: "volt",   name: "Voltcore (−30% time, −6% pwr)", color: GREEN, highlight: true },
       ],
     },
@@ -468,12 +473,18 @@ const CompareBars = ({ title, note, rows, dark }) => {
 };
 
 /* ─── INTERACTIVE LINE CHART ─────────────────────────────────────────────── */
-const LineChart = ({ data, xKey, xLabel, yLabel, series, dark }) => {
+const LineChart = ({ data, xKey, xLabel, yLabel, series, dark, yDomain, yTicks, xTicks }) => {
   const [hoverIdx, setHoverIdx] = useState(null);
   const [drawn, setDrawn] = useState(false);
+  const [axesShown, setAxesShown] = useState(false);
   const [ref, shown] = useInView(0.3);
   const svgRef = useRef(null);
-  useEffect(() => { if (shown) setTimeout(() => setDrawn(true), 100); }, [shown]);
+  useEffect(() => {
+    if (!shown) return;
+    const t1 = setTimeout(() => setAxesShown(true), 60);
+    const t2 = setTimeout(() => setDrawn(true), 500);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, [shown]);
   const W = 540, H = 220;
   const PAD = { top: 16, right: 16, bottom: 28, left: 34 };
   const plotW = W - PAD.left - PAD.right;
@@ -481,9 +492,12 @@ const LineChart = ({ data, xKey, xLabel, yLabel, series, dark }) => {
   const xVals = data.map((d) => d[xKey]);
   const xMin = xVals[0], xMax = xVals[xVals.length - 1];
   const allY = data.flatMap((d) => series.map((s) => d[s.key]));
-  const yMax = Math.max(...allY) * 1.12;
+  // Use a fixed axis (yDomain/yTicks) when the caller supplies one — needed to
+  // match a source chart exactly — otherwise fall back to auto quarter-ticks.
+  const [yAxisMin, yAxisMax] = yDomain || [0, Math.max(...allY) * 1.12];
+  const ticks = yTicks || [0, 0.25, 0.5, 0.75, 1].map((pct) => Math.round(pct * yAxisMax));
   const xScale = (v) => PAD.left + ((v - xMin) / (xMax - xMin)) * plotW;
-  const yScale = (v) => PAD.top + plotH - (v / yMax) * plotH;
+  const yScale = (v) => PAD.top + plotH - ((v - yAxisMin) / (yAxisMax - yAxisMin)) * plotH;
   const linePath = (key) => data.map((d, i) => `${i === 0 ? "M" : "L"} ${xScale(d[xKey]).toFixed(1)} ${yScale(d[key]).toFixed(1)}`).join("  ");
   const pathLength = 999;
   const gridColor = dark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.07)";
@@ -514,27 +528,30 @@ const LineChart = ({ data, xKey, xLabel, yLabel, series, dark }) => {
       </div>
       <svg ref={svgRef} viewBox={`0 0 ${W} ${H}`} className="w-full h-auto cursor-crosshair"
         onMouseMove={handleMove} onMouseLeave={() => setHoverIdx(null)}>
-        {[0, 0.25, 0.5, 0.75, 1].map((pct) => {
-          const v = pct * yMax;
+        {ticks.map((v, i) => {
           const y = yScale(v);
           return (
-            <g key={pct}>
+            <g key={v} style={{
+              opacity: axesShown ? 1 : 0,
+              transform: axesShown ? "translateX(0)" : "translateX(-6px)",
+              transition: `opacity 0.4s ease ${i * 40}ms, transform 0.4s ease ${i * 40}ms`,
+            }}>
               <line x1={PAD.left} x2={W - PAD.right} y1={y} y2={y} stroke={gridColor} strokeWidth="1" />
-              <text x={PAD.left - 6} y={y + 4} textAnchor="end" fontSize="9" fill={textColor}>{Math.round(v)}</text>
+              <text x={PAD.left - 6} y={y + 4} textAnchor="end" fontSize="9" fill={textColor}>{v}</text>
             </g>
           );
         })}
-        {/* MODIFICATION: Afficher tous les points ou presque pour inclure 180 */}
         {data.map((d, i) => {
-          // Afficher les points 0, et tous les 20 secondes, et le dernier (180)
-          if (i === 0 || i === data.length - 1 || d[xKey] % 40 === 0) {
+          const showLabel = xTicks ? xTicks.includes(d[xKey]) : (i === 0 || i === data.length - 1 || d[xKey] % 40 === 0);
+          if (showLabel) {
             return (
-              <text key={d[xKey]} x={xScale(d[xKey])} y={H - PAD.bottom + 16} textAnchor="middle" fontSize="9" fill={textColor}>{d[xKey]}</text>
+              <text key={d[xKey]} x={xScale(d[xKey])} y={H - PAD.bottom + 16} textAnchor="middle" fontSize="9" fill={textColor}
+                style={{ opacity: axesShown ? 1 : 0, transition: `opacity 0.4s ease ${i * 30}ms` }}>{d[xKey]}</text>
             );
           }
           return null;
         })}
-        <text x={W - PAD.right} y={H - 2} textAnchor="end" fontSize="9" fill={textColor}>{xLabel}</text>
+        <text x={W - PAD.right} y={H - 2} textAnchor="end" fontSize="9" fill={textColor} style={{ opacity: axesShown ? 1 : 0, transition: "opacity 0.4s ease" }}>{xLabel}</text>
         {series.map((s) => (
           <g key={s.key}>
             {/* glow duplicate for highlight */}
@@ -568,6 +585,147 @@ const LineChart = ({ data, xKey, xLabel, yLabel, series, dark }) => {
           </span>
         ))}
       </div>
+    </div>
+  );
+};
+
+/* ── STOPWATCH — realistic analog face, synced to real <video> playback time ─
+   A proper stopwatch dial: bezel, 12 tick marks, a sweeping hand that
+   completes one full turn over `total` seconds, and a digital readout under
+   the dial. The "target" clock (Voltcore) freezes the instant the video
+   crosses its target-reached second; the "baseline" clock keeps sweeping for
+   the full clip since it never gets there. ──────────────────────────────── */
+const Stopwatch = ({ elapsed, total, color, label, sublabel, done, dark }) => {
+  const pct = total ? Math.min(1, elapsed / total) : 0;
+  const angle = pct * 360;
+  const mm = Math.floor(elapsed / 60);
+  const ss = Math.floor(elapsed % 60);
+  const faceBg = dark ? "#0f0f14" : "#fbfbf9";
+  const bezel = dark ? "#3a3a44" : "#d8d6cd";
+  const tick = dark ? "rgba(255,255,255,0.28)" : "rgba(20,20,27,0.28)";
+
+  return (
+    <div className="flex flex-row md:flex-col items-center gap-4 md:gap-3 w-full md:w-32 shrink-0">
+      <div className="relative w-20 h-20 md:w-24 md:h-24 shrink-0">
+        <svg viewBox="0 0 100 100" className="w-full h-full">
+          {/* outer bezel */}
+          <circle cx="50" cy="50" r="47" fill={faceBg} stroke={bezel} strokeWidth="3" />
+          <circle cx="50" cy="50" r="47" fill="none" stroke={done ? color : "transparent"} strokeWidth="3" opacity="0.6" />
+          {/* progress arc, subtle, along the inner edge */}
+          <circle cx="50" cy="50" r="41" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round"
+            strokeDasharray={2 * Math.PI * 41} strokeDashoffset={2 * Math.PI * 41 * (1 - pct)}
+            transform="rotate(-90 50 50)" opacity="0.35"
+            style={{ transition: "stroke-dashoffset 0.15s linear" }} />
+          {/* 12 tick marks like a real stopwatch face */}
+          {Array.from({ length: 12 }).map((_, i) => {
+            const a = (i * 30 * Math.PI) / 180;
+            const isMajor = i % 3 === 0;
+            const r1 = isMajor ? 34 : 37, r2 = 41;
+            return (
+              <line key={i}
+                x1={50 + r1 * Math.sin(a)} y1={50 - r1 * Math.cos(a)}
+                x2={50 + r2 * Math.sin(a)} y2={50 - r2 * Math.cos(a)}
+                stroke={tick} strokeWidth={isMajor ? 1.6 : 1} />
+            );
+          })}
+          {/* sweeping hand */}
+          <g style={{ transition: "transform 0.15s linear" }} transform={`rotate(${angle} 50 50)`}>
+            <line x1="50" y1="50" x2="50" y2="18" stroke={color} strokeWidth="2.5" strokeLinecap="round" />
+            <line x1="50" y1="50" x2="50" y2="60" stroke={color} strokeWidth="2.5" strokeLinecap="round" opacity="0.5" />
+          </g>
+          <circle cx="50" cy="50" r="3.2" fill={color} stroke={dark ? "#0f0f14" : "#fbfbf9"} strokeWidth="1" />
+        </svg>
+        {done && (
+          <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black text-white shadow-md" style={{ background: color }}>✓</span>
+        )}
+      </div>
+      <span className="text-xs font-black tabular-nums -mt-1 md:-mt-1" style={{ color: dark ? "white" : "#14141B" }}>
+        {mm}:{String(ss).padStart(2, "0")}
+      </span>
+      <div className="text-left md:text-center">
+        <div className="text-[10px] font-black uppercase tracking-widest" style={{ color }}>{label}</div>
+        <div className={`text-[10px] md:text-[9px] mt-0.5 leading-snug ${dark ? "text-zinc-500" : "text-zinc-500"}`}>{sublabel}</div>
+      </div>
+    </div>
+  );
+};
+
+/* ── VIDEO + DUAL STOPWATCH COMPARISON ──────────────────────────────────── */
+const VideoStopwatchCompare = ({ src, targetSec = 39, totalSec = 180, dark }) => {
+  const videoRef = useRef(null);
+  const [t, setT] = useState(0);
+  const [duration, setDuration] = useState(totalSec);
+  const reachedTarget = t >= targetSec;
+
+  return (
+    <div className={`rounded-2xl p-5 md:p-6 border ${dark ? "bg-[#1C1C24] border-zinc-800" : "bg-white border-zinc-200"}`}>
+      <div className="flex items-center justify-between mb-5 flex-wrap gap-2">
+        <h4 className={`text-sm md:text-base font-black uppercase tracking-tight ${dark ? "text-white" : "text-[#14141B]"}`}>
+          Copper Wire System <span className={dark ? "text-zinc-600" : "text-zinc-400"}>vs.</span> <span style={{ color: GREEN }}>Voltcore</span>
+        </h4>
+        <span className={`text-[10px] font-bold uppercase tracking-widest ${dark ? "text-zinc-500" : "text-zinc-400"}`}>
+          Live thermal test — glovebox heating
+        </span>
+      </div>
+
+      <div className="flex flex-col md:flex-row items-center gap-5 md:gap-6">
+        <Stopwatch
+          elapsed={t} total={duration}
+          color={dark ? "#9a9a9a" : "#8a8a8a"}
+          label="Copper Wire System"
+          sublabel={reachedTarget ? "Never reaches target ΔT" : "Heating…"}
+          done={false}
+          dark={dark}
+        />
+
+        <div className="relative w-full flex-1 rounded-xl overflow-hidden bg-black">
+          <video
+            ref={videoRef}
+            src={src}
+            className="w-full h-[280px] md:h-[320px] object-contain bg-black"
+            controls
+            autoPlay
+            muted
+            loop
+            playsInline
+            onTimeUpdate={(e) => setT(e.currentTarget.currentTime)}
+            onLoadedMetadata={(e) => setDuration(e.currentTarget.duration || totalSec)}
+          />
+          <span className="absolute top-3 left-3 text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-sm text-white/80">
+            Copper Wire System
+          </span>
+          <span className="absolute top-3 right-3 text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full backdrop-blur-sm text-[#14141B]" style={{ background: `${GREEN}E6` }}>
+            Voltcore
+          </span>
+        </div>
+
+        <Stopwatch
+          elapsed={Math.min(t, targetSec)} total={targetSec}
+          color={GREEN}
+          label="Voltcore"
+          sublabel={reachedTarget ? `Target ΔT reached — ${targetSec}s` : "Heating…"}
+          done={reachedTarget}
+          dark={dark}
+        />
+      </div>
+
+      <p className={`text-[11px] mt-4 leading-relaxed ${dark ? "text-zinc-500" : "text-zinc-500"}`}>
+        Both clocks track the video in real time. Voltcore's clock stops the moment the glovebox surface reaches target ΔT ({targetSec}s in) — the Copper Wire System never gets there across the full {Math.round(duration)}s clip.
+      </p>
+    </div>
+  );
+};
+
+/* ── STEP HEADER — labels a proof block (video/chart/animation) with the
+   bullet text it demonstrates, mirroring the numbered layout on the source
+   slide so the section reads clearly without prior context. ─────────────── */
+const StepHeader = ({ num, b, dark }) => {
+  const Icon = b.icon;
+  return (
+    <div className="flex items-center gap-3 mb-3">
+      <span className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black shrink-0" style={{ background: `${GREEN}20`, color: GREEN }}>{num}</span>
+      {Icon && <Icon size={13} style={{ color: GREEN }} className="shrink-0" />}
+      <h5 className={`text-sm font-bold ${dark ? "text-white" : "text-[#14141B]"}`}>{b.title}</h5>
     </div>
   );
 };
@@ -757,30 +915,55 @@ const CaseStudyPanel = ({ cs, dark }) => (
         </div>
       </Reveal>
     )}
-    {/* 5a. Thermal drag slider (01) OR Video (02) */}
-    {cs.thermal && (
-      <Reveal delay={80}>
-        <div className={`rounded-2xl p-5 border ${dark ? "bg-[#1C1C24] border-zinc-800" : "bg-white border-zinc-200"}`}>
-          <BeforeAfterSlider {...cs.thermal} />
+    {/* Challenge framing — marketing context so the 3 proof steps below make sense at a glance */}
+    {cs.challenge && (
+      <Reveal delay={90}>
+        <div className={`rounded-2xl px-6 py-5 border-l-4 ${dark ? "bg-[#1C1C24] border-zinc-800" : "bg-white border-zinc-200"}`} style={{ borderLeftColor: GREEN }}>
+          <p className={`text-sm leading-relaxed ${dark ? "text-zinc-300" : "text-zinc-700"}`}>{cs.challenge}</p>
         </div>
       </Reveal>
     )}
-    {/* MODIFICATION: Ajout du rendu pour la vidéo (Case 02) avec controls */}
+
+    {/* Step 1 — thermal video + dual stopwatch (proves bullet #1: homogeneous / faster heat) */}
     {cs.video && (
-      <Reveal delay={80}>
-        <div className={`rounded-2xl p-0 border overflow-hidden ${dark ? "bg-[#1C1C24] border-zinc-800" : "bg-white border-zinc-200"}`}>
-          <video
-            src={cs.video.src}
-            className="w-full h-[320px] object-contain bg-black"
-            controls
-            autoPlay
-            muted
-            loop
-            playsInline
-          />
+      <Reveal delay={100}>
+        {cs.bullets?.[0] && <StepHeader num="1" b={cs.bullets[0]} dark={dark} />}
+        <VideoStopwatchCompare src={cs.video.src} targetSec={cs.video.targetSec} totalSec={cs.video.totalSec} dark={dark} />
+      </Reveal>
+    )}
+
+    {/* Step 2 — chart + bars (proves bullet #2: energy efficiency / speed) */}
+    {cs.chart && (
+      <Reveal delay={120}>
+        {cs.bullets?.[1] && <StepHeader num="2" b={cs.bullets[1]} dark={dark} />}
+        <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-5">
+          <LineChart {...cs.chart} dark={dark} />
+          <div className="flex flex-col gap-4">
+            {cs.bars?.map((block) => (
+              <CompareBars key={block.title} title={block.title} note={block.note} rows={block.rows} dark={dark} />
+            ))}
+          </div>
         </div>
       </Reveal>
     )}
+
+    {/* Step 3 — integration animation (proves bullet #3: faster / cheaper integration) */}
+    {cs.integrationVideo && (
+      <Reveal delay={140}>
+        {cs.bullets?.[2] && <StepHeader num="3" b={cs.bullets[2]} dark={dark} />}
+        <div className={`rounded-2xl overflow-hidden border ${dark ? "bg-[#1C1C24] border-zinc-800" : "bg-white border-zinc-200"}`}>
+          <video
+            src={cs.integrationVideo.src}
+            className="w-full h-[280px] md:h-[340px] object-contain bg-black"
+            autoPlay muted loop playsInline
+          />
+          {cs.integrationVideo.caption && (
+            <p className={`text-[11px] px-5 py-3 leading-relaxed ${dark ? "text-zinc-500" : "text-zinc-500"}`}>{cs.integrationVideo.caption}</p>
+          )}
+        </div>
+      </Reveal>
+    )}
+
     {/* 5b. Thermal photo compare (03 04) */}
     {cs.thermalCompare && (
       <Reveal delay={80}>
@@ -789,16 +972,11 @@ const CaseStudyPanel = ({ cs, dark }) => (
         </div>
       </Reveal>
     )}
-    {/* 6. Chart + bars */}
-    {cs.chart && (
-      <Reveal delay={100}>
-        <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-5">
-          <LineChart {...cs.chart} dark={dark} />
-          <div className="flex flex-col gap-4">
-            {cs.bars?.map((block) => (
-              <CompareBars key={block.title} title={block.title} note={block.note} rows={block.rows} dark={dark} />
-            ))}
-          </div>
+    {/* 5a. Thermal drag slider (01) */}
+    {cs.thermal && (
+      <Reveal delay={80}>
+        <div className={`rounded-2xl p-5 border ${dark ? "bg-[#1C1C24] border-zinc-800" : "bg-white border-zinc-200"}`}>
+          <BeforeAfterSlider {...cs.thermal} />
         </div>
       </Reveal>
     )}

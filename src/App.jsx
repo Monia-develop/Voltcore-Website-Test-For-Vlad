@@ -25,6 +25,9 @@ import FloorHeating from "./pages/FloorHeating";
 import FloorHeatingCaseStudiesPage from "./pages/industries/FloorHeatingCaseStudiesPage";
 import Defense from "./pages/industries/Defense";
 
+
+
+
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
   useEffect(() => {
