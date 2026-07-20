@@ -24,7 +24,7 @@ import SensingFabricPhoto    from "../../assets/website/industries/Sensing02.png
 import HeroVideo             from "../../assets/website/Anim2Automotive.mp4";
 import SeatsVideo            from "../../assets/website/anim1-2.mp4";
 // NOUVEL IMPORT POUR LA VIDEO
-const ThermalVideoGlobox = "";
+const ThermalVideoGlobox = null;
 import GloveboxIntegrationAnim from "../../assets/website/GloveboxAnim.mp4";
 
 /* ─── THEME ───────────────────────────────────────────────────────────────── */
